@@ -22,4 +22,8 @@ public class RobotMap
     public static final int RIGHT_BACK_MOTOR = 4;
     public static final int RIGHT_MIDDLE_MOTOR = 5;
     public static final int RIGHT_FRONT_MOTOR = 6;
+
+    // Pneumatics
+    public static final int SHIFTER_SOLENOID_REVERSE = 0;
+    public static final int SHIFTER_SOLENOID_FORWARD = 0;
 }

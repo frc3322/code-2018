@@ -44,5 +44,6 @@
         <jarDirectory url="file://$USER_HOME$/wpilib/java/current/lib" recursive="true" type="SOURCES" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="CTRE_Phoenix" level="project" />
   </component>
 </module>
