@@ -13,8 +13,7 @@ package frc.team3322;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class RobotMap 
-{
+public abstract class RobotMap {
     // Drivetrain talons
     public static final int LEFT_BACK_MOTOR = 1;
     public static final int LEFT_MIDDLE_MOTOR = 2;
@@ -26,4 +25,11 @@ public class RobotMap
     // Pneumatics
     public static final int SHIFTER_SOLENOID_REVERSE = 0;
     public static final int SHIFTER_SOLENOID_FORWARD = 0;
+
+    //CubeIntake talons
+    public static final int LEFT_INTAKE = 7;
+    public static final int RIGHT_INTAKE = 8;
+    public static final int LEFT_ARM = 9;
+    public static final int RIGHT_ARM = 10;
+
 }

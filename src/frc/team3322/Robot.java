@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.subsystems.CubeIntake;
 import frc.team3322.subsystems.Drivetrain;
 
 /**
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot
 {
 
     public static final Drivetrain drivetrain = new Drivetrain();
+    public static final CubeIntake cubeIntake = new CubeIntake();
     public static OI oi;
 
     private Command autonomousCommand;
@@ -39,7 +41,7 @@ public class Robot extends TimedRobot
     public void robotInit() 
     {
         oi = new OI();
-        // chooser.addObject("My Auto", new MyAutoCommand());
+        chooser.addObject("AutonSimple", new AutonSimple());
         SmartDashboard.putData("Auto mode", chooser);
     }
 
