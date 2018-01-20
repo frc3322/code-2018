@@ -15,7 +15,8 @@ package frc.team3322;
  */
 public class RobotMap 
 {
-    // Drivetrain talons
+    // CAN
+    // Drivetrain
     public static final int LEFT_BACK_MOTOR = 10;
     public static final int LEFT_MIDDLE_MOTOR = 2;
     public static final int LEFT_FRONT_MOTOR = 11;
@@ -23,7 +24,23 @@ public class RobotMap
     public static final int RIGHT_MIDDLE_MOTOR = 6;
     public static final int RIGHT_FRONT_MOTOR = 5;
 
-    // Pneumatics
-    public static final int SHIFTER_SOLENOID_REVERSE = 0;
-    public static final int SHIFTER_SOLENOID_FORWARD = 1;
+    // Elevator
+    public static final int ELEVATOR_MOTOR_1 = 7;
+    public static final int ELEVATOR_MOTOR_2 = 8;
+
+
+    // PCM
+    // Drivetrain
+    public static final int SHIFTER_FORWARD = 0;
+    public static final int SHIFTER_REVERSE = 1;
+
+    // Elevator
+    public static final int ELEVATOR_SHIFTER_FORWARD = 2;
+    public static final int ELEVATOR_SHIFTER_REVERSE = 3;
+
+
+    // DI
+    // Elevator
+    public static final int TOP_LIMIT_SWITCH = 0;
+    public static final int BOTTOM_LIMIT_SWITCH = 1;
 }

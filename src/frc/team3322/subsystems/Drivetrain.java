@@ -26,7 +26,7 @@ public class Drivetrain extends Subsystem {
 
         robotDrive = new DifferentialDrive(leftGroup, rightGroup);
 
-        shifter = new DoubleSolenoid(RobotMap.SHIFTER_SOLENOID_REVERSE, RobotMap.SHIFTER_SOLENOID_FORWARD);
+        shifter = new DoubleSolenoid(RobotMap.SHIFTER_REVERSE, RobotMap.SHIFTER_FORWARD);
     }
 
     public void initDefaultCommand() {
