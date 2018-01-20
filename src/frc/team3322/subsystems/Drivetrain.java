@@ -15,14 +15,14 @@ public class Drivetrain extends Subsystem {
 
     public Drivetrain() {
         WPI_TalonSRX leftBackMotor = new WPI_TalonSRX(RobotMap.LEFT_BACK_MOTOR);
-        WPI_TalonSRX leftMiddleMotor = new WPI_TalonSRX(RobotMap.LEFT_MIDDLE_MOTOR);
+        //WPI_TalonSRX leftMiddleMotor = new WPI_TalonSRX(RobotMap.LEFT_MIDDLE_MOTOR);
         WPI_TalonSRX leftFrontMotor = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
         WPI_TalonSRX rightBackMotor = new WPI_TalonSRX(RobotMap.RIGHT_BACK_MOTOR);
-        WPI_TalonSRX rightMiddleMotor = new WPI_TalonSRX(RobotMap.RIGHT_MIDDLE_MOTOR);
+        //WPI_TalonSRX rightMiddleMotor = new WPI_TalonSRX(RobotMap.RIGHT_MIDDLE_MOTOR);
         WPI_TalonSRX rightFrontMotor = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
 
-        SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftBackMotor, leftMiddleMotor, leftFrontMotor);
-        SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightBackMotor, rightMiddleMotor, rightFrontMotor);
+        SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftBackMotor, leftFrontMotor);
+        SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightBackMotor, rightFrontMotor);
 
         robotDrive = new DifferentialDrive(leftGroup, rightGroup);
 
