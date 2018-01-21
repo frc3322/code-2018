@@ -2,6 +2,7 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.team3322.Robot.drivetrain;
 
@@ -56,6 +57,8 @@ public class Auton extends Command {
      */
     @Override
     protected void execute() {
+    SmartDashboard.putString("Elapsed Time", getElapsedTime() + " seconds");
+    SmartDashboard.putBoolean("AutonOver", getElapsedTime() > 15);
         if (startPos == StartPos.RIGHT) {
             if (desiredTarget == DesiredTarget.SWITCH) {
                 if (switchSide.equals("L")) {
@@ -164,11 +167,11 @@ public class Auton extends Command {
         }
     }
 
-    public void resetTime() {
+    private void resetTime() {
         startTime = System.currentTimeMillis();
     }
 
-    public double getElapsedTime() {
+    private double getElapsedTime() {
         double elapsedTime = (System.currentTimeMillis() - autonStartTime)/1000;
         double twoDecimals = (double) Math.round(elapsedTime * 100) / 100;
         return twoDecimals;
