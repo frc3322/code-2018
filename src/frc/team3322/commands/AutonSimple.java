@@ -1,4 +1,4 @@
-package frc.team3322;
+package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
