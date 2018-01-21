@@ -89,7 +89,8 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit() 
     {
-        autonomousCommand = startPosChooser.getSelected();
+        // Placeholder auton init; starts in left pos and targets the switch
+        autonomousCommand = new Auton(Auton.StartPos.LEFT, Auton.DesiredTarget.SWITCH);
 
         /*
          * String autoSelected = SmartDashboard.getString("Auto Selector",
