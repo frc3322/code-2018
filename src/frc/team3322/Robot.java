@@ -30,7 +30,8 @@ public class Robot extends TimedRobot
 
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final Elevator elevator = new Elevator();
-    public static OI oi;
+    public OI oi;
+    public Auton auton;
 
     private Command autonomousCommand;
     private SendableChooser<Command> startPosChooser = new SendableChooser<>();
@@ -110,6 +111,9 @@ public class Robot extends TimedRobot
     public void autonomousPeriodic() 
     {
         Scheduler.getInstance().run();
+
+        SmartDashboard.putString("Elapsed Time", auton.getElapsedTime() + " seconds");
+        SmartDashboard.putBoolean("AutonOver", auton.getElapsedTime() > 15);
     }
 
     @Override

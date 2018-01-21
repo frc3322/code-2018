@@ -12,6 +12,7 @@ public class Auton extends Command {
     private String scaleSide;
 
     private int state = 0;
+    private double startTime, autonStartTime;
 
     public enum StartPos {
         LEFT,
@@ -44,6 +45,8 @@ public class Auton extends Command {
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         switchSide = gameData.substring(0, 1);
         scaleSide = gameData.substring(1, 2);
+        autonStartTime = System.currentTimeMillis();
+        startTime = 0;
     }
 
 
@@ -57,7 +60,46 @@ public class Auton extends Command {
             if (desiredTarget == DesiredTarget.SWITCH) {
                 if (switchSide.equals("L")) {
                     switch (state) {
-
+                        case 0:
+                            if (System.currentTimeMillis() - startTime >= 5000) {
+                                state++;
+                            } else {
+                                drivetrain.drive(1,0);
+                            }
+                            break;
+                        case 1:
+                            if (Math.abs(drivetrain.navx.getYaw() + 90) < 5) {
+                                state++;
+                                resetTime();
+                            } else {
+                                drivetrain.drive(0,0.5);
+                            }
+                            break;
+                        case 2:
+                            if (System.currentTimeMillis() - startTime >= 5000) {
+                                state++;
+                            } else {
+                                drivetrain.drive(1,0);
+                            }
+                            break;
+                        case 3:
+                            if (Math.abs(drivetrain.navx.getYaw() + 90) < 5) {
+                                state++;
+                                resetTime();
+                            } else {
+                                drivetrain.drive(0,0.5);
+                            }
+                            break;
+                        case 4:
+                            if (System.currentTimeMillis() - startTime >= 500) {
+                                state++;
+                            } else {
+                                drivetrain.drive(1,0);
+                            }
+                            break;
+                        case 5:
+                            //run cubeHolder motor
+                            break;
                     }
                 } else if (switchSide.equals("R")) {
                     switch (state) {
@@ -122,7 +164,15 @@ public class Auton extends Command {
         }
     }
 
+    public void resetTime() {
+        startTime = System.currentTimeMillis();
+    }
 
+    public double getElapsedTime() {
+        double elapsedTime = (System.currentTimeMillis() - autonStartTime)/1000;
+        double twoDecimals = (double) Math.round(elapsedTime * 100) / 100;
+        return twoDecimals;
+    }
     /**
      * <p>
      * Returns whether this command is finished. If it is, then the command will be removed and
