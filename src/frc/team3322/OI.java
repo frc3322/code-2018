@@ -8,6 +8,7 @@
 package frc.team3322;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -22,7 +23,8 @@ public class OI
     // joystick.
     // You create one by telling it which joystick it's on and which button
     // number it is.
-    public Joystick stick = new Joystick(0);
+    public XboxController xbox = new XboxController(0);
+    //public Joystick stick = new Joystick(0);
     //Button aButton = new JoystickButton(stick, 0);
 
     // There are a few additional built in buttons you can use. Additionally,

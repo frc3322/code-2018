@@ -1,14 +1,25 @@
 package frc.team3322.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.drivetrain;
-import static frc.team3322.Robot.oi;
+public class AutonSelect extends Command {
+    public Auton.StartPos startPos;
+    public Auton.DesiredTarget desiredTarget;
 
-public class TeleopDrive extends Command {
-    public TeleopDrive() {
-        requires(drivetrain);
+    public AutonSelect(Auton.StartPos startPos) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+
+        this.startPos = startPos;
+        this.desiredTarget = null;
+    }
+
+    public AutonSelect(Auton.DesiredTarget desiredTarget) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+
+        this.startPos = null;
+        this.desiredTarget = desiredTarget;
     }
 
 
@@ -28,7 +39,7 @@ public class TeleopDrive extends Command {
      */
     @Override
     protected void execute() {
-        drivetrain.drive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
+
     }
 
 

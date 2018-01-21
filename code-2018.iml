@@ -45,5 +45,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="CTRE_Phoenix" level="project" />
+    <orderEntry type="library" name="navx_frc" level="project" />
   </component>
 </module>

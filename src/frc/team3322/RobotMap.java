@@ -13,23 +13,40 @@ package frc.team3322;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public abstract class RobotMap {
-    // Drivetrain talons
-    public static final int LEFT_BACK_MOTOR = 1;
+public class RobotMap 
+{
+    // CAN
+    // Drivetrain
+    public static final int LEFT_BACK_MOTOR = 10;
     public static final int LEFT_MIDDLE_MOTOR = 2;
-    public static final int LEFT_FRONT_MOTOR = 3;
+    public static final int LEFT_FRONT_MOTOR = 11;
     public static final int RIGHT_BACK_MOTOR = 4;
-    public static final int RIGHT_MIDDLE_MOTOR = 5;
-    public static final int RIGHT_FRONT_MOTOR = 6;
+    public static final int RIGHT_MIDDLE_MOTOR = 6;
+    public static final int RIGHT_FRONT_MOTOR = 5;
 
-    // Pneumatics
-    public static final int SHIFTER_SOLENOID_REVERSE = 0;
-    public static final int SHIFTER_SOLENOID_FORWARD = 0;
-
-    //CubeIntake talons
+    //CubeIntake
     public static final int LEFT_INTAKE = 7;
     public static final int RIGHT_INTAKE = 8;
     public static final int LEFT_ARM = 9;
     public static final int RIGHT_ARM = 10;
 
+    // Elevator
+    public static final int ELEVATOR_MOTOR_1 = 7;
+    public static final int ELEVATOR_MOTOR_2 = 8;
+
+
+    // PCM
+    // Drivetrain
+    public static final int SHIFTER_FORWARD = 0;
+    public static final int SHIFTER_REVERSE = 1;
+
+    // Elevator
+    public static final int ELEVATOR_SHIFTER_FORWARD = 2;
+    public static final int ELEVATOR_SHIFTER_REVERSE = 3;
+
+
+    // DI
+    // Elevator
+    public static final int TOP_LIMIT_SWITCH = 0;
+    public static final int BOTTOM_LIMIT_SWITCH = 1;
 }

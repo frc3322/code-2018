@@ -1,14 +1,12 @@
 package frc.team3322.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.drivetrain;
-import static frc.team3322.Robot.oi;
+import static frc.team3322.Robot.elevator;
 
-public class TeleopDrive extends Command {
-    public TeleopDrive() {
-        requires(drivetrain);
+public class ElevatorToTop extends Command {
+    public ElevatorToTop() {
+        requires(elevator);
     }
 
 
@@ -28,7 +26,7 @@ public class TeleopDrive extends Command {
      */
     @Override
     protected void execute() {
-        drivetrain.drive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
+        elevator.moveUp();
     }
 
 
@@ -52,7 +50,7 @@ public class TeleopDrive extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return elevator.isAtTop();
     }
 
 
@@ -64,7 +62,7 @@ public class TeleopDrive extends Command {
      */
     @Override
     protected void end() {
-
+        elevator.stop();
     }
 
 

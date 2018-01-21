@@ -12,9 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3322.commands.AutonSimple;
-import frc.team3322.subsystems.CubeIntake;
+import frc.team3322.commands.Auton;
+import frc.team3322.commands.AutonSelect;
 import frc.team3322.subsystems.Drivetrain;
+import frc.team3322.subsystems.Elevator;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,11 +29,13 @@ public class Robot extends TimedRobot
 {
 
     public static final Drivetrain drivetrain = new Drivetrain();
+    public static final Elevator elevator = new Elevator();
     public static final CubeIntake cubeIntake = new CubeIntake();
     public static OI oi;
 
     private Command autonomousCommand;
-    private SendableChooser<Command> chooser = new SendableChooser<>();
+    private SendableChooser<Command> startPosChooser = new SendableChooser<>();
+    private SendableChooser<Command> desiredTargetChooser = new SendableChooser<>();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -42,8 +45,16 @@ public class Robot extends TimedRobot
     public void robotInit() 
     {
         oi = new OI();
-        chooser.addObject("AutonSimple", new AutonSimple());
-        SmartDashboard.putData("Auto mode", chooser);
+
+        startPosChooser.addObject("Left", new AutonSelect(Auton.StartPos.LEFT));
+        startPosChooser.addObject("Middle", new AutonSelect(Auton.StartPos.MIDDLE));
+        startPosChooser.addObject("Right", new AutonSelect(Auton.StartPos.RIGHT));
+
+        desiredTargetChooser.addObject("Scale", new AutonSelect(Auton.DesiredTarget.SCALE));
+        desiredTargetChooser.addObject("Switch", new AutonSelect(Auton.DesiredTarget.SWITCH));
+
+        SmartDashboard.putData("Start position", startPosChooser);
+        SmartDashboard.putData("Desired target", desiredTargetChooser);
     }
 
     /**
@@ -64,20 +75,20 @@ public class Robot extends TimedRobot
     }
 
     /**
-     * This autonomous (along with the chooser code above) shows how to select
+     * This autonomous (along with the startPosChooser code above) shows how to select
      * between different autonomous modes using the dashboard. The sendable
-     * chooser code works with the Java SmartDashboard. If you prefer the
-     * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+     * startPosChooser code works with the Java SmartDashboard. If you prefer the
+     * LabVIEW Dashboard, remove all of the startPosChooser code and uncomment the
      * getString code to get the auto name from the text box below the Gyro
      *
      * <p>You can add additional auto modes by adding additional commands to the
-     * chooser code above (like the commented example) or additional comparisons
+     * startPosChooser code above (like the commented example) or additional comparisons
      * to the switch structure below with additional strings & commands.
      */
     @Override
     public void autonomousInit() 
     {
-        autonomousCommand = chooser.getSelected();
+        autonomousCommand = startPosChooser.getSelected();
 
         /*
          * String autoSelected = SmartDashboard.getString("Auto Selector",
