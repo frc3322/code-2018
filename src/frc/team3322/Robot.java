@@ -50,7 +50,7 @@ public class Robot extends TimedRobot
         startPosChooser.addObject("Right", new AutonSelect(Auton.StartPos.RIGHT));
 
         desiredTargetChooser.addObject("Scale", new AutonSelect(Auton.DesiredTarget.SCALE));
-        desiredTargetChooser.addObject("Scale", new AutonSelect(Auton.DesiredTarget.SWITCH));
+        desiredTargetChooser.addObject("Switch", new AutonSelect(Auton.DesiredTarget.SWITCH));
 
         SmartDashboard.putData("Start position", startPosChooser);
         SmartDashboard.putData("Desired target", desiredTargetChooser);
