@@ -28,7 +28,7 @@ public class TeleopDrive extends Command {
      */
     @Override
     protected void execute() {
-        drivetrain.robotDrive.arcadeDrive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
+        drivetrain.drive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
     }
 
 
