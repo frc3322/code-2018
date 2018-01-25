@@ -4,9 +4,13 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 public class SetElevator extends Command {
-    public SetElevator() {
+    private final double height;
+
+    public SetElevator(double height) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+
+        this.height = height;
     }
 
 

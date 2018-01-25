@@ -5,14 +5,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.elevator;
 
 
-public class MoveElevator extends Command {
-    private final double speed;
-
-    public MoveElevator(double speed) {
+public class HoldElevator extends Command {
+    public HoldElevator() {
         // Use requires() here to declare subsystem dependencies
         requires(elevator);
-
-        this.speed = speed;
     }
 
 
@@ -32,7 +28,7 @@ public class MoveElevator extends Command {
      */
     @Override
     protected void execute() {
-        elevator.moveUp();
+
     }
 
 
