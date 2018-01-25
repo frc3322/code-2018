@@ -1,17 +1,15 @@
 package frc.team3322.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 
+import static frc.team3322.Robot.cubeIntake;
 import static frc.team3322.Robot.drivetrain;
-import static frc.team3322.Robot.oi;
 
-public class TeleopDrive extends Command {
-    double straightAngle;
-    boolean drivingStraight;
 
-    public TeleopDrive() {
+public class AutonSimple extends Command {
+    public AutonSimple() {
         requires(drivetrain);
+        requires(cubeIntake);
     }
 
 
@@ -31,18 +29,9 @@ public class TeleopDrive extends Command {
      */
     @Override
     protected void execute() {
-        if(oi.xbox.getX(GenericHID.Hand.kRight) < .01) {
-            if(!drivingStraight) {
-                drivingStraight = true;
-                straightAngle = drivetrain.navx.getAngle();
-            }
-        } else {
-            if(drivingStraight) {
-                drivingStraight = false;
-            }
-            drivetrain.drive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
-        }
+
     }
+
 
     /**
      * <p>

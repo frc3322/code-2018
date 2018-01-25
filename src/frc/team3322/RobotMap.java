@@ -24,6 +24,12 @@ public class RobotMap
     public static final int RIGHT_MIDDLE_MOTOR = 6;
     public static final int RIGHT_FRONT_MOTOR = 5;
 
+    //CubeIntake
+    public static final int LEFT_INTAKE = 7;
+    public static final int RIGHT_INTAKE = 8;
+    public static final int LEFT_ARM = 9;
+    public static final int RIGHT_ARM = 10;
+
     // Elevator
     public static final int ELEVATOR_MOTOR_1 = 7;
     public static final int ELEVATOR_MOTOR_2 = 8;
