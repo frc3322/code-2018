@@ -7,6 +7,9 @@ import static frc.team3322.Robot.drivetrain;
 import static frc.team3322.Robot.oi;
 
 public class TeleopDrive extends Command {
+    double straightAngle;
+    boolean drivingStraight;
+
     public TeleopDrive() {
         requires(drivetrain);
     }
@@ -28,9 +31,18 @@ public class TeleopDrive extends Command {
      */
     @Override
     protected void execute() {
-        drivetrain.drive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
+        if(oi.xbox.getX(GenericHID.Hand.kRight) < .01) {
+            if(!drivingStraight) {
+                drivingStraight = true;
+                straightAngle = drivetrain.navx.getAngle();
+            }
+        } else {
+            if(drivingStraight) {
+                drivingStraight = false;
+            }
+            drivetrain.drive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
+        }
     }
-
 
     /**
      * <p>

@@ -43,6 +43,11 @@ public class Drivetrain extends Subsystem {
         robotDrive.arcadeDrive(speed, rotation);
     }
 
+    public void driveAngle(double speed, double angle) {
+        double error = navx.getAngle() - angle; //getAngle() returns overall angle, not necessarily from -180 to 180
+        robotDrive.arcadeDrive(speed, error*.05); //@TODO tune constant
+    }
+
     public void shiftLow() {
         shifter.set(DoubleSolenoid.Value.kReverse);
     }

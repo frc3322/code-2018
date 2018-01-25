@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.commands.Auton;
 import frc.team3322.commands.AutonSelect;
+import frc.team3322.commands.TeleopDrive;
 import frc.team3322.subsystems.CubeIntake;
 import frc.team3322.subsystems.Drivetrain;
 import frc.team3322.subsystems.Elevator;
@@ -33,6 +34,8 @@ public class Robot extends TimedRobot
     public static final Elevator elevator = new Elevator();
     public static final CubeIntake cubeIntake = new CubeIntake();
     public static OI oi;
+
+    private Command teleopDrive = new TeleopDrive();
 
     private Command autonomousCommand;
     private SendableChooser<Command> startPosChooser = new SendableChooser<>();
@@ -126,6 +129,7 @@ public class Robot extends TimedRobot
         {
             autonomousCommand.cancel();
         }
+        Scheduler.getInstance().add(teleopDrive);
     }
 
     /**
