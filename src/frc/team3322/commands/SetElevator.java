@@ -2,11 +2,11 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.elevator;
 
-public class ElevatorToBottom extends Command {
-    public ElevatorToBottom() {
-        requires(elevator);
+public class SetElevator extends Command {
+    public SetElevator() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
 
@@ -26,7 +26,7 @@ public class ElevatorToBottom extends Command {
      */
     @Override
     protected void execute() {
-        elevator.moveDown();
+
     }
 
 
@@ -50,7 +50,7 @@ public class ElevatorToBottom extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return elevator.isAtBottom();
+        return false;
     }
 
 
@@ -62,7 +62,7 @@ public class ElevatorToBottom extends Command {
      */
     @Override
     protected void end() {
-        elevator.stop();
+
     }
 
 
