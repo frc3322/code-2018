@@ -31,16 +31,17 @@ public class TeleopDrive extends Command {
      */
     @Override
     protected void execute() {
-        if(oi.xbox.getX(GenericHID.Hand.kRight) < .01) {
-            if(!drivingStraight) {
+        if (oi.xbox.getX(GenericHID.Hand.kRight) < .01) {
+            if (!drivingStraight) {
                 drivingStraight = true;
                 straightAngle = drivetrain.navx.getAngle();
             }
             drivetrain.driveAngle(oi.xbox.getY(GenericHID.Hand.kLeft), straightAngle);
         } else {
-            if(drivingStraight) {
+            if (drivingStraight) {
                 drivingStraight = false;
             }
+
             drivetrain.drive(oi.xbox.getY(GenericHID.Hand.kLeft), oi.xbox.getX(GenericHID.Hand.kRight) * -1);
         }
     }
