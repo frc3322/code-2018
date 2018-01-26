@@ -1,4 +1,4 @@
-package frc.team3322.commands;
+package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
