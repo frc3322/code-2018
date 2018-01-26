@@ -36,6 +36,7 @@ public class TeleopDrive extends Command {
                 drivingStraight = true;
                 straightAngle = drivetrain.navx.getAngle();
             }
+            drivetrain.driveAngle(oi.xbox.getY(GenericHID.Hand.kLeft), straightAngle);
         } else {
             if(drivingStraight) {
                 drivingStraight = false;
