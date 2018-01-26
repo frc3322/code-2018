@@ -5,15 +5,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.elevator;
 
 
-public class Calibrate extends Command {
-    private boolean doneCalibrating = false;
-
-    public Calibrate() {
-        // Use requires() here to declare subsystem dependencies
+public class ElevatorToBottom extends Command {
+    public ElevatorToBottom() {
         requires(elevator);
-        setTimeout(1);
     }
-
 
     /**
      * The initialize method is called just before the first time
@@ -32,17 +27,12 @@ public class Calibrate extends Command {
     @Override
     protected void execute() {
         elevator.moveDown();
-
-        if (elevator.isAtBottom()) {
-            elevator.resetEncoder();
-            doneCalibrating = true;
-        }
     }
 
 
     /**
      * <p>
-     * Returns whether this command is doneCalibrating. If it is, then the command will be removed and
+     * Returns whether this command is finished. If it is, then the command will be removed and
      * {@link #end()} will be called.
      * </p><p>
      * It may be useful for a team to reference the {@link #isTimedOut()}
@@ -54,12 +44,12 @@ public class Calibrate extends Command {
      * {@link edu.wpi.first.wpilibj.command.InstantCommand} (added in 2017) for this.
      * </p>
      *
-     * @return whether this command is doneCalibrating.
+     * @return whether this command is finished.
      * @see Command#isTimedOut() isTimedOut()
      */
     @Override
     protected boolean isFinished() {
-        return doneCalibrating || isTimedOut();
+        return elevator.isAtBottom();
     }
 
 
@@ -71,7 +61,7 @@ public class Calibrate extends Command {
      */
     @Override
     protected void end() {
-
+        elevator.stop();
     }
 
 

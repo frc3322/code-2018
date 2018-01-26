@@ -32,7 +32,7 @@ public class MoveElevator extends Command {
      */
     @Override
     protected void execute() {
-        elevator.moveUp();
+        elevator.move(speed);
     }
 
 
@@ -55,8 +55,7 @@ public class MoveElevator extends Command {
      */
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return elevator.isAtBottom() || elevator.isAtTop();
     }
 
 

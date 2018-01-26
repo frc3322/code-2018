@@ -2,17 +2,13 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import static frc.team3322.Robot.elevator;
 
-public class SetElevator extends Command {
-    private final double height;
 
-    public SetElevator(double height) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-
-        this.height = height;
+public class ElevatorToTop extends Command {
+    public ElevatorToTop() {
+        requires(elevator);
     }
-
 
     /**
      * The initialize method is called just before the first time
@@ -30,7 +26,7 @@ public class SetElevator extends Command {
      */
     @Override
     protected void execute() {
-
+        elevator.moveUp();
     }
 
 
@@ -53,8 +49,7 @@ public class SetElevator extends Command {
      */
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return elevator.isAtTop();
     }
 
 
@@ -66,7 +61,7 @@ public class SetElevator extends Command {
      */
     @Override
     protected void end() {
-
+        elevator.stop();
     }
 
 
