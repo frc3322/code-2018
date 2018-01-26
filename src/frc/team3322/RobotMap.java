@@ -44,6 +44,12 @@ public class RobotMap
     public static final int ELEVATOR_SHIFTER_FORWARD = 2;
     public static final int ELEVATOR_SHIFTER_REVERSE = 3;
 
+    //EagleWings
+    public static final int LEFT_WING = 4;
+    public static final int RIGHT_WING = 5;
+
+
+    // DI
     // DI (PWM)
     // Elevator
     public static final int TOP_LIMIT_SWITCH = 0;
@@ -51,4 +57,6 @@ public class RobotMap
 
     public static final int ELEVATOR_ENCODER_A = 2;
     public static final int ELEVATOR_ENCODER_B = 3;
+
+
 }
