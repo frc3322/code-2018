@@ -3,9 +3,11 @@ package frc.team3322.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team3322.RobotMap;
+import frc.team3322.commands.MoveElevator;
 
 public class Elevator extends Subsystem {
 
@@ -14,8 +16,7 @@ public class Elevator extends Subsystem {
 
     private DigitalInput topLimitSwitch;
     private DigitalInput bottomLimitSwitch;
-
-    private double speed = 1;
+    private Encoder encoder;
 
     public Elevator() {
         WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_1);
@@ -27,11 +28,12 @@ public class Elevator extends Subsystem {
 
         topLimitSwitch = new DigitalInput(RobotMap.TOP_LIMIT_SWITCH);
         bottomLimitSwitch = new DigitalInput(RobotMap.BOTTOM_LIMIT_SWITCH);
+        encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_A, RobotMap.ELEVATOR_ENCODER_B);
     }
 
     public void initDefaultCommand() {
         // TODO: Set the default command, if any, for a subsystem here. Example:
-        //    setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new MoveElevator(0));
     }
 
     public void moveUp() {
@@ -60,6 +62,14 @@ public class Elevator extends Subsystem {
 
     public boolean isAtBottom() {
         return bottomLimitSwitch.get();
+    }
+
+    public double getHeight() {
+        return encoder.getDistance();
+    }
+
+    public void resetEncoder() {
+        encoder.reset();
     }
 }
 

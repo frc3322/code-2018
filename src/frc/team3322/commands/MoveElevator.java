@@ -4,9 +4,15 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import static frc.team3322.Robot.elevator;
 
-public class ElevatorToBottom extends Command {
-    public ElevatorToBottom() {
+
+public class MoveElevator extends Command {
+    private final double speed;
+
+    public MoveElevator(double speed) {
+        // Use requires() here to declare subsystem dependencies
         requires(elevator);
+
+        this.speed = speed;
     }
 
 
@@ -26,7 +32,7 @@ public class ElevatorToBottom extends Command {
      */
     @Override
     protected void execute() {
-        elevator.moveDown();
+        elevator.moveUp();
     }
 
 
@@ -50,7 +56,7 @@ public class ElevatorToBottom extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return elevator.isAtBottom();
+        return false;
     }
 
 
@@ -62,7 +68,7 @@ public class ElevatorToBottom extends Command {
      */
     @Override
     protected void end() {
-        elevator.stop();
+
     }
 
 

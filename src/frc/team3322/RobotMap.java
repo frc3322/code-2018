@@ -50,9 +50,13 @@ public class RobotMap
 
 
     // DI
+    // DI (PWM)
     // Elevator
     public static final int TOP_LIMIT_SWITCH = 0;
     public static final int BOTTOM_LIMIT_SWITCH = 1;
+
+    public static final int ELEVATOR_ENCODER_A = 2;
+    public static final int ELEVATOR_ENCODER_B = 3;
 
 
 }
