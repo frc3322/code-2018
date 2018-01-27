@@ -16,9 +16,7 @@ public class MoveElevator extends Command {
     }
 
     @Override
-    protected void initialize() {
-
-    }
+    protected void initialize() {}
 
     @Override
     protected void execute() {
@@ -32,7 +30,7 @@ public class MoveElevator extends Command {
 
     @Override
     protected void end() {
-
+        elevator.stop();
     }
 
     @Override
