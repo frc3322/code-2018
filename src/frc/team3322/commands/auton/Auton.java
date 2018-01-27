@@ -20,7 +20,7 @@ public class Auton extends Command {
         RIGHT
     }
 
-    public enum AutonAction {
+    public enum Action {
         SCALE,
         SWITCH,
         DONOTHING,
@@ -48,10 +48,10 @@ public class Auton extends Command {
     }
 
     private StartPosition startPos;
-    private AutonAction action;
+    private Action action;
     private Path selectedPath;
 
-    public Auton(StartPosition startPos, AutonAction action) {
+    public Auton(StartPosition startPos, Action action) {
         requires(drivetrain);
         requires(elevator);
         requires(cubeIntake);
