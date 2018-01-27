@@ -1,39 +1,39 @@
-package frc.team3322.commands;
+package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.elevator;
+import static frc.team3322.Robot.drivetrain;
 
 
-public class HoldElevator extends Command {
-    private double holdHeight;
-    private double error;
-    private double kp = 0.05;
+public class TurnAngle extends Command {
+    private final double angle;
 
-    public HoldElevator() {
+    public TurnAngle(double angle) {
         // Use requires() here to declare subsystem dependencies
-        requires(elevator);
+        requires(drivetrain);
+
+        this.angle = angle;
     }
 
     @Override
     protected void initialize() {
-        holdHeight = elevator.getHeight();
+
     }
 
     @Override
     protected void execute() {
-        error = holdHeight - elevator.getHeight();
-        elevator.move(error * kp);
+        drivetrain.driveAngle(0, angle);
     }
 
     @Override
     protected boolean isFinished() {
+        // TODO: Make this return true when this Command no longer needs to run execute()
         return false;
     }
 
     @Override
     protected void end() {
-        elevator.stop();
+        drivetrain.stop();
     }
 
     @Override

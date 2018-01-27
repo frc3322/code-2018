@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.team3322.RobotMap;
-import frc.team3322.commands.TeleopDrive;
+import frc.team3322.commands.Drive;
+
+import java.awt.geom.Point2D;
 
 public class Drivetrain extends Subsystem {
 
@@ -36,7 +38,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new TeleopDrive());
+        setDefaultCommand(new Drive());
     }
 
     public void drive(double speed, double rotation) {
@@ -46,6 +48,25 @@ public class Drivetrain extends Subsystem {
     public void driveAngle(double speed, double angle) {
         double error = navx.getAngle() - angle; //getAngle() returns overall angle, not necessarily from -180 to 180
         robotDrive.arcadeDrive(speed, error*.05); // TODO tune constant
+    }
+
+    public void stop() {
+        robotDrive.arcadeDrive(0, 0);
+    }
+
+    /**
+     * Gets the distance displaced by the robot since the last reset
+     * @return A Point2D vector representing the deltas
+     */
+    public Point2D getDisplacement() {
+        return new Point2D.Double(navx.getDisplacementX(), navx.getDisplacementY());
+    }
+
+    /**
+     * Resets the distance displaced
+     */
+    public void resetDisplacement() {
+        navx.resetDisplacement();
     }
 
     public void shiftLow() {
