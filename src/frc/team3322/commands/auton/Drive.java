@@ -1,14 +1,40 @@
 package frc.team3322.commands.auton;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+
+import static frc.team3322.Robot.drivetrain;
 
 
 public class Drive extends Command {
-    public Drive() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
+    private int metersDistance;
+    private PIDController pid;
+    public Drive(double distance) {
+        requires(drivetrain);
+        pid = new PIDController(4, 0, 0, new PIDSource() {
+            PIDSourceType sourceType = PIDSourceType.kDisplacement;
 
+            @Override
+            public double pidGet() {
+                return drivetrain.getDistance();
+            }
+
+            @Override
+            public void setPIDSourceType(PIDSourceType pidSource) {
+                sourceType = pidSource;
+            }
+
+            @Override
+            public PIDSourceType getPIDSourceType() {
+                return sourceType;
+            }
+        }, d -> drivetrain.drive(d, 0));
+
+        pid.setAbsoluteTolerance(0.01);
+        pid.setSetpoint(distance);
+    }
 
     /**
      * The initialize method is called just before the first time
@@ -28,7 +54,6 @@ public class Drive extends Command {
     protected void execute() {
 
     }
-
 
     /**
      * <p>
@@ -52,7 +77,6 @@ public class Drive extends Command {
         // TODO: Make this return true when this Command no longer needs to run execute()
         return false;
     }
-
 
     /**
      * Called once when the command ended peacefully; that is it is called once

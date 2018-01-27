@@ -76,5 +76,9 @@ public class Drivetrain extends Subsystem {
     public void shiftHigh() {
         shifter.set(DoubleSolenoid.Value.kForward);
     }
+
+    public double getDistance(){
+        return 0;
+    }
 }
 
