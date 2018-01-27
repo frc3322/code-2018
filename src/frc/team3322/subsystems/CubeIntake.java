@@ -14,14 +14,16 @@ public class CubeIntake extends Subsystem {
     public SpeedControllerGroup arms;
 
     public CubeIntake() {
-        WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.LEFT_INTAKE);
+        WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
+        WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.RIGHT_INTAKE);
         leftIntake.setInverted(true);
-        WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.RIGHT_INTAKE);
+
         intake = new SpeedControllerGroup(leftIntake,rightIntake);
 
-        WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.LEFT_ARM);
+        WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
+        WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
         leftArm.setInverted(true);
-        WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.RIGHT_ARM);
+
         arms = new SpeedControllerGroup(leftArm,rightArm);
     }
 

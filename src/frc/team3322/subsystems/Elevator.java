@@ -25,16 +25,16 @@ public class Elevator extends Subsystem {
     private Encoder encoder;
 
     public Elevator() {
-        WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_1);
-        WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_2);
+        WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_1);
+        WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_2);
 
         elevator = new SpeedControllerGroup(elevatorMotor1, elevatorMotor2);
 
-        shifter = new DoubleSolenoid(RobotMap.ELEVATOR_SHIFTER_FORWARD, RobotMap.ELEVATOR_SHIFTER_REVERSE);
+        shifter = new DoubleSolenoid(RobotMap.PCM.ELEVATOR_SHIFTER_FORWARD, RobotMap.PCM.ELEVATOR_SHIFTER_REVERSE);
 
-        topLimitSwitch = new DigitalInput(RobotMap.TOP_LIMIT_SWITCH);
-        bottomLimitSwitch = new DigitalInput(RobotMap.BOTTOM_LIMIT_SWITCH);
-        encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_A, RobotMap.ELEVATOR_ENCODER_B);
+        topLimitSwitch = new DigitalInput(RobotMap.DI.TOP_LIMIT_SWITCH);
+        bottomLimitSwitch = new DigitalInput(RobotMap.DI.BOTTOM_LIMIT_SWITCH);
+        encoder = new Encoder(RobotMap.DI.ELEVATOR_ENCODER_A, RobotMap.DI.ELEVATOR_ENCODER_B);
     }
 
     public void initDefaultCommand() {

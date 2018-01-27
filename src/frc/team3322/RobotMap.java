@@ -15,48 +15,55 @@ package frc.team3322;
  */
 public class RobotMap 
 {
-    // CAN
-    // Drivetrain
-    public static final int LEFT_BACK_MOTOR = 10;
-    public static final int LEFT_MIDDLE_MOTOR = 2;
-    public static final int LEFT_FRONT_MOTOR = 11;
-    public static final int RIGHT_BACK_MOTOR = 4;
-    public static final int RIGHT_MIDDLE_MOTOR = 6;
-    public static final int RIGHT_FRONT_MOTOR = 5;
+    /**
+     * IDs for Talons and other CAN devices
+     */
+    public static class CAN {
+        // Drivetrain
+        public static final int LEFT_BACK_MOTOR = 10;
+        public static final int LEFT_MIDDLE_MOTOR = 2;
+        public static final int LEFT_FRONT_MOTOR = 11;
+        public static final int RIGHT_BACK_MOTOR = 4;
+        public static final int RIGHT_MIDDLE_MOTOR = 6;
+        public static final int RIGHT_FRONT_MOTOR = 5;
 
-    //CubeIntake
-    public static final int LEFT_INTAKE = 7;
-    public static final int RIGHT_INTAKE = 8;
-    public static final int LEFT_ARM = 9;
-    public static final int RIGHT_ARM = 10;
+        //CubeIntake
+        public static final int LEFT_INTAKE = 7;
+        public static final int RIGHT_INTAKE = 8;
+        public static final int LEFT_ARM = 9;
+        public static final int RIGHT_ARM = 10;
 
-    // Elevator
-    public static final int ELEVATOR_MOTOR_1 = 7;
-    public static final int ELEVATOR_MOTOR_2 = 8;
+        // Elevator
+        public static final int ELEVATOR_MOTOR_1 = 7;
+        public static final int ELEVATOR_MOTOR_2 = 8;
+    }
 
+    /**
+     * IDs for pneumatics solenoids
+     */
+    public static class PCM {
+        // Drivetrain
+        public static final int SHIFTER_FORWARD = 0;
+        public static final int SHIFTER_REVERSE = 1;
 
-    // PCM
-    // Drivetrain
-    public static final int SHIFTER_FORWARD = 0;
-    public static final int SHIFTER_REVERSE = 1;
+        // Elevator
+        public static final int ELEVATOR_SHIFTER_FORWARD = 2;
+        public static final int ELEVATOR_SHIFTER_REVERSE = 3;
 
-    // Elevator
-    public static final int ELEVATOR_SHIFTER_FORWARD = 2;
-    public static final int ELEVATOR_SHIFTER_REVERSE = 3;
-
-    //EagleWings
-    public static final int LEFT_WING = 4;
-    public static final int RIGHT_WING = 5;
-
-
-    // DI
-    // DI (PWM)
-    // Elevator
-    public static final int TOP_LIMIT_SWITCH = 0;
-    public static final int BOTTOM_LIMIT_SWITCH = 1;
-
-    public static final int ELEVATOR_ENCODER_A = 2;
-    public static final int ELEVATOR_ENCODER_B = 3;
+        //EagleWings
+        public static final int LEFT_WING = 4;
+        public static final int RIGHT_WING = 5;
+    }
 
 
+    /**
+     * IDs for DigitalInput devices such as switches and sensors
+     */
+    public static class DI {
+        // Elevator
+        public static final int TOP_LIMIT_SWITCH = 0;
+        public static final int BOTTOM_LIMIT_SWITCH = 1;
+        public static final int ELEVATOR_ENCODER_A = 2;
+        public static final int ELEVATOR_ENCODER_B = 3;
+    }
 }
