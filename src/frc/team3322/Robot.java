@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.commands.auton.Auton;
 import frc.team3322.subsystems.CubeIntake;
 import frc.team3322.subsystems.Drivetrain;
 import frc.team3322.subsystems.Elevator;
@@ -33,7 +34,8 @@ public class Robot extends TimedRobot
     public static OI oi;
 
     private Command autonomousCommand;
-    private SendableChooser<Command> chooser = new SendableChooser<>();
+    private SendableChooser<Auton.StartPosition> startChooser = new SendableChooser<>();
+    private SendableChooser<Auton.Action> actionChooser = new SendableChooser<>();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -43,8 +45,20 @@ public class Robot extends TimedRobot
     public void robotInit() 
     {
         oi = new OI();
-        // chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
+
+        // Create sendable choosers for auton selection
+        startChooser.addObject("Left", Auton.StartPosition.LEFT);
+        startChooser.addDefault("Middle", Auton.StartPosition.MIDDLE);
+        startChooser.addObject("Right", Auton.StartPosition.RIGHT);
+
+        actionChooser.addObject("Do nothing", Auton.Action.DONOTHING);
+        actionChooser.addDefault("Drive straight", Auton.Action.DRIVESTRAIGHT);
+        actionChooser.addObject("Closest", Auton.Action.CLOSEST);
+        actionChooser.addObject("Scale", Auton.Action.SCALE);
+        actionChooser.addObject("Switch", Auton.Action.SWITCH);
+
+        SmartDashboard.putData("Start pos", startChooser);
+        SmartDashboard.putData("Auton action", actionChooser);
     }
 
     /**
@@ -78,20 +92,9 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit() 
     {
-        autonomousCommand = chooser.getSelected();
+        autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected());
 
-        /*
-         * String autoSelected = SmartDashboard.getString("Auto Selector",
-         * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-         * = new MyAutoCommand(); break; case "Default Auto": default:
-         * autonomousCommand = new ExampleCommand(); break; }
-         */
-
-        // schedule the autonomous command (example)
-        if (autonomousCommand != null) 
-        {
-            autonomousCommand.start();
-        }
+        autonomousCommand.start();
     }
 
     /**
@@ -106,14 +109,7 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit() 
     {
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (autonomousCommand != null) 
-        {
-            autonomousCommand.cancel();
-        }
+        autonomousCommand.cancel();
     }
 
     /**
