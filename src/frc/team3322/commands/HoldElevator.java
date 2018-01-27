@@ -18,7 +18,6 @@ public class HoldElevator extends Command {
      */
     @Override
     protected void initialize() {
-
     }
 
 

@@ -21,6 +21,9 @@
 
   <!-- Any other property in build.properties can also be overridden. -->
 
+  <!-- Overrides 3rd party lib directory, allowing us to store libs within the project -->
+  <property name="userLibs.dir" value="lib"/>
+
   <property file="${user.home}/wpilib/wpilib.properties"/>
   <property file="build.properties"/>
   <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>

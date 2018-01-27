@@ -11,9 +11,11 @@ public class EagleWings extends Subsystem {
     Solenoid rightWing;
 
     public EagleWings() {
-        leftWing = new Solenoid(RobotMap.LEFT_WING);
-        rightWing = new Solenoid(RobotMap.RIGHT_WING);
+        leftWing = new Solenoid(RobotMap.PCM.LEFT_WING);
+        rightWing = new Solenoid(RobotMap.PCM.RIGHT_WING);
     }
+
+    public void initDefaultCommand() {}
 
     public void deploy() {
         leftWing.set(true);
@@ -23,11 +25,6 @@ public class EagleWings extends Subsystem {
     public void stop() {
         leftWing.set(false);
         rightWing.set(false);
-    }
-
-    public void initDefaultCommand() {
-        // TODO: Set the default command, if any, for a subsystem here. Example:
-        //    setDefaultCommand(new MySpecialCommand());
     }
 }
 

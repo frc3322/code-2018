@@ -19,19 +19,19 @@ public class Drivetrain extends Subsystem {
 
 
     public Drivetrain() {
-        WPI_TalonSRX leftBackMotor = new WPI_TalonSRX(RobotMap.LEFT_BACK_MOTOR);
+        WPI_TalonSRX leftBackMotor = new WPI_TalonSRX(RobotMap.CAN.LEFT_BACK_MOTOR);
         //WPI_TalonSRX leftMiddleMotor = new WPI_TalonSRX(RobotMap.LEFT_MIDDLE_MOTOR);
-        WPI_TalonSRX leftFrontMotor = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
-        WPI_TalonSRX rightBackMotor = new WPI_TalonSRX(RobotMap.RIGHT_BACK_MOTOR);
-        //WPI_TalonSRX rightMiddleMotor = new WPI_TalonSRX(RobotMap.RIGHT_MIDDLE_MOTOR);
-        WPI_TalonSRX rightFrontMotor = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
+        WPI_TalonSRX leftFrontMotor = new WPI_TalonSRX(RobotMap.CAN.LEFT_FRONT_MOTOR);
+        WPI_TalonSRX rightBackMotor = new WPI_TalonSRX(RobotMap.CAN.RIGHT_BACK_MOTOR);
+        //WPI_TalonSRX rightMiddleMotor = new WPI_TalonSRX(RobotMap.CAN.RIGHT_MIDDLE_MOTOR);
+        WPI_TalonSRX rightFrontMotor = new WPI_TalonSRX(RobotMap.CAN.RIGHT_FRONT_MOTOR);
 
         SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftBackMotor, leftFrontMotor);
         SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightBackMotor, rightFrontMotor);
 
         robotDrive = new DifferentialDrive(leftGroup, rightGroup);
 
-        shifter = new DoubleSolenoid(RobotMap.SHIFTER_REVERSE, RobotMap.SHIFTER_FORWARD);
+        shifter = new DoubleSolenoid(RobotMap.PCM.SHIFTER_REVERSE, RobotMap.PCM.SHIFTER_FORWARD);
         navx = new AHRS(SerialPort.Port.kMXP);
     }
 
@@ -45,7 +45,7 @@ public class Drivetrain extends Subsystem {
 
     public void driveAngle(double speed, double angle) {
         double error = navx.getAngle() - angle; //getAngle() returns overall angle, not necessarily from -180 to 180
-        robotDrive.arcadeDrive(speed, error*.05); //@TODO tune constant
+        robotDrive.arcadeDrive(speed, error*.05); // TODO tune constant
     }
 
     public void shiftLow() {
