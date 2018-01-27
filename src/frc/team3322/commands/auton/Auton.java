@@ -2,38 +2,63 @@ package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static frc.team3322.Robot.cubeIntake;
 import static frc.team3322.Robot.drivetrain;
+import static frc.team3322.Robot.elevator;
+
 
 public class Auton extends Command {
-
     private String gameData;
     private String switchSide;
     private String scaleSide;
-
     private int state = 0;
-    private double startTime, autonStartTime;
 
-    public enum StartPos {
+    public enum StartPosition {
         LEFT,
         MIDDLE,
         RIGHT
     }
 
-    public enum DesiredTarget {
+    public enum AutonAction {
         SCALE,
-        SWITCH
+        SWITCH,
+        DONOTHING,
+        DRIVESTRAIGHT,
+        CLOSEST
     }
 
-    private StartPos startPos;
-    private DesiredTarget desiredTarget;
+    public enum Path {
+        POSX_DONOTHING,
+        POS1_LSWITCH,
+        POS1_LSCALE,
+        POS1_RSWITCH,
+        POS1_RSCALE,
+        POS1_DRIVESTRAIGHT,
+        POS2_LSWITCH,
+        POS2_LSCALE,
+        POS2_RSWITCH,
+        POS2_RSCALE,
+        POS2_DRIVESTRAIGHT,
+        POS3_LSWITCH,
+        POS3_LSCALE,
+        POS3_RSWITCH,
+        POS3_RSCALE,
+        POS3_DRIVESTRAIGHT
+    }
 
-    public Auton(StartPos startPos, DesiredTarget desiredTarget) {
+    private StartPosition startPos;
+    private AutonAction action;
+    private Path selectedPath;
+
+    public Auton(StartPosition startPos, AutonAction action) {
+        // Use requires() here to declare subsystem dependencies
         requires(drivetrain);
+        requires(elevator);
+        requires(cubeIntake);
 
         this.startPos = startPos;
-        this.desiredTarget = desiredTarget;
+        this.action = action;
     }
 
 
@@ -45,9 +70,235 @@ public class Auton extends Command {
     protected void initialize() {
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         switchSide = gameData.substring(0, 1);
-        scaleSide = gameData.substring(1, 2);
-        autonStartTime = System.currentTimeMillis();
-        startTime = 0;
+        scaleSide = gameData.substring(0, 1);
+
+        switch (startPos) {
+            case LEFT:
+                if (switchSide.equals("L") && scaleSide.equals("L")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS1_LSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            break;
+                    }
+                } else if (switchSide.equals("L") && scaleSide.equals("R")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS1_LSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            break;
+                    }
+                } else if (switchSide.equals("R") && scaleSide.equals("L")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS1_RSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS1_LSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS1_LSCALE;
+                            break;
+                    }
+                } else if (switchSide.equals("R") && scaleSide.equals("R")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS1_RSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS1_RSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS1_RSWITCH;
+                            break;
+                    }
+                }
+                break;
+            case MIDDLE:
+                if (switchSide.equals("L") && scaleSide.equals("L")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS2_LSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            break;
+                    }
+                } else if (switchSide.equals("L") && scaleSide.equals("R")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS2_RSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            break;
+                    }
+                } else if (switchSide.equals("R") && scaleSide.equals("L")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS2_LSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            break;
+                    }
+                } else if (switchSide.equals("R") && scaleSide.equals("R")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS2_RSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            break;
+                    }
+                }
+                break;
+            case RIGHT:
+                if (switchSide.equals("L") && scaleSide.equals("L")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS3_LSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS3_LSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS3_LSWITCH;
+                            break;
+                    }
+                } else if (switchSide.equals("L") && scaleSide.equals("R")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS3_LSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS3_RSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS3_RSCALE;
+                            break;
+                    }
+                } else if (switchSide.equals("R") && scaleSide.equals("L")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS3_LSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            break;
+                    }
+                } else if (switchSide.equals("R") && scaleSide.equals("R")) {
+                    switch (action) {
+                        case DONOTHING:
+                            selectedPath = Auton.Path.POSX_DONOTHING;
+                            break;
+                        case DRIVESTRAIGHT:
+                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            break;
+                        case SWITCH:
+                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            break;
+                        case SCALE:
+                            selectedPath = Auton.Path.POS3_RSCALE;
+                            break;
+                        case CLOSEST:
+                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            break;
+                    }
+                }
+                break;
+        }
     }
 
 
@@ -57,125 +308,59 @@ public class Auton extends Command {
      */
     @Override
     protected void execute() {
-    SmartDashboard.putString("Elapsed Time", getElapsedTime() + " seconds");
-    SmartDashboard.putBoolean("AutonOver", getElapsedTime() > 15);
-        if (startPos == StartPos.RIGHT) {
-            if (desiredTarget == DesiredTarget.SWITCH) {
-                if (switchSide.equals("L")) {
-                    switch (state) {
-                        case 0:
-                            if (System.currentTimeMillis() - startTime >= 5000) {
-                                state++;
-                            } else {
-                                drivetrain.drive(1,0);
-                            }
-                            break;
-                        case 1:
-                            if (Math.abs(drivetrain.navx.getYaw() + 90) < 5) {
-                                state++;
-                                resetTime();
-                            } else {
-                                drivetrain.drive(0,0.5);
-                            }
-                            break;
-                        case 2:
-                            if (System.currentTimeMillis() - startTime >= 5000) {
-                                state++;
-                            } else {
-                                drivetrain.drive(1,0);
-                            }
-                            break;
-                        case 3:
-                            if (Math.abs(drivetrain.navx.getYaw() + 90) < 5) {
-                                state++;
-                                resetTime();
-                            } else {
-                                drivetrain.drive(0,0.5);
-                            }
-                            break;
-                        case 4:
-                            if (System.currentTimeMillis() - startTime >= 500) {
-                                state++;
-                            } else {
-                                drivetrain.drive(1,0);
-                            }
-                            break;
-                        case 5:
-                            //run cubeHolder motor
-                            break;
-                    }
-                } else if (switchSide.equals("R")) {
-                    switch (state) {
+        switch (selectedPath) {
+            case POSX_DONOTHING:
 
-                    }
-                }
-            } else if (desiredTarget == DesiredTarget.SCALE) {
-                if (scaleSide.equals("L")) {
-                    switch (state) {
+                break;
+            case POS1_LSWITCH:
 
-                    }
-                } else if (scaleSide.equals("R")) {
-                    switch (state) {
+                break;
+            case POS1_LSCALE:
 
-                    }
-                }
-            }
-        } else if (startPos == StartPos.MIDDLE) {
-            if (desiredTarget == DesiredTarget.SWITCH) {
-                if (switchSide.equals("L")) {
-                    switch (state) {
+                break;
+            case POS1_RSWITCH:
 
-                    }
-                } else if (switchSide.equals("R")) {
-                    switch (state) {
+                break;
+            case POS1_RSCALE:
 
-                    }
-                }
-            } else if (desiredTarget == DesiredTarget.SCALE) {
-                if (scaleSide.equals("L")) {
-                    switch (state) {
+                break;
+            case POS1_DRIVESTRAIGHT:
 
-                    }
-                } else if (scaleSide.equals("R")) {
-                    switch (state) {
+                break;
+            case POS2_LSWITCH:
 
-                    }
-                }
-            }
-        } else if (startPos == StartPos.LEFT) {
-            if (desiredTarget == DesiredTarget.SWITCH) {
-                if (switchSide.equals("L")) {
-                    switch (state) {
+                break;
+            case POS2_LSCALE:
 
-                    }
-                } else if (switchSide.equals("R")) {
-                    switch (state) {
+                break;
+            case POS2_RSWITCH:
 
-                    }
-                }
-            } else if (desiredTarget == DesiredTarget.SCALE) {
-                if (scaleSide.equals("L")) {
-                    switch (state) {
+                break;
+            case POS2_RSCALE:
 
-                    }
-                } else if (scaleSide.equals("R")) {
-                    switch (state) {
+                break;
+            case POS2_DRIVESTRAIGHT:
 
-                    }
-                }
-            }
+                break;
+            case POS3_LSWITCH:
+
+                break;
+            case POS3_LSCALE:
+
+                break;
+            case POS3_RSWITCH:
+
+                break;
+            case POS3_RSCALE:
+
+                break;
+            case POS3_DRIVESTRAIGHT:
+
+                break;
         }
     }
 
-    private void resetTime() {
-        startTime = System.currentTimeMillis();
-    }
 
-    private double getElapsedTime() {
-        double elapsedTime = (System.currentTimeMillis() - autonStartTime)/1000;
-        double twoDecimals = (double) Math.round(elapsedTime * 100) / 100;
-        return twoDecimals;
-    }
     /**
      * <p>
      * Returns whether this command is finished. If it is, then the command will be removed and
