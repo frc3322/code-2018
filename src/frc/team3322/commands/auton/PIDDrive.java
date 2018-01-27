@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.drivetrain;
 
 
-public class Drive extends Command {
+public class PIDDrive extends Command {
     private int metersDistance;
     private PIDController pid;
-    public Drive(double distance) {
+    public PIDDrive(double distance) {
         requires(drivetrain);
         pid = new PIDController(4, 0, 0, new PIDSource() {
             PIDSourceType sourceType = PIDSourceType.kDisplacement;
