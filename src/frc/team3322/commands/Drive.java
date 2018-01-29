@@ -32,7 +32,7 @@ public class Drive extends Command {
                 drivingStraight = false;
             }
 
-            drivetrain.drive(oi.stick.getY(GenericHID.Hand.kLeft), oi.stick.getX(GenericHID.Hand.kRight) * -1);
+            drivetrain.drive(oi.stick.getY(GenericHID.Hand.kLeft), -oi.stick.getX(GenericHID.Hand.kRight));
         }
     }
 

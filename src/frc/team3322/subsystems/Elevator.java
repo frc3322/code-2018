@@ -27,7 +27,6 @@ public class Elevator extends Subsystem {
     public Elevator() {
         WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_1);
         WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_2);
-
         elevator = new SpeedControllerGroup(elevatorMotor1, elevatorMotor2);
 
         shifter = new DoubleSolenoid(RobotMap.PCM.ELEVATOR_SHIFTER_FORWARD, RobotMap.PCM.ELEVATOR_SHIFTER_REVERSE);
@@ -42,11 +41,11 @@ public class Elevator extends Subsystem {
     }
 
     public void moveUp() {
-        elevator.set(1);
+        elevator.set(.5);
     }
 
     public void moveDown() {
-        elevator.set(-1);
+        elevator.set(-.5);
     }
 
     public void move(double speed) {
