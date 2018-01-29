@@ -21,21 +21,21 @@ public class RobotMap
     public static class CAN {
         // Drivetrain
         public static final int LEFT_BACK_MOTOR = 10;
-        public static final int LEFT_MIDDLE_MOTOR = 2;
+        public static final int LEFT_MIDDLE_MOTOR = 0;
         public static final int LEFT_FRONT_MOTOR = 11;
         public static final int RIGHT_BACK_MOTOR = 4;
-        public static final int RIGHT_MIDDLE_MOTOR = 6;
+        public static final int RIGHT_MIDDLE_MOTOR = 0;
         public static final int RIGHT_FRONT_MOTOR = 5;
 
-        //CubeIntake
-        public static final int LEFT_INTAKE = 7;
-        public static final int RIGHT_INTAKE = 8;
-        public static final int LEFT_ARM = 9;
-        public static final int RIGHT_ARM = 10;
-
         // Elevator
-        public static final int ELEVATOR_MOTOR_1 = 7;
-        public static final int ELEVATOR_MOTOR_2 = 8;
+        public static final int ELEVATOR_MOTOR_1 = 8;
+        public static final int ELEVATOR_MOTOR_2 = 9;
+
+        // Cube Intake
+        public static final int LEFT_INTAKE = 12;
+        public static final int RIGHT_INTAKE = 13;
+        public static final int LEFT_ARM = 14;
+        public static final int RIGHT_ARM = 15;
     }
 
     /**
@@ -50,7 +50,7 @@ public class RobotMap
         public static final int ELEVATOR_SHIFTER_FORWARD = 2;
         public static final int ELEVATOR_SHIFTER_REVERSE = 3;
 
-        //EagleWings
+        // Eagle Wings
         public static final int LEFT_WING = 4;
         public static final int RIGHT_WING = 5;
     }
@@ -65,5 +65,23 @@ public class RobotMap
         public static final int BOTTOM_LIMIT_SWITCH = 1;
         public static final int ELEVATOR_ENCODER_A = 2;
         public static final int ELEVATOR_ENCODER_B = 3;
+    }
+
+    public static class XBOX {
+        // Buttons
+        public static final int BUTTON_A = 1;
+        public static final int BUTTON_B = 2;
+        public static final int BUTTON_X = 3;
+        public static final int BUTTON_Y = 4;
+        public static final int BUMPER_LEFT = 5;
+        public static final int BUMPER_RIGHT = 6;
+        public static final int BUTTON_BACK = 7;
+        public static final int BUTTON_START = 8;
+        public static final int STICK_LEFT = 9;
+        public static final int STICK_RIGHT = 10;
+
+        // Axes
+        public static final int TRIGGER_L_AXIS = 2;
+        public static final int TRIGGER_R_AXIS = 3;
     }
 }

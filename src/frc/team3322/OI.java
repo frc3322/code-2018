@@ -8,9 +8,11 @@
 package frc.team3322;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
+import frc.team3322.commands.MoveElevator;
+import frc.team3322.triggers.XboxTrigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -19,10 +21,25 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI 
 {
     public Joystick stick = new Joystick(0);
-    Button aButton = new JoystickButton(stick, 0);
-    Button bButton = new JoystickButton(stick, 1);
-    Button xButton = new JoystickButton(stick, 2);
-    Button yButton = new JoystickButton(stick, 3);
+
+    Button button_a = new JoystickButton(stick, RobotMap.XBOX.BUTTON_A);
+    Button button_b = new JoystickButton(stick, RobotMap.XBOX.BUTTON_B);
+    Button button_x = new JoystickButton(stick, RobotMap.XBOX.BUTTON_X);
+    Button button_y = new JoystickButton(stick, RobotMap.XBOX.BUTTON_Y);
+    Button bumper_left = new JoystickButton(stick, RobotMap.XBOX.BUMPER_LEFT);
+    Button bumper_right = new JoystickButton(stick, RobotMap.XBOX.BUMPER_RIGHT);
+    Button button_back = new JoystickButton(stick, RobotMap.XBOX.BUTTON_BACK);
+    Button button_start = new JoystickButton(stick, RobotMap.XBOX.BUTTON_START);
+    Button stick_left = new JoystickButton(stick, RobotMap.XBOX.STICK_LEFT);
+    Button stick_right = new JoystickButton(stick, RobotMap.XBOX.STICK_RIGHT);
+    Trigger trigger_left = new XboxTrigger(stick, RobotMap.XBOX.TRIGGER_L_AXIS);
+    Trigger trigger_right = new XboxTrigger(stick, RobotMap.XBOX.TRIGGER_R_AXIS);
+
+    public OI() {
+        // Elevator movement with triggers
+        trigger_left.whileActive(new MoveElevator(stick.getRawAxis(RobotMap.XBOX.TRIGGER_L_AXIS)));
+        trigger_right.whileActive(new MoveElevator(-stick.getRawAxis(RobotMap.XBOX.TRIGGER_R_AXIS)));
+    }
 
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of
