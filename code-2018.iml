@@ -44,7 +44,7 @@
         <jarDirectory url="file://$USER_HOME$/wpilib/java/current/lib" recursive="true" type="SOURCES" />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="navX" level="application" />
-    <orderEntry type="library" name="CTRE Phoenix" level="application" />
+    <orderEntry type="library" name="CTRE_Phoenix" level="project" />
+    <orderEntry type="library" name="navx_frc" level="project" />
   </component>
 </module>
