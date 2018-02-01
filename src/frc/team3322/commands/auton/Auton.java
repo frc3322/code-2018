@@ -2,6 +2,7 @@ package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team3322.commands.ElevatorToTop;
 
 
 public class Auton extends CommandGroup {
@@ -47,7 +48,7 @@ public class Auton extends CommandGroup {
     public Auton(StartPosition startPos, Action action) {
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         switchSide = gameData.substring(0, 1);
-        scaleSide = gameData.substring(0, 1);
+        scaleSide = gameData.substring(1, 2);
 
         switch (startPos) {
             case LEFT:
@@ -285,12 +286,15 @@ public class Auton extends CommandGroup {
             case POSX_DONOTHING:
                 break;
             case POSL_LSWITCH:
-                addSequential(new DriveDistance(10));
+                addSequential(new DriveDistance(3));
                 addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(5));
+                addSequential(new DriveDistance(2));
                 break;
             case POSL_LSCALE:
-
+                addSequential(new DriveDistance(6));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(2));
+                addSequential(new ElevatorToTop());
                 break;
             case POSL_RSWITCH:
 
