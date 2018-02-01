@@ -5,10 +5,16 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.drivetrain;
 
 
-public class Turn extends Command {
-    public Turn(double angle) {
+public class TurnToAngle extends Command {
+    private final double desiredAngle;
+
+    public TurnToAngle(double degrees) {
         // Use requires() here to declare subsystem dependencies
         requires(drivetrain);
+        setTimeout(5);
+
+        double initialAngle = drivetrain.navx.getAngle();
+        desiredAngle = initialAngle + degrees;
     }
 
 
@@ -28,7 +34,7 @@ public class Turn extends Command {
      */
     @Override
     protected void execute() {
-
+        drivetrain.driveAngle(0, desiredAngle);
     }
 
 
@@ -52,7 +58,7 @@ public class Turn extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return Math.abs(desiredAngle - drivetrain.navx.getAngle()) < 1 || isTimedOut();
     }
 
 

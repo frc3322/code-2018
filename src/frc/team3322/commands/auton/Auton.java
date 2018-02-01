@@ -1,18 +1,13 @@
 package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.Command;
-
-import static frc.team3322.Robot.cubeIntake;
-import static frc.team3322.Robot.drivetrain;
-import static frc.team3322.Robot.elevator;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 
-public class Auton extends Command {
+public class Auton extends CommandGroup {
     private String gameData;
     private String switchSide;
     private String scaleSide;
-    private int state = 0;
 
     public enum StartPosition {
         LEFT,
@@ -30,38 +25,26 @@ public class Auton extends Command {
 
     public enum Path {
         POSX_DONOTHING,
-        POS1_LSWITCH,
-        POS1_LSCALE,
-        POS1_RSWITCH,
-        POS1_RSCALE,
-        POS1_DRIVESTRAIGHT,
-        POS2_LSWITCH,
-        POS2_LSCALE,
-        POS2_RSWITCH,
-        POS2_RSCALE,
-        POS2_DRIVESTRAIGHT,
-        POS3_LSWITCH,
-        POS3_LSCALE,
-        POS3_RSWITCH,
-        POS3_RSCALE,
-        POS3_DRIVESTRAIGHT
+        POSL_LSWITCH,
+        POSL_LSCALE,
+        POSL_RSWITCH,
+        POSL_RSCALE,
+        POSL_DRIVESTRAIGHT,
+        POSM_LSWITCH,
+        POSM_LSCALE,
+        POSM_RSWITCH,
+        POSM_RSCALE,
+        POSM_DRIVESTRAIGHT,
+        POSR_LSWITCH,
+        POSR_LSCALE,
+        POSR_RSWITCH,
+        POSR_RSCALE,
+        POSR_DRIVESTRAIGHT
     }
 
-    private StartPosition startPos;
-    private Action action;
     private Path selectedPath;
 
     public Auton(StartPosition startPos, Action action) {
-        requires(drivetrain);
-        requires(elevator);
-        requires(cubeIntake);
-
-        this.startPos = startPos;
-        this.action = action;
-    }
-
-    @Override
-    protected void initialize() {
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         switchSide = gameData.substring(0, 1);
         scaleSide = gameData.substring(0, 1);
@@ -74,16 +57,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            selectedPath = Auton.Path.POSL_LSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS1_LSCALE;
+                            selectedPath = Auton.Path.POSL_LSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            selectedPath = Auton.Path.POSL_LSWITCH;
                             break;
                     }
                 } else if (switchSide.equals("L") && scaleSide.equals("R")) {
@@ -92,16 +75,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            selectedPath = Auton.Path.POSL_LSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS1_LSCALE;
+                            selectedPath = Auton.Path.POSL_LSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS1_LSWITCH;
+                            selectedPath = Auton.Path.POSL_LSWITCH;
                             break;
                     }
                 } else if (switchSide.equals("R") && scaleSide.equals("L")) {
@@ -110,16 +93,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS1_RSWITCH;
+                            selectedPath = Auton.Path.POSL_RSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS1_LSCALE;
+                            selectedPath = Auton.Path.POSL_LSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS1_LSCALE;
+                            selectedPath = Auton.Path.POSL_LSCALE;
                             break;
                     }
                 } else if (switchSide.equals("R") && scaleSide.equals("R")) {
@@ -128,16 +111,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS1_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS1_RSWITCH;
+                            selectedPath = Auton.Path.POSL_RSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS1_RSCALE;
+                            selectedPath = Auton.Path.POSL_RSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS1_RSWITCH;
+                            selectedPath = Auton.Path.POSL_RSWITCH;
                             break;
                     }
                 }
@@ -149,16 +132,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            selectedPath = Auton.Path.POSM_LSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS2_LSCALE;
+                            selectedPath = Auton.Path.POSM_LSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            selectedPath = Auton.Path.POSM_LSWITCH;
                             break;
                     }
                 } else if (switchSide.equals("L") && scaleSide.equals("R")) {
@@ -167,16 +150,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            selectedPath = Auton.Path.POSM_LSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS2_RSCALE;
+                            selectedPath = Auton.Path.POSM_RSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS2_LSWITCH;
+                            selectedPath = Auton.Path.POSM_LSWITCH;
                             break;
                     }
                 } else if (switchSide.equals("R") && scaleSide.equals("L")) {
@@ -185,16 +168,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            selectedPath = Auton.Path.POSM_RSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS2_LSCALE;
+                            selectedPath = Auton.Path.POSM_LSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            selectedPath = Auton.Path.POSM_RSWITCH;
                             break;
                     }
                 } else if (switchSide.equals("R") && scaleSide.equals("R")) {
@@ -203,16 +186,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS2_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            selectedPath = Auton.Path.POSM_RSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS2_RSCALE;
+                            selectedPath = Auton.Path.POSM_RSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS2_RSWITCH;
+                            selectedPath = Auton.Path.POSM_RSWITCH;
                             break;
                     }
                 }
@@ -224,16 +207,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS3_LSWITCH;
+                            selectedPath = Auton.Path.POSR_LSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS3_LSCALE;
+                            selectedPath = Auton.Path.POSR_LSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS3_LSWITCH;
+                            selectedPath = Auton.Path.POSR_LSWITCH;
                             break;
                     }
                 } else if (switchSide.equals("L") && scaleSide.equals("R")) {
@@ -242,16 +225,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS3_LSWITCH;
+                            selectedPath = Auton.Path.POSR_LSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS3_RSCALE;
+                            selectedPath = Auton.Path.POSR_RSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS3_RSCALE;
+                            selectedPath = Auton.Path.POSR_RSCALE;
                             break;
                     }
                 } else if (switchSide.equals("R") && scaleSide.equals("L")) {
@@ -260,16 +243,16 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            selectedPath = Auton.Path.POSR_RSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS3_LSCALE;
+                            selectedPath = Auton.Path.POSR_LSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            selectedPath = Auton.Path.POSR_RSWITCH;
                             break;
                     }
                 } else if (switchSide.equals("R") && scaleSide.equals("R")) {
@@ -278,90 +261,76 @@ public class Auton extends Command {
                             selectedPath = Auton.Path.POSX_DONOTHING;
                             break;
                         case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POS3_DRIVESTRAIGHT;
+                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
                             break;
                         case SWITCH:
-                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            selectedPath = Auton.Path.POSR_RSWITCH;
                             break;
                         case SCALE:
-                            selectedPath = Auton.Path.POS3_RSCALE;
+                            selectedPath = Auton.Path.POSR_RSCALE;
                             break;
                         case CLOSEST:
-                            selectedPath = Auton.Path.POS3_RSWITCH;
+                            selectedPath = Auton.Path.POSR_RSWITCH;
                             break;
                     }
                 }
                 break;
         }
+
+        queuePath();
     }
 
-    @Override
-    protected void execute() {
+    public void queuePath() {
         switch (selectedPath) {
             case POSX_DONOTHING:
+                break;
+            case POSL_LSWITCH:
+                addSequential(new DriveDistance(10));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(5));
+                break;
+            case POSL_LSCALE:
 
                 break;
-            case POS1_LSWITCH:
+            case POSL_RSWITCH:
 
                 break;
-            case POS1_LSCALE:
+            case POSL_RSCALE:
 
                 break;
-            case POS1_RSWITCH:
+            case POSL_DRIVESTRAIGHT:
 
                 break;
-            case POS1_RSCALE:
+            case POSM_LSWITCH:
 
                 break;
-            case POS1_DRIVESTRAIGHT:
+            case POSM_LSCALE:
 
                 break;
-            case POS2_LSWITCH:
+            case POSM_RSWITCH:
 
                 break;
-            case POS2_LSCALE:
+            case POSM_RSCALE:
 
                 break;
-            case POS2_RSWITCH:
+            case POSM_DRIVESTRAIGHT:
 
                 break;
-            case POS2_RSCALE:
+            case POSR_LSWITCH:
 
                 break;
-            case POS2_DRIVESTRAIGHT:
+            case POSR_LSCALE:
 
                 break;
-            case POS3_LSWITCH:
+            case POSR_RSWITCH:
 
                 break;
-            case POS3_LSCALE:
+            case POSR_RSCALE:
 
                 break;
-            case POS3_RSWITCH:
-
-                break;
-            case POS3_RSCALE:
-
-                break;
-            case POS3_DRIVESTRAIGHT:
+            case POSR_DRIVESTRAIGHT:
 
                 break;
         }
-    }
-
-    @Override
-    protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
-    }
-
-    @Override
-    protected void end() {
-
-    }
-
-    @Override
-    protected void interrupted() {
-        super.interrupted();
     }
 }
