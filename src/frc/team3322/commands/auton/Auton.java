@@ -2,9 +2,7 @@ package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team3322.commands.Drive;
 import frc.team3322.commands.ElevatorToTop;
-import frc.team3322.subsystems.Drivetrain;
 
 
 public class Auton extends CommandGroup {
