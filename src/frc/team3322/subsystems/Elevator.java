@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team3322.RobotMap;
-import frc.team3322.commands.HoldElevator;
-import frc.team3322.commands.MoveElevator;
+import frc.team3322.commands.ElevatorControl;
 
 public class Elevator extends Subsystem {
 
@@ -37,7 +36,7 @@ public class Elevator extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new HoldElevator());
+        setDefaultCommand(new ElevatorControl());
     }
 
     public void moveUp() {
@@ -77,7 +76,8 @@ public class Elevator extends Subsystem {
     }
 
     public double getHeight() {
-        return encoder.getDistance();
+        //return encoder.getDistance();
+        return -1;
     }
 
     public void resetEncoder() {

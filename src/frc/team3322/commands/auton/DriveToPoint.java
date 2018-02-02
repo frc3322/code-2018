@@ -8,34 +8,44 @@ import static frc.team3322.Robot.drivetrain;
 
 
 public class DriveToPoint extends Command {
-	private final Point2D point;
-	private Point2D error = new Point2D.Double();
+	private final double finalX;
+	private final double finalY;
+
+	private double errorX;
+	private double errorY;
 
 	public DriveToPoint(Point2D point) {
+		this(point.getX(), point.getY());
+	}
+
+	public DriveToPoint(double x, double y) {
 		// Use requires() here to declare subsystem dependencies
 		requires(drivetrain);
 
-		this.point = point;
+		this.finalX = x;
+		this.finalY = y;
 	}
 
 	@Override
 	protected void initialize() {
-		drivetrain.resetDisplacement();
+		drivetrain.navx.resetDisplacement();
 	}
 
 	@Override
 	protected void execute() {
-		double dy = point.getY() - drivetrain.navx.getDisplacementY();
-		double dx = point.getX() - drivetrain.navx.getDisplacementX();
+		double dy = finalY - drivetrain.navx.getDisplacementY();
+		double dx = finalX - drivetrain.navx.getDisplacementX();
 		double angle = Math.atan2(dy, dx);
-		error.setLocation(dx, dy);
+
+		errorX = dx;
+		errorY = dy;
 
 		drivetrain.driveAngle(1, angle);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return error.distance(0, 0) < 1;
+		return errorX < .1 && errorY < .1;
 	}
 
 	@Override

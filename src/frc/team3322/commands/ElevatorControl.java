@@ -1,29 +1,37 @@
 package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team3322.RobotMap;
 
 import static frc.team3322.Robot.elevator;
+import static frc.team3322.Robot.oi;
 
 
-public class HoldElevator extends Command {
-    private double holdHeight;
-    private double error;
-    private double kp = 0.05;
+public class ElevatorControl extends Command {
 
-    public HoldElevator() {
+    private final int UP_AXIS;
+    private final int DOWN_AXIS;
+
+    public ElevatorControl() {
         // Use requires() here to declare subsystem dependencies
         requires(elevator);
+
+        this.UP_AXIS = RobotMap.XBOX.TRIGGER_L_AXIS;
+        this.DOWN_AXIS = RobotMap.XBOX.TRIGGER_R_AXIS;
     }
 
     @Override
     protected void initialize() {
-        holdHeight = elevator.getHeight();
+
     }
 
     @Override
     protected void execute() {
-        error = holdHeight - elevator.getHeight();
-        //elevator.move(error * kp);
+        if (Math.abs(UP_AXIS - DOWN_AXIS) < .01) {
+            elevator.stop();
+        } else {
+            elevator.move(oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS));
+        }
     }
 
     @Override

@@ -7,11 +7,11 @@ import frc.team3322.RobotMap;
 import static frc.team3322.Robot.drivetrain;
 import static frc.team3322.Robot.oi;
 
-public class Drive extends Command {
+public class DriveControl extends Command {
     double straightAngle;
     boolean drivingStraight;
 
-    public Drive() {
+    public DriveControl() {
         requires(drivetrain);
     }
 
@@ -23,6 +23,7 @@ public class Drive extends Command {
     @Override
     protected void execute() {
         if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .01) {
+            // Drive straight
             if (!drivingStraight) {
                 drivingStraight = true;
                 straightAngle = drivetrain.navx.getAngle();

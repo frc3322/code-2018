@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.team3322.commands.MoveElevator;
+import frc.team3322.commands.ElevatorToBottom;
+import frc.team3322.commands.ElevatorToTop;
+import frc.team3322.commands.ShiftDrivetrain;
 import frc.team3322.triggers.XboxTrigger;
 
 /**
@@ -36,12 +38,10 @@ public class OI
     Trigger trigger_right = new XboxTrigger(stick, RobotMap.XBOX.TRIGGER_R_AXIS);
 
     public OI() {
-        // Elevator movement with triggers
-        bumper_left.whileHeld(new MoveElevator(1));
-        bumper_right.whileHeld(new MoveElevator(-1));
+        stick_left.whenPressed(new ShiftDrivetrain());
 
-        trigger_left.whileActive(new MoveElevator(stick.getRawAxis(RobotMap.XBOX.TRIGGER_L_AXIS)));
-        trigger_right.whileActive(new MoveElevator(-stick.getRawAxis(RobotMap.XBOX.TRIGGER_R_AXIS)));
+        button_y.whenPressed(new ElevatorToTop());
+        button_x.whenPressed(new ElevatorToBottom());
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS

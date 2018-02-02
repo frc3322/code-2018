@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.team3322.RobotMap;
-import frc.team3322.commands.Drive;
+import frc.team3322.commands.DriveControl;
 
 import java.awt.geom.Point2D;
 
@@ -38,7 +38,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new Drive());
+        setDefaultCommand(new DriveControl());
     }
 
     public void drive(double speed, double rotation) {
@@ -54,21 +54,6 @@ public class Drivetrain extends Subsystem {
         robotDrive.arcadeDrive(0, 0);
     }
 
-    /**
-     * Gets the distance displaced by the robot since the last reset
-     * @return A Point2D vector representing the deltas
-     */
-    public Point2D getDisplacement() {
-        return new Point2D.Double(navx.getDisplacementX(), navx.getDisplacementY());
-    }
-
-    /**
-     * Resets the distance displaced
-     */
-    public void resetDisplacement() {
-        navx.resetDisplacement();
-    }
-
     public void shiftLow() {
         shifter.set(DoubleSolenoid.Value.kReverse);
     }
@@ -77,8 +62,16 @@ public class Drivetrain extends Subsystem {
         shifter.set(DoubleSolenoid.Value.kForward);
     }
 
-    public double getDistance(){
-        return 0;
+    public boolean isHigh() {
+        return shifter.get() == DoubleSolenoid.Value.kForward;
+    }
+
+    public void toggleShifter() {
+        if (isHigh()) {
+            shiftLow();
+        } else {
+            shiftHigh();
+        }
     }
 }
 
