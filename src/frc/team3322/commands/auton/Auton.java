@@ -2,7 +2,9 @@ package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team3322.commands.Drive;
 import frc.team3322.commands.ElevatorToTop;
+import frc.team3322.subsystems.Drivetrain;
 
 
 public class Auton extends CommandGroup {
@@ -297,43 +299,100 @@ public class Auton extends CommandGroup {
                 addSequential(new ElevatorToTop());
                 break;
             case POSL_RSWITCH:
-
+                addSequential(new DriveDistance(4));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(8));
+                addSequential(new TurnToAngle(180));
+                addSequential(new DriveDistance(3));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(2));
                 break;
             case POSL_RSCALE:
-
+                addSequential(new DriveDistance(4));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(8));
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(3));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(2));
+                addSequential(new ElevatorToTop());
                 break;
             case POSL_DRIVESTRAIGHT:
-
+                addSequential(new DriveDistance(6));
                 break;
             case POSM_LSWITCH:
-
+                addSequential(new DriveDistance(1));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(4));
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(3));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(2));
                 break;
             case POSM_LSCALE:
-
+                addSequential(new DriveDistance(1));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(5));
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(8));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(2));
+                addSequential(new ElevatorToTop());
                 break;
             case POSM_RSWITCH:
-
+                addSequential(new DriveDistance(1));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(4));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(2));
                 break;
             case POSM_RSCALE:
-
+                addSequential(new DriveDistance(1));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(5));
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(8));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(2));
+                addSequential(new ElevatorToTop());
                 break;
-            case POSM_DRIVESTRAIGHT:
-
+            case POSM_DRIVESTRAIGHT: // cross baseline
+                addSequential(new DriveDistance(1));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(5));
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(5));
                 break;
             case POSR_LSWITCH:
-
+                addSequential(new DriveDistance(6));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(6));
+                addSequential(new TurnToAngle(180));
+                addSequential(new DriveDistance(2));
                 break;
             case POSR_LSCALE:
-
+                addSequential(new DriveDistance(6));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(8));
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(3));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(2));
+                addSequential(new ElevatorToTop());
                 break;
             case POSR_RSWITCH:
-
+                addSequential(new DriveDistance(4));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(2));
                 break;
             case POSR_RSCALE:
-
+                addSequential(new DriveDistance(8));
+                addSequential(new TurnToAngle(270));
+                addSequential(new DriveDistance(2));
+                addSequential(new ElevatorToTop());
                 break;
             case POSR_DRIVESTRAIGHT:
-
+                addSequential(new DriveDistance(5));
                 break;
         }
     }
