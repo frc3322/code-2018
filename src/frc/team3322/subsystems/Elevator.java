@@ -65,14 +65,14 @@ public class Elevator extends Subsystem {
     }
 
     public boolean isAtTop() {
-        return topLimitSwitch.get();
+        return false; // topLimitSwitch.get();
     }
 
     public boolean isAtBottom() {
-        if(bottomLimitSwitch.get()) {
-            resetEncoder();
-            return true;
-        }
+//        if(bottomLimitSwitch.get()) {
+//            resetEncoder();
+//            return true;
+//        }
         return false;
     }
 

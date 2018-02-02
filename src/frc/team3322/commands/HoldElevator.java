@@ -23,7 +23,7 @@ public class HoldElevator extends Command {
     @Override
     protected void execute() {
         error = holdHeight - elevator.getHeight();
-        elevator.move(error * kp);
+        //elevator.move(error * kp);
     }
 
     @Override

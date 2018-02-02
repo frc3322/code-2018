@@ -14,6 +14,6 @@ public class XboxTrigger extends Trigger {
     }
 
     public boolean get() {
-        return joystick.getRawAxis(axisNumber) > 0.05;
+        return joystick.getRawAxis(axisNumber) > 0;
     }
 }

@@ -33,8 +33,7 @@ public class MoveElevator extends Command {
         elevator.stop();
     }
 
-    @Override
-    protected void interrupted() {
+    protected void interruptedx() {
         super.interrupted();
     }
 }

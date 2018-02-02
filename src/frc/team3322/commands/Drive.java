@@ -2,6 +2,7 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team3322.RobotMap;
 
 import static frc.team3322.Robot.drivetrain;
 import static frc.team3322.Robot.oi;
@@ -21,7 +22,7 @@ public class Drive extends Command {
 
     @Override
     protected void execute() {
-        if (Math.abs(oi.stick.getX(GenericHID.Hand.kRight)) < .01) {
+        if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .01) {
             if (!drivingStraight) {
                 drivingStraight = true;
                 straightAngle = drivetrain.navx.getAngle();
@@ -31,8 +32,7 @@ public class Drive extends Command {
             if (drivingStraight) {
                 drivingStraight = false;
             }
-
-            drivetrain.drive(oi.stick.getY(GenericHID.Hand.kLeft), -oi.stick.getX(GenericHID.Hand.kRight));
+            drivetrain.drive(oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), -oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS));
         }
     }
 

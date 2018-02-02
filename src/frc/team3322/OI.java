@@ -37,6 +37,9 @@ public class OI
 
     public OI() {
         // Elevator movement with triggers
+        bumper_left.whileHeld(new MoveElevator(1));
+        bumper_right.whileHeld(new MoveElevator(-1));
+
         trigger_left.whileActive(new MoveElevator(stick.getRawAxis(RobotMap.XBOX.TRIGGER_L_AXIS)));
         trigger_right.whileActive(new MoveElevator(-stick.getRawAxis(RobotMap.XBOX.TRIGGER_R_AXIS)));
     }

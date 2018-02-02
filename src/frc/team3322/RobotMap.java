@@ -20,7 +20,7 @@ public class RobotMap
      */
     public static class CAN {
         // Drivetrain
-        public static final int LEFT_BACK_MOTOR = 10;
+        public static final int LEFT_BACK_MOTOR = 9;
         public static final int LEFT_MIDDLE_MOTOR = 0;
         public static final int LEFT_FRONT_MOTOR = 11;
         public static final int RIGHT_BACK_MOTOR = 4;
@@ -29,7 +29,7 @@ public class RobotMap
 
         // Elevator
         public static final int ELEVATOR_MOTOR_1 = 8;
-        public static final int ELEVATOR_MOTOR_2 = 9;
+        public static final int ELEVATOR_MOTOR_2 = 10;
 
         // Cube Intake
         public static final int LEFT_INTAKE = 12;
@@ -81,6 +81,10 @@ public class RobotMap
         public static final int STICK_RIGHT = 10;
 
         // Axes
+        public static final int STICK_L_X_AXIS = 0;
+        public static final int STICK_L_Y_AXIS = 1;
+        public static final int STICK_R_X_AXIS = 4;
+        public static final int STICK_R_Y_AXIS = 5;
         public static final int TRIGGER_L_AXIS = 2;
         public static final int TRIGGER_R_AXIS = 3;
     }
