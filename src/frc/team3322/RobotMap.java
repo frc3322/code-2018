@@ -21,21 +21,21 @@ public class RobotMap
     public static class CAN {
         // Drivetrain
         public static final int LEFT_BACK_MOTOR = 9;
-        public static final int LEFT_MIDDLE_MOTOR = 0;
-        public static final int LEFT_FRONT_MOTOR = 11;
+        //public static final int LEFT_MIDDLE_MOTOR = 0;
+        //public static final int LEFT_FRONT_MOTOR = 11;
         public static final int RIGHT_BACK_MOTOR = 4;
-        public static final int RIGHT_MIDDLE_MOTOR = 0;
-        public static final int RIGHT_FRONT_MOTOR = 5;
+        //public static final int RIGHT_MIDDLE_MOTOR = 0;
+        //public static final int RIGHT_FRONT_MOTOR = 5;
 
         // Elevator
         public static final int ELEVATOR_MOTOR_1 = 8;
         public static final int ELEVATOR_MOTOR_2 = 10;
 
         // Cube Intake
-        public static final int LEFT_INTAKE = 12;
-        public static final int RIGHT_INTAKE = 13;
-        public static final int LEFT_ARM = 14;
-        public static final int RIGHT_ARM = 15;
+        //public static final int LEFT_INTAKE = 12;
+        //public static final int RIGHT_INTAKE = 13;
+        //public static final int LEFT_ARM = 14;
+        //public static final int RIGHT_ARM = 15;
     }
 
     /**
