@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.DriveControl;
 
-import java.awt.geom.Point2D;
-
 public class Drivetrain extends Subsystem {
 
     private DifferentialDrive robotDrive;
@@ -30,6 +28,8 @@ public class Drivetrain extends Subsystem {
 
         SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftBackMotor, leftFrontMotor);
         SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightBackMotor, rightFrontMotor);
+        leftGroup.setInverted(true);
+        rightGroup.setInverted(true);
 
         robotDrive = new DifferentialDrive(leftGroup, rightGroup);
 
@@ -46,8 +46,8 @@ public class Drivetrain extends Subsystem {
     }
 
     public void driveAngle(double speed, double angle) {
-        double error = navx.getAngle() - angle; //getAngle() returns overall angle, not necessarily from -180 to 180
-        robotDrive.arcadeDrive(speed, error*.05); // TODO tune constant
+        double error = angle - navx.getAngle(); //getAngle() returns overall angle, not necessarily from -180 to 180
+        robotDrive.arcadeDrive(speed, error * .04); // TODO tune constant
     }
 
     public void stop() {

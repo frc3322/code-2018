@@ -22,18 +22,18 @@ public class DriveControl extends Command {
 
     @Override
     protected void execute() {
-        if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .01) {
+        if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .05) {
             // Drive straight
             if (!drivingStraight) {
                 drivingStraight = true;
                 straightAngle = drivetrain.navx.getAngle();
             }
-            drivetrain.driveAngle(oi.stick.getY(GenericHID.Hand.kLeft), straightAngle);
+            drivetrain.driveAngle(-oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), straightAngle);
         } else {
             if (drivingStraight) {
                 drivingStraight = false;
             }
-            drivetrain.drive(oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), -oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS));
+            drivetrain.drive(-oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS));
         }
     }
 

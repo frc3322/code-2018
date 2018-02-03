@@ -282,21 +282,25 @@ public class Auton extends CommandGroup {
     }
 
     public void queuePath() {
+        System.out.println("Path queued");
         switch (selectedPath) {
             case POSX_DONOTHING:
                 break;
             case POSL_LSWITCH:
+                System.out.println("POSL_LSWITCH");
                 addSequential(new DriveDistance(3));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(2));
                 break;
             case POSL_LSCALE:
-                addSequential(new DriveDistance(6));
+                System.out.println("POSL_LSCALE");
+                addSequential(new DriveDistance(10));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToTop());
                 break;
             case POSL_RSWITCH:
+                System.out.println("POSR_RSWITCH");
                 addSequential(new DriveDistance(4));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(8));
@@ -306,6 +310,7 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(2));
                 break;
             case POSL_RSCALE:
+                System.out.println("POSR_RSCALE");
                 addSequential(new DriveDistance(4));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(8));
@@ -316,9 +321,11 @@ public class Auton extends CommandGroup {
                 addSequential(new ElevatorToTop());
                 break;
             case POSL_DRIVESTRAIGHT:
+                System.out.println("POSL_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(6));
                 break;
             case POSM_LSWITCH:
+                System.out.println("POSM_LSWITCH");
                 addSequential(new DriveDistance(1));
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(4));
@@ -328,6 +335,7 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(2));
                 break;
             case POSM_LSCALE:
+                System.out.println("POSM_LSCALE");
                 addSequential(new DriveDistance(1));
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(5));
@@ -338,6 +346,7 @@ public class Auton extends CommandGroup {
                 addSequential(new ElevatorToTop());
                 break;
             case POSM_RSWITCH:
+                System.out.println("POSM_RSWITCH");
                 addSequential(new DriveDistance(1));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(4));
@@ -345,6 +354,7 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(2));
                 break;
             case POSM_RSCALE:
+                System.out.println("POSM_RSCALE");
                 addSequential(new DriveDistance(1));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(5));
@@ -355,6 +365,7 @@ public class Auton extends CommandGroup {
                 addSequential(new ElevatorToTop());
                 break;
             case POSM_DRIVESTRAIGHT: // cross baseline
+                System.out.println("POSM_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(1));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(5));
@@ -362,6 +373,7 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(5));
                 break;
             case POSR_LSWITCH:
+                System.out.println("POSR_LSWITCH");
                 addSequential(new DriveDistance(6));
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(6));
@@ -369,6 +381,7 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(2));
                 break;
             case POSR_LSCALE:
+                System.out.println("POSR_LSCALE");
                 addSequential(new DriveDistance(6));
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(8));
@@ -379,17 +392,20 @@ public class Auton extends CommandGroup {
                 addSequential(new ElevatorToTop());
                 break;
             case POSR_RSWITCH:
+                System.out.println("POSR_RSWITCH");
                 addSequential(new DriveDistance(4));
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 break;
             case POSR_RSCALE:
+                System.out.println("POSR_RSCALE");
                 addSequential(new DriveDistance(8));
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToTop());
                 break;
             case POSR_DRIVESTRAIGHT:
+                System.out.println("POSR_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(5));
                 break;
         }

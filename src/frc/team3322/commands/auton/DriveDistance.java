@@ -1,37 +1,45 @@
 package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.team3322.Robot.drivetrain;
 
 
 public class DriveDistance extends Command {
     private final double desiredDistance;
-    private double errorDistance = 0;
+    private double deltaDistance = 0;
+    private double angle;
 
     public DriveDistance(double meters) {
         requires(drivetrain);
 
-        this.desiredDistance = meters;
+        this.desiredDistance = meters / 4.9;
     }
 
     @Override
     protected void initialize() {
+        angle = drivetrain.navx.getAngle();
+        drivetrain.navx.resetDisplacement();
     }
 
     @Override
     protected void execute() {
-        double angle = drivetrain.navx.getAngle();
-        double curDistance = drivetrain.navx.getDisplacementX() * Math.cos(Math.toRadians(angle))
-                + drivetrain.navx.getDisplacementY() * Math.sin(Math.toRadians(angle));
+        double curDistance = Math.sqrt(Math.pow(drivetrain.navx.getDisplacementX() * Math.cos(Math.toRadians(angle)), 2)
+                + Math.pow(drivetrain.navx.getDisplacementX() * Math.sin(Math.toRadians(angle)), 2));
 
-        errorDistance = desiredDistance - curDistance;
-        drivetrain.drive(1, 0);
+        deltaDistance = desiredDistance - curDistance;
+        drivetrain.driveAngle(1, angle);
+
+        SmartDashboard.putNumber("Displacement X", drivetrain.navx.getDisplacementX());
+        SmartDashboard.putNumber("Displacement Y", drivetrain.navx.getDisplacementY());
+        SmartDashboard.putNumber("Displacement Z", drivetrain.navx.getDisplacementZ());
+        System.out.println("deltaDistance: " + deltaDistance);
     }
 
     @Override
     protected boolean isFinished() {
-        return errorDistance < 1;
+        return deltaDistance < 1;
     }
 
     @Override

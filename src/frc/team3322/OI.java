@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.team3322.commands.ElevatorToBottom;
 import frc.team3322.commands.ElevatorToTop;
 import frc.team3322.commands.ShiftDrivetrain;
-import frc.team3322.triggers.XboxTrigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -34,8 +33,6 @@ public class OI
     Button button_start = new JoystickButton(stick, RobotMap.XBOX.BUTTON_START);
     Button stick_left = new JoystickButton(stick, RobotMap.XBOX.STICK_LEFT);
     Button stick_right = new JoystickButton(stick, RobotMap.XBOX.STICK_RIGHT);
-    Trigger trigger_left = new XboxTrigger(stick, RobotMap.XBOX.TRIGGER_L_AXIS);
-    Trigger trigger_right = new XboxTrigger(stick, RobotMap.XBOX.TRIGGER_R_AXIS);
 
     public OI() {
         stick_left.whenPressed(new ShiftDrivetrain());
