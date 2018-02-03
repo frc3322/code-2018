@@ -22,7 +22,7 @@ public class DriveControl extends Command {
 
     @Override
     protected void execute() {
-        if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .05) {
+        if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .1) {
             // Drive straight
             if (!drivingStraight) {
                 drivingStraight = true;
