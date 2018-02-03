@@ -32,10 +32,10 @@ public class RobotMap
         public static final int ELEVATOR_MOTOR_2 = 10;
 
         // Cube Intake
-        //public static final int LEFT_INTAKE = 12;
-        //public static final int RIGHT_INTAKE = 13;
-        //public static final int LEFT_ARM = 14;
-        //public static final int RIGHT_ARM = 15;
+        public static final int LEFT_INTAKE = 12;
+        public static final int RIGHT_INTAKE = 13;
+        public static final int LEFT_ARM = 14;
+        public static final int RIGHT_ARM = 15;
     }
 
     /**

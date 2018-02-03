@@ -5,11 +5,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.arms;
 
 
-public class EjectCube extends Command {
-
-    public EjectCube() {
+public class IntakeInwards extends Command {
+    public IntakeInwards() {
+        // Use requires() here to declare subsystem dependencies
         requires(arms);
-        setTimeout(3);
     }
 
     @Override
@@ -19,13 +18,13 @@ public class EjectCube extends Command {
 
     @Override
     protected void execute() {
-        arms.ejectCube();
+        arms.receiveCube();
     }
 
     @Override
     protected boolean isFinished() {
-        // TODO read motor current to determine when finished
-        return isTimedOut();
+        // TODO: Make this return true when this Command no longer needs to run execute()
+        return false;
     }
 
     @Override

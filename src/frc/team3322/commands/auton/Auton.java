@@ -281,7 +281,7 @@ public class Auton extends CommandGroup {
         queuePath();
     }
 
-    public void queuePath() {
+    private void queuePath() {
         System.out.println("Path queued");
         switch (selectedPath) {
             case POSX_DONOTHING:
@@ -292,7 +292,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSL_LSCALE:
@@ -301,7 +301,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToScale());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSL_RSWITCH:
@@ -314,7 +314,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSL_RSCALE:
@@ -327,7 +327,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToScale());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSL_DRIVESTRAIGHT:
@@ -344,7 +344,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSM_LSCALE:
@@ -357,7 +357,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToScale());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSM_RSWITCH:
@@ -368,7 +368,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSM_RSCALE:
@@ -381,7 +381,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToScale());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSM_DRIVESTRAIGHT: // cross baseline
@@ -400,7 +400,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(180));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSR_LSCALE:
@@ -413,7 +413,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToScale());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSR_RSWITCH:
@@ -422,7 +422,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSR_RSCALE:
@@ -431,7 +431,7 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(270));
                 addSequential(new DriveDistance(2));
                 addSequential(new ElevatorToScale());
-                addSequential(new EjectCube(5));
+                addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSR_DRIVESTRAIGHT:
