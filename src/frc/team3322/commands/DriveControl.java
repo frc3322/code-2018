@@ -9,7 +9,7 @@ import static frc.team3322.Robot.oi;
 
 public class DriveControl extends Command {
     double straightAngle;
-    boolean drivingStraight;
+    boolean drivingStraight = false;
 
     public DriveControl() {
         requires(drivetrain);
@@ -23,12 +23,14 @@ public class DriveControl extends Command {
     @Override
     protected void execute() {
         if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .1) {
-            // Drive straight
-            if (!drivingStraight) {
-                drivingStraight = true;
-                straightAngle = drivetrain.navx.getAngle();
+            if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS)) > .1) {
+                // Drive straight
+                if (!drivingStraight) {
+                    drivingStraight = true;
+                    straightAngle = drivetrain.navx.getAngle();
+                }
+                drivetrain.driveAngle(-oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), straightAngle);
             }
-            drivetrain.driveAngle(-oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), straightAngle);
         } else {
             if (drivingStraight) {
                 drivingStraight = false;

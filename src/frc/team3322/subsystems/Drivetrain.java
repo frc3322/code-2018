@@ -47,7 +47,7 @@ public class Drivetrain extends Subsystem {
 
     public void driveAngle(double speed, double angle) {
         double error = angle - navx.getAngle(); //getAngle() returns overall angle, not necessarily from -180 to 180
-        robotDrive.arcadeDrive(speed, error * .04); // TODO tune constant
+        robotDrive.arcadeDrive(speed, error * .03); // TODO tune constant
     }
 
     public void stop() {
