@@ -7,15 +7,17 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
     private DifferentialDrive robotDrive;
-
     private DoubleSolenoid shifter;
     public AHRS navx;
+
+    private double lastAngleError = 0;
 
 
     public Drivetrain() {
@@ -35,6 +37,9 @@ public class Drivetrain extends Subsystem {
 
         shifter = new DoubleSolenoid(RobotMap.PCM.SHIFTER_REVERSE, RobotMap.PCM.SHIFTER_FORWARD);
         navx = new AHRS(SerialPort.Port.kMXP);
+
+        SmartDashboard.putNumber("DriveAngle kp", .2);
+        SmartDashboard.putNumber("DriveAngle kd", .1);
     }
 
     public void initDefaultCommand() {
@@ -45,9 +50,20 @@ public class Drivetrain extends Subsystem {
         robotDrive.arcadeDrive(speed, rotation);
     }
 
+    public void driveAngleInit(double angle) {
+        lastAngleError = angle - navx.getAngle();
+    }
+
     public void driveAngle(double speed, double angle) {
         double error = angle - navx.getAngle(); //getAngle() returns overall angle, not necessarily from -180 to 180
-        robotDrive.arcadeDrive(speed, error * .03); // TODO tune constant
+        double kp = SmartDashboard.getNumber("DriveAngle kp", .2);
+        double kd = SmartDashboard.getNumber("DriveAngle kd", .1);
+
+        double turn = kp * error + kd * (lastAngleError - error);
+
+        robotDrive.arcadeDrive(speed, turn);
+
+        SmartDashboard.putNumber("DriveAngle error", error);
     }
 
     public void stop() {

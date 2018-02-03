@@ -1,15 +1,18 @@
 package frc.team3322.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
 
 import static frc.team3322.Robot.drivetrain;
 import static frc.team3322.Robot.oi;
 
 public class DriveControl extends Command {
-    double straightAngle;
-    boolean drivingStraight = false;
+
+    private boolean straightModeStart;
+    private boolean straightModeRun;
+    private long runDelay;
+    private double straightAngle;
 
     public DriveControl() {
         requires(drivetrain);
@@ -17,26 +20,43 @@ public class DriveControl extends Command {
 
     @Override
     protected void initialize() {
-
+        straightModeStart = false;
     }
 
     @Override
     protected void execute() {
-        if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS)) < .1) {
-            if (Math.abs(oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS)) > .1) {
-                // Drive straight
-                if (!drivingStraight) {
-                    drivingStraight = true;
-                    straightAngle = drivetrain.navx.getAngle();
+        double speedInput = -oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS);
+        double rotationInput = oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS);
+
+        if (Math.abs(rotationInput) < .15) {
+            if (Math.abs(speedInput) > .15) {
+                if (!straightModeStart) {
+                    straightModeStart = true;
+
+                    runDelay = System.currentTimeMillis();
                 }
-                drivetrain.driveAngle(-oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), straightAngle);
+
+                // Wait a bit before setting our desired angle
+                if (System.currentTimeMillis() - runDelay > 250 && !straightModeRun) {
+                    straightAngle = drivetrain.navx.getAngle();
+                    drivetrain.driveAngleInit(straightAngle);
+                    straightModeRun = true;
+                }
+
+                if (straightModeRun) {
+                    drivetrain.driveAngle(speedInput, straightAngle);
+                } else {
+                    drivetrain.drive(speedInput, rotationInput);
+                }
             }
         } else {
-            if (drivingStraight) {
-                drivingStraight = false;
-            }
-            drivetrain.drive(-oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS), oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS));
+            straightModeStart = false;
+            straightModeRun = false;
+            drivetrain.drive(speedInput, rotationInput);
         }
+
+        SmartDashboard.putBoolean("Driving straight", straightModeStart);
+        SmartDashboard.putNumber("Straight angle", straightAngle);
     }
 
     @Override
