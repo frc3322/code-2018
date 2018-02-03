@@ -48,4 +48,8 @@ public class CubeIntake extends Subsystem {
     public void ejectCube() {
         intake.set(-DEFAULT_INTAKE_SPEED);
     }
+
+    public void stopIntake() {
+        intake.set(0);
+    }
 }
