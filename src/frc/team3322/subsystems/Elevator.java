@@ -84,4 +84,20 @@ public class Elevator extends Subsystem {
     public void resetEncoder() {
         encoder.reset();
     }
+    //ToDo implement methods
+    public boolean isAtSwitch() {
+        return false;
+    }
+
+    public boolean isAtScale() {
+        return false;
+    }
+
+    public boolean isAboveSwitch() {
+        return false;
+    }
+
+    public boolean isAboveScale() {
+        return false;
+    }
 }
