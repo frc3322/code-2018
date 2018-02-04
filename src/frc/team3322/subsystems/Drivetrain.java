@@ -13,6 +13,9 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
+    public static final double DRIVEANGLE_KD = .15;
+    public static final double DRIVEANGLE_KP = .2;
+
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
     public AHRS navx;
@@ -38,8 +41,8 @@ public class Drivetrain extends Subsystem {
         shifter = new DoubleSolenoid(RobotMap.PCM.SHIFTER_REVERSE, RobotMap.PCM.SHIFTER_FORWARD);
         navx = new AHRS(SerialPort.Port.kMXP);
 
-        SmartDashboard.putNumber("DriveAngle kp", .2);
-        SmartDashboard.putNumber("DriveAngle kd", .1);
+        SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
+        SmartDashboard.putNumber("DriveAngle kd", DRIVEANGLE_KD);
     }
 
     public void initDefaultCommand() {
@@ -48,6 +51,12 @@ public class Drivetrain extends Subsystem {
 
     public void drive(double speed, double rotation) {
         robotDrive.arcadeDrive(speed, rotation);
+
+        SmartDashboard.putNumber("Velocity X", navx.getVelocityX());
+        SmartDashboard.putNumber("Velocity Y", navx.getVelocityY());
+
+        SmartDashboard.putNumber("Displacement X", navx.getDisplacementX());
+        SmartDashboard.putNumber("Displacement Y", navx.getDisplacementY());
     }
 
     public void driveAngleInit(double angle) {
@@ -56,12 +65,12 @@ public class Drivetrain extends Subsystem {
 
     public void driveAngle(double speed, double angle) {
         double error = angle - navx.getAngle(); //getAngle() returns overall angle, not necessarily from -180 to 180
-        double kp = SmartDashboard.getNumber("DriveAngle kp", .2);
-        double kd = SmartDashboard.getNumber("DriveAngle kd", .1);
+        double kp = SmartDashboard.getNumber("DriveAngle kp", DRIVEANGLE_KP);
+        double kd = SmartDashboard.getNumber("DriveAngle kd", DRIVEANGLE_KD);
 
         double turn = kp * error + kd * (lastAngleError - error);
 
-        robotDrive.arcadeDrive(speed, turn);
+        drive(speed, turn);
 
         SmartDashboard.putNumber("DriveAngle error", error);
     }
