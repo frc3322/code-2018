@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.Robot;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.ElevatorControl;
 
@@ -16,24 +18,40 @@ public class Elevator extends Subsystem {
     public static final double SWITCH = 100;
     public static final double BOTTOM = 0;
 
+    private static final double ELEVATOR_KP = 0.2;
+    private static final double ELEVATOR_KD = 0.15;
+
+    private double upSpeed = .5;
+    private double downSpeed = .45;
+
     private SpeedControllerGroup elevator;
     private DoubleSolenoid shifter;
 
+    private Encoder encoder;
     private DigitalInput topLimitSwitch;
     private DigitalInput bottomLimitSwitch;
-    private Encoder encoder;
+
+    private double lastHeightError;
 
     public Elevator() {
         WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_1);
         WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_2);
         elevator = new SpeedControllerGroup(elevatorMotor1, elevatorMotor2);
-        elevator.setInverted(true);
 
         shifter = new DoubleSolenoid(RobotMap.PCM.ELEVATOR_SHIFTER_FORWARD, RobotMap.PCM.ELEVATOR_SHIFTER_REVERSE);
 
-        topLimitSwitch = new DigitalInput(RobotMap.DI.TOP_LIMIT_SWITCH);
-        bottomLimitSwitch = new DigitalInput(RobotMap.DI.BOTTOM_LIMIT_SWITCH);
-        encoder = new Encoder(RobotMap.DI.ELEVATOR_ENCODER_A, RobotMap.DI.ELEVATOR_ENCODER_B);
+        if (RobotMap.PCM.ELEVATOR_SHIFTER_FORWARD != -1 && RobotMap.PCM.ELEVATOR_SHIFTER_REVERSE != -1)
+            encoder = new Encoder(RobotMap.DIO.ELEVATOR_ENCODER_A, RobotMap.DIO.ELEVATOR_ENCODER_B);
+        if (RobotMap.DIO.ELEVATOR_LIMIT_TOP != -1)
+            topLimitSwitch = new DigitalInput(RobotMap.DIO.ELEVATOR_LIMIT_TOP);
+        if (RobotMap.DIO.ELEVATOR_LIMIT_BOTTOM != -1)
+            bottomLimitSwitch = new DigitalInput(RobotMap.DIO.ELEVATOR_LIMIT_BOTTOM);
+    }
+
+    public Elevator(double upSpeed, double downSpeed) {
+        this();
+        this.upSpeed = upSpeed;
+        this.downSpeed = downSpeed;
     }
 
     public void initDefaultCommand() {
@@ -41,11 +59,11 @@ public class Elevator extends Subsystem {
     }
 
     public void moveUp() {
-        elevator.set(.5);
+        elevator.set(upSpeed);
     }
 
     public void moveDown() {
-        elevator.set(-.5);
+        elevator.set(-downSpeed);
     }
 
     public void move(double speed) {
@@ -56,6 +74,16 @@ public class Elevator extends Subsystem {
         elevator.set(0);
     }
 
+    public void goToPos(double height) {
+        double error = height - getHeight();
+        double kp = SmartDashboard.getNumber("Elevator kp", ELEVATOR_KP);
+        double kd = SmartDashboard.getNumber("Elevator kd", ELEVATOR_KD);
+
+        double speed = kp * error + kd * (lastHeightError - error);
+
+        move(speed);
+    }
+
     public void shiftHigh() {
         shifter.set(DoubleSolenoid.Value.kForward);
     }
@@ -64,40 +92,38 @@ public class Elevator extends Subsystem {
         shifter.set(DoubleSolenoid.Value.kReverse);
     }
 
+    public void resetEncoder() {
+        encoder.reset();
+    }
+
+
+    // TODO implement the following checks
+
     public boolean isAtTop() {
-        return false; // topLimitSwitch.get();
+        return topLimitSwitch != null && topLimitSwitch.get();
     }
 
     public boolean isAtBottom() {
-//        if(bottomLimitSwitch.get()) {
-//            resetEncoder();
-//            return true;
-//        }
+        if (bottomLimitSwitch != null) {
+            resetEncoder();
+            return bottomLimitSwitch.get();
+        }
         return false;
     }
 
     public double getHeight() {
-        //return encoder.getDistance();
+        if (encoder != null) {
+            return encoder.getDistance();
+        }
         return -1;
     }
 
-    public void resetEncoder() {
-        encoder.reset();
-    }
-    //ToDo implement methods
+    // TODO incorporate hysteresis
     public boolean isAtSwitch() {
         return false;
     }
 
     public boolean isAtScale() {
-        return false;
-    }
-
-    public boolean isAboveSwitch() {
-        return false;
-    }
-
-    public boolean isAboveScale() {
         return false;
     }
 }

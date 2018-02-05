@@ -41,8 +41,8 @@ public class RobotMap
      */
     public static class PCM {
         // Drivetrain
-        public static final int SHIFTER_FORWARD = 0;
-        public static final int SHIFTER_REVERSE = 1;
+        public static final int DRIVETRAIN_SHIFTER_FORWARD = 0;
+        public static final int DRIVETRAIN_SHIFTER_REVERSE = 1;
 
         // Elevator
         public static final int ELEVATOR_SHIFTER_FORWARD = 2;
@@ -55,14 +55,18 @@ public class RobotMap
 
 
     /**
-     * IDs for DigitalInput devices such as switches and sensors
+     * IDs for digital devices such as switches and sensors
      */
-    public static class DI {
+    public static class DIO {
+        // Drivetrain
+        public static final int DRIVETRAIN_ENCODER_A = 0;
+        public static final int DRIVETRAIN_ENCODER_B = 1;
+
         // Elevator
-        public static final int TOP_LIMIT_SWITCH = 0;
-        public static final int BOTTOM_LIMIT_SWITCH = 1;
         public static final int ELEVATOR_ENCODER_A = 2;
         public static final int ELEVATOR_ENCODER_B = 3;
+        public static final int ELEVATOR_LIMIT_TOP = 4;
+        public static final int ELEVATOR_LIMIT_BOTTOM = 5;
     }
 
     public static class XBOX {
