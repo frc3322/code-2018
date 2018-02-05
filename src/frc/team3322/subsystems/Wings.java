@@ -5,12 +5,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team3322.RobotMap;
 
-public class EagleWings extends Subsystem {
+public class Wings extends Subsystem {
 
-    Solenoid leftWing;
-    Solenoid rightWing;
+    private Solenoid leftWing;
+    private Solenoid rightWing;
 
-    public EagleWings() {
+    public Wings() {
         leftWing = new Solenoid(RobotMap.PCM.LEFT_WING);
         rightWing = new Solenoid(RobotMap.PCM.RIGHT_WING);
     }
