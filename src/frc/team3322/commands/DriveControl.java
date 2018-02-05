@@ -9,6 +9,9 @@ import static frc.team3322.Robot.oi;
 
 public class DriveControl extends Command {
 
+    private final int SPEED_AXIS;
+    private final int ROTATION_AXIS;
+
     private boolean straightModeStart;
     private boolean straightModeRun;
     private long runDelay;
@@ -16,6 +19,9 @@ public class DriveControl extends Command {
 
     public DriveControl() {
         requires(drivetrain);
+
+        SPEED_AXIS = RobotMap.XBOX.STICK_L_Y_AXIS;
+        ROTATION_AXIS = RobotMap.XBOX.STICK_R_X_AXIS;
     }
 
     @Override
@@ -25,8 +31,8 @@ public class DriveControl extends Command {
 
     @Override
     protected void execute() {
-        double speedInput = -oi.stick.getRawAxis(RobotMap.XBOX.STICK_L_Y_AXIS);
-        double rotationInput = oi.stick.getRawAxis(RobotMap.XBOX.STICK_R_X_AXIS);
+        double speedInput = -oi.stick.getRawAxis(SPEED_AXIS);
+        double rotationInput = oi.stick.getRawAxis(ROTATION_AXIS);
 
         if (Math.abs(rotationInput) < .15) {
             if (Math.abs(speedInput) > .15) {
@@ -66,7 +72,7 @@ public class DriveControl extends Command {
 
     @Override
     protected void end() {
-
+        drivetrain.stop();
     }
 
     @Override
