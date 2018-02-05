@@ -13,8 +13,8 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    public static final double DRIVEANGLE_KD = .15;
     public static final double DRIVEANGLE_KP = .2;
+    public static final double DRIVEANGLE_KD = .15;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
@@ -36,7 +36,7 @@ public class Drivetrain extends Subsystem {
 
         robotDrive = new DifferentialDrive(leftGroup, rightGroup);
 
-        shifter = new DoubleSolenoid(RobotMap.PCM.SHIFTER_REVERSE, RobotMap.PCM.SHIFTER_FORWARD);
+        shifter = new DoubleSolenoid(RobotMap.PCM.DRIVETRAIN_SHIFTER_FORWARD, RobotMap.PCM.DRIVETRAIN_SHIFTER_REVERSE);
         navx = new AHRS(SerialPort.Port.kMXP);
 
         SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
