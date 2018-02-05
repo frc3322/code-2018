@@ -1,6 +1,7 @@
 package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team3322.subsystems.Elevator;
 
 import static frc.team3322.Robot.elevator;
 
@@ -16,11 +17,7 @@ public class ElevatorToSwitch extends Command {
 
     @Override
     protected void execute() {
-        if (elevator.isAboveSwitch()) {
-            elevator.moveDown();
-        } else {
-            elevator.moveUp();
-        }
+        elevator.goToPos(Elevator.SWITCH);
     }
 
     @Override
