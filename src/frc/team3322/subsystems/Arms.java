@@ -16,7 +16,7 @@ public class Arms extends Subsystem {
     public Arms() {
         WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
         WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
-        leftArm.setInverted(true);
+        rightArm.setInverted(true);
         arms = new SpeedControllerGroup(leftArm,rightArm);
 
         WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
