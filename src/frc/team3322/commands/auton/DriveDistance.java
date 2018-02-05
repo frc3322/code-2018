@@ -14,7 +14,7 @@ public class DriveDistance extends Command {
     public DriveDistance(double meters) {
         requires(drivetrain);
 
-        this.desiredDistance = meters / 4.9;
+        this.desiredDistance = meters;
     }
 
     @Override
@@ -25,16 +25,14 @@ public class DriveDistance extends Command {
 
     @Override
     protected void execute() {
-        double curDistance = Math.sqrt(Math.pow(drivetrain.navx.getDisplacementX() * Math.cos(Math.toRadians(angle)), 2)
-                + Math.pow(drivetrain.navx.getDisplacementX() * Math.sin(Math.toRadians(angle)), 2));
+        SmartDashboard.putBoolean("Driving distance", true);
+        double curDistance = Math.sqrt(Math.pow(drivetrain.navx.getDisplacementX(), 2)
+                + Math.pow(drivetrain.navx.getDisplacementY(), 2));
 
         deltaDistance = desiredDistance - curDistance;
         drivetrain.driveAngle(1, angle);
 
-        SmartDashboard.putNumber("Displacement X", drivetrain.navx.getDisplacementX());
-        SmartDashboard.putNumber("Displacement Y", drivetrain.navx.getDisplacementY());
-        SmartDashboard.putNumber("Displacement Z", drivetrain.navx.getDisplacementZ());
-        System.out.println("deltaDistance: " + deltaDistance);
+        SmartDashboard.putNumber("Delta distance", deltaDistance);
     }
 
     @Override
@@ -45,6 +43,7 @@ public class DriveDistance extends Command {
     @Override
     protected void end() {
         drivetrain.stop();
+        SmartDashboard.putBoolean("Driving distance", false);
     }
 
     @Override
