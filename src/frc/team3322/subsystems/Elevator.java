@@ -40,12 +40,9 @@ public class Elevator extends Subsystem {
 
         shifter = new DoubleSolenoid(RobotMap.PCM.ELEVATOR_SHIFTER_FORWARD, RobotMap.PCM.ELEVATOR_SHIFTER_REVERSE);
 
-        if (RobotMap.PCM.ELEVATOR_SHIFTER_FORWARD != -1 && RobotMap.PCM.ELEVATOR_SHIFTER_REVERSE != -1)
-            encoder = new Encoder(RobotMap.DIO.ELEVATOR_ENCODER_A, RobotMap.DIO.ELEVATOR_ENCODER_B);
-        if (RobotMap.DIO.ELEVATOR_LIMIT_TOP != -1)
-            topLimitSwitch = new DigitalInput(RobotMap.DIO.ELEVATOR_LIMIT_TOP);
-        if (RobotMap.DIO.ELEVATOR_LIMIT_BOTTOM != -1)
-            bottomLimitSwitch = new DigitalInput(RobotMap.DIO.ELEVATOR_LIMIT_BOTTOM);
+        encoder = null;
+        topLimitSwitch = null;
+        bottomLimitSwitch = null;
     }
 
     public Elevator(double upSpeed, double downSpeed) {
