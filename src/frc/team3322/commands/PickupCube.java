@@ -7,6 +7,6 @@ public class PickupCube extends CommandGroup {
 
     public PickupCube() {
         addParallel(new OpenArms());
-        addParallel(new IntakeInwards());
+        addParallel(new IntakeIn());
     }
 }

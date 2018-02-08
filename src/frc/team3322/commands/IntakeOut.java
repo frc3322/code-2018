@@ -5,10 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.arms;
 
 
-public class IntakeInwards extends Command {
-    public IntakeInwards() {
+public class IntakeOut extends Command {
+    public IntakeOut() {
         // Use requires() here to declare subsystem dependencies
-        requires(arms);
     }
 
     @Override
@@ -18,7 +17,7 @@ public class IntakeInwards extends Command {
 
     @Override
     protected void execute() {
-        arms.receiveCube();
+        arms.ejectCube();
     }
 
     @Override
