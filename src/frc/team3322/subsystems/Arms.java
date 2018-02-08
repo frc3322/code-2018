@@ -7,8 +7,8 @@ import frc.team3322.RobotMap;
 
 public class Arms extends Subsystem {
 
-    private double armSpeed = .5;
-    private double intakeSpeed = .75;
+    private double armSpeed = .3;
+    private double intakeSpeed = .25;
 
     private SpeedControllerGroup arms;
     private SpeedControllerGroup intake;
@@ -16,12 +16,12 @@ public class Arms extends Subsystem {
     public Arms() {
         WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
         WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
-        rightArm.setInverted(true);
+        leftArm.setInverted(true);
         arms = new SpeedControllerGroup(leftArm,rightArm);
 
         WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
         WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.RIGHT_INTAKE);
-        rightIntake.setInverted(true);
+        leftIntake.setInverted(true);
         intake = new SpeedControllerGroup(leftIntake, rightIntake);
     }
 
