@@ -7,7 +7,8 @@ import static frc.team3322.Robot.arms;
 
 public class IntakeIn extends Command {
     public IntakeIn() {
-        // Use requires() here to declare subsystem dependencies
+        requires(arms);
+        setTimeout(1);
     }
 
     @Override
@@ -22,8 +23,7 @@ public class IntakeIn extends Command {
 
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return isTimedOut();
     }
 
     @Override
