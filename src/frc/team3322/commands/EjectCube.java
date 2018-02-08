@@ -8,13 +8,11 @@ import static frc.team3322.Robot.arms;
 public class EjectCube extends Command {
 
     public EjectCube() {
-        requires(arms);
-        setTimeout(3);
+        setTimeout(1);
     }
 
     @Override
     protected void initialize() {
-
     }
 
     @Override
