@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.team3322.commands.ElevatorToBottom;
-import frc.team3322.commands.ElevatorToTop;
-import frc.team3322.commands.ShiftDrivetrain;
+import frc.team3322.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -39,6 +37,9 @@ public class OI
 
         button_y.whenPressed(new ElevatorToTop());
         button_x.whenPressed(new ElevatorToBottom());
+
+        bumper_left.whileHeld(new PickupCube());
+        bumper_right.whileHeld(new IntakeOut());
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS
