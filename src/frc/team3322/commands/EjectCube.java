@@ -22,7 +22,6 @@ public class EjectCube extends Command {
 
     @Override
     protected boolean isFinished() {
-        // TODO read motor current to determine when finished
         return isTimedOut();
     }
 
