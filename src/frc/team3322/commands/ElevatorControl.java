@@ -29,13 +29,7 @@ public class ElevatorControl extends Command {
     protected void execute() {
         double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS);
 
-        if (elevator.isAtBottom() || elevator.isAtTop()) {
-            elevator.stop();
-        } else if (moveInput < .05) {
-            elevator.stop();
-        } else {
-            elevator.move(moveInput);
-        }
+        elevator.move(moveInput);
     }
 
     @Override
