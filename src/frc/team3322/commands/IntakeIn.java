@@ -7,8 +7,7 @@ import static frc.team3322.Robot.arms;
 
 public class IntakeIn extends Command {
     public IntakeIn() {
-        requires(arms);
-        setTimeout(1);
+        //requires(arms);
     }
 
     @Override
@@ -18,12 +17,12 @@ public class IntakeIn extends Command {
 
     @Override
     protected void execute() {
-        arms.receiveCube();
+        arms.intakeIn();
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     @Override

@@ -13,8 +13,8 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    public static final double DRIVEANGLE_KP = .2;
-    public static final double DRIVEANGLE_KD = .15;
+    public static final double DRIVEANGLE_KP = .5;
+    public static final double DRIVEANGLE_KD = .3;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
@@ -50,8 +50,7 @@ public class Drivetrain extends Subsystem {
     public void drive(double speed, double rotation) {
         robotDrive.arcadeDrive(speed, rotation);
 
-        SmartDashboard.putNumber("Velocity X", navx.getVelocityX());
-        SmartDashboard.putNumber("Velocity Y", navx.getVelocityY());
+        SmartDashboard.putNumber("Velocity", Math.sqrt(Math.pow(navx.getVelocityX(), 2) + Math.pow(navx.getVelocityY(), 2)));
 
         SmartDashboard.putNumber("Displacement X", navx.getDisplacementX());
         SmartDashboard.putNumber("Displacement Y", navx.getDisplacementY());

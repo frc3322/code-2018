@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.arms;
 
 
-public class OpenArms extends Command {
-    public OpenArms() {
+public class CloseArms extends Command {
+    public CloseArms() {
         //requires(arms);
     }
 
@@ -17,12 +17,13 @@ public class OpenArms extends Command {
 
     @Override
     protected void execute() {
-        arms.open();
+        arms.close();
     }
 
     @Override
     protected boolean isFinished() {
-        return arms.isLeftOpen() && arms.isRightOpen();
+        // TODO: verify motor current
+        return arms.isLeftClosed() && arms.isRightClosed();
     }
 
     @Override

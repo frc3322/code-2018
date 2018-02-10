@@ -7,22 +7,24 @@ import frc.team3322.RobotMap;
 
 public class Arms extends Subsystem {
 
-    private double armSpeed = .3;
-    private double intakeSpeed = .25;
+    private double armSpeed = .35;
+    private double intakeSpeed = .35;
+
+    private WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
+    private WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
+
+    private WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
+    private WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.RIGHT_INTAKE);
 
     private SpeedControllerGroup arms;
-    private SpeedControllerGroup intake;
+    private SpeedControllerGroup intakes;
 
     public Arms() {
-        WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
-        WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
         leftArm.setInverted(true);
-        arms = new SpeedControllerGroup(leftArm,rightArm);
+        rightIntake.setInverted(true);
 
-        WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
-        WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.RIGHT_INTAKE);
-        leftIntake.setInverted(true);
-        intake = new SpeedControllerGroup(leftIntake, rightIntake);
+        arms = new SpeedControllerGroup(leftArm, rightArm);
+        intakes = new SpeedControllerGroup(leftIntake, rightIntake);
     }
 
     public Arms(double armSpeed, double intakeSpeed) {
@@ -33,27 +35,49 @@ public class Arms extends Subsystem {
 
     public void initDefaultCommand() {}
 
-    public void openArm() {
-        arms.set(armSpeed);
+    public void open() {
+        leftArm.set(armSpeed*.85);
+        rightArm.set(armSpeed);
     }
 
-    public void closeArm() {
-        arms.set(-armSpeed);
+    public void close() {
+        leftArm.set(-armSpeed*.75*.85);
+        rightArm.set(-armSpeed*.75);
     }
 
-    public void stopArm() {
+    public void stop() {
         arms.set(0);
     }
 
-    public void receiveCube() {
-        intake.set(intakeSpeed);
+    public void intakeIn() {
+        intakes.set(-intakeSpeed);
     }
 
-    public void ejectCube() {
-        intake.set(-intakeSpeed);
+    public void intakeOut() {
+        intakes.set(intakeSpeed);
     }
 
     public void stopIntake() {
-        intake.set(0);
+        intakes.set(0);
+    }
+
+    public boolean isLeftOpen() {
+        return false;
+        //return leftArm.getOutputCurrent() > 20;
+    }
+
+    public boolean isRightOpen() {
+        return false;
+        //return rightArm.getOutputCurrent() > 20;
+    }
+
+    public boolean isLeftClosed() {
+        return false;
+        //return leftArm.getOutputCurrent() > 20;
+    }
+
+    public boolean isRightClosed() {
+        return false;
+        //return rightArm.getOutputCurrent() > 20;
     }
 }

@@ -35,11 +35,13 @@ public class OI
     public OI() {
         stick_left.whenPressed(new ShiftDrivetrain());
 
-        button_y.whenPressed(new ElevatorToTop());
-        button_x.whenPressed(new ElevatorToBottom());
+        button_a.whileHeld(new OpenArms());
+        button_b.whileHeld(new CloseArms());
+        button_x.whileHeld(new IntakeIn());
+        button_y.whileHeld(new IntakeOut());
 
         bumper_left.whileHeld(new PickupCube());
-        bumper_right.whileHeld(new IntakeOut());
+        bumper_right.whileHeld(new DropCube());
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS

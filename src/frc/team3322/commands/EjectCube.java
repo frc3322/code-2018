@@ -17,7 +17,7 @@ public class EjectCube extends Command {
 
     @Override
     protected void execute() {
-        arms.ejectCube();
+        arms.intakeOut();
     }
 
     @Override
