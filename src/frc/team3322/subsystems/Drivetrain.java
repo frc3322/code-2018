@@ -14,8 +14,10 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    public static final double DRIVEANGLE_KP = .4;
-    public static final double DRIVEANGLE_KD = .3;
+    private static final double DRIVEANGLE_KP = .4;
+    private static final double DRIVEANGLE_KD = .3;
+    private static final double WHEEL_DIAMETER = .155;
+    private static final double TICS_PER_REVOLUTION = 256;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
@@ -62,8 +64,8 @@ public class Drivetrain extends Subsystem {
         SmartDashboard.putNumber("Displacement X", navx.getDisplacementX());
         SmartDashboard.putNumber("Displacement Y", navx.getDisplacementY());
 
-        SmartDashboard.putNumber("Left encoder", leftEnc.get());
-        SmartDashboard.putNumber("Right encoder", rightEnc.get());
+        SmartDashboard.putNumber("Left displacement", getLeftDisplacement());
+        SmartDashboard.putNumber("Right displacement", getRightDisplacement());
 
     }
 
@@ -105,5 +107,17 @@ public class Drivetrain extends Subsystem {
         } else {
             shiftHigh();
         }
+    }
+
+    public double getLeftDisplacement() {
+        return leftEnc.get() / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER;
+    }
+
+    public double getRightDisplacement() {
+        return rightEnc.get() / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER;
+    }
+
+    public double getTotalDisplacement() {
+        return (getLeftDisplacement() + getRightDisplacement()) / 2;
     }
 }
