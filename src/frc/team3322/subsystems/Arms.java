@@ -36,13 +36,29 @@ public class Arms extends Subsystem {
     public void initDefaultCommand() {}
 
     public void open() {
-        if (!hasLeftReachedEnd()) leftArm.set(armSpeed*.85);
-        rightArm.set(armSpeed);
+        if (!hasLeftReachedEnd()) {
+            leftArm.set(armSpeed*.85);
+        } else {
+            leftArm.set(0);
+        }
+        if (!hasRightReachedEnd()) {
+            rightArm.set(armSpeed);
+        } else {
+            rightArm.set(0);
+        }
     }
 
     public void close() {
-        leftArm.set(-armSpeed*.75*.85);
-        rightArm.set(-armSpeed*.75);
+        if (!hasLeftReachedEnd()) {
+            leftArm.set(-armSpeed*.75*.85);
+        } else {
+            leftArm.set(0);
+        }
+        if (!hasRightReachedEnd()) {
+            rightArm.set(-armSpeed*.75);
+        } else {
+            rightArm.set(0);
+        }
     }
 
     public void stop() {
