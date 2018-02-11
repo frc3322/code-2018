@@ -3,6 +3,7 @@ package frc.team3322.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
 
 public class Arms extends Subsystem {
@@ -18,6 +19,14 @@ public class Arms extends Subsystem {
 
     private SpeedControllerGroup arms;
     private SpeedControllerGroup intakes;
+
+    private enum State {
+        OPENED,
+        CLOSED,
+        MOVING
+    }
+
+    private State currentState = State.MOVING;
 
     public Arms() {
         leftArm.setInverted(true);
@@ -36,8 +45,13 @@ public class Arms extends Subsystem {
     public void initDefaultCommand() {}
 
     public void open() {
+        if (currentState == State.OPENED) {
+            arms.set(0);
+            return;
+        }
+
         if (!hasLeftReachedEnd()) {
-            leftArm.set(armSpeed*.85);
+            leftArm.set(armSpeed);
         } else {
             leftArm.set(0);
         }
@@ -46,18 +60,35 @@ public class Arms extends Subsystem {
         } else {
             rightArm.set(0);
         }
+
+        if (haveBothReachedEnd()) {
+            currentState = State.OPENED;
+        } else {
+            currentState = State.MOVING;
+        }
     }
 
     public void close() {
+        if (currentState == State.CLOSED) {
+            arms.set(0);
+            return;
+        }
+
         if (!hasLeftReachedEnd()) {
-            leftArm.set(-armSpeed*.75*.85);
+            leftArm.set(-armSpeed);
         } else {
             leftArm.set(0);
         }
         if (!hasRightReachedEnd()) {
-            rightArm.set(-armSpeed*.75);
+            rightArm.set(-armSpeed);
         } else {
             rightArm.set(0);
+        }
+
+        if (haveBothReachedEnd()) {
+            currentState = State.CLOSED;
+        } else {
+            currentState = State.MOVING;
         }
     }
 
@@ -78,11 +109,17 @@ public class Arms extends Subsystem {
     }
 
     public boolean hasLeftReachedEnd() {
-        return leftArm.getOutputCurrent() < 20;
+        SmartDashboard.putNumber("Left arm current", leftArm.getOutputCurrent());
+        //return false;
+        //if (leftArm.getOutputCurrent() == 0) return false;
+        return leftArm.getOutputCurrent() > 10;
     }
 
     public boolean hasRightReachedEnd() {
-        return rightArm.getOutputCurrent() < 20;
+        SmartDashboard.putNumber("Right arm current", rightArm.getOutputCurrent());
+        //return false;
+        //if (rightArm.getOutputCurrent() == 0) return false;
+        return rightArm.getOutputCurrent() > 10;
     }
 
     public boolean haveBothReachedEnd() {
