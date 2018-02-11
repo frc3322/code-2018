@@ -23,7 +23,7 @@ public class CloseArms extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: verify motor current
-        return arms.isLeftClosed() && arms.isRightClosed();
+        return arms.haveBothReachedEnd();
     }
 
     @Override

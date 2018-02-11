@@ -13,7 +13,7 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    public static final double DRIVEANGLE_KP = .5;
+    public static final double DRIVEANGLE_KP = .4;
     public static final double DRIVEANGLE_KD = .3;
 
     private DifferentialDrive robotDrive;

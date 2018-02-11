@@ -36,7 +36,7 @@ public class Arms extends Subsystem {
     public void initDefaultCommand() {}
 
     public void open() {
-        leftArm.set(armSpeed*.85);
+        if (!hasLeftReachedEnd()) leftArm.set(armSpeed*.85);
         rightArm.set(armSpeed);
     }
 
@@ -61,23 +61,15 @@ public class Arms extends Subsystem {
         intakes.set(0);
     }
 
-    public boolean isLeftOpen() {
-        return false;
-        //return leftArm.getOutputCurrent() > 20;
+    public boolean hasLeftReachedEnd() {
+        return leftArm.getOutputCurrent() < 20;
     }
 
-    public boolean isRightOpen() {
-        return false;
-        //return rightArm.getOutputCurrent() > 20;
+    public boolean hasRightReachedEnd() {
+        return rightArm.getOutputCurrent() < 20;
     }
 
-    public boolean isLeftClosed() {
-        return false;
-        //return leftArm.getOutputCurrent() > 20;
-    }
-
-    public boolean isRightClosed() {
-        return false;
-        //return rightArm.getOutputCurrent() > 20;
+    public boolean haveBothReachedEnd() {
+        return hasLeftReachedEnd() && hasRightReachedEnd();
     }
 }

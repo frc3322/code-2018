@@ -22,7 +22,7 @@ public class OpenArms extends Command {
 
     @Override
     protected boolean isFinished() {
-        return arms.isLeftOpen() && arms.isRightOpen();
+        return arms.haveBothReachedEnd();
     }
 
     @Override

@@ -7,6 +7,8 @@
 
 package frc.team3322;
 
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -33,6 +35,7 @@ public class Robot extends TimedRobot
     public static final Elevator elevator = new Elevator();
     public static final Arms arms = new Arms();
     public static final Wings wings = new Wings();
+
     public static OI oi;
 
     private Command autonomousCommand;
@@ -46,6 +49,8 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit() 
     {
+        CameraServer.getInstance().startAutomaticCapture();
+
         oi = new OI();
 
         // Create sendable choosers for auton selection

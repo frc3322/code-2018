@@ -10,7 +10,6 @@ package frc.team3322;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.team3322.commands.*;
 
 /**
@@ -40,7 +39,8 @@ public class OI
         button_x.whileHeld(new IntakeIn());
         button_y.whileHeld(new IntakeOut());
 
-        bumper_left.whileHeld(new PickupCube());
+        bumper_left.whileHeld(new PreparePickupCube());
+        bumper_left.whenReleased(new PickupCube());
         bumper_right.whileHeld(new DropCube());
     }
 
