@@ -3,6 +3,7 @@ package frc.team3322.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,6 +20,8 @@ public class Drivetrain extends Subsystem {
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
     public AHRS navx;
+    private Encoder leftEnc;
+    private Encoder rightEnc;
 
     private double lastAngleError = 0;
 
@@ -39,6 +42,10 @@ public class Drivetrain extends Subsystem {
         shifter = new DoubleSolenoid(RobotMap.PCM.DRIVETRAIN_SHIFTER_FORWARD, RobotMap.PCM.DRIVETRAIN_SHIFTER_REVERSE);
         navx = new AHRS(SerialPort.Port.kMXP);
 
+        leftEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
+        rightEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
+        rightEnc.setReverseDirection(true);
+
         SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
         SmartDashboard.putNumber("DriveAngle kd", DRIVEANGLE_KD);
     }
@@ -55,6 +62,10 @@ public class Drivetrain extends Subsystem {
 
         SmartDashboard.putNumber("Displacement X", navx.getDisplacementX());
         SmartDashboard.putNumber("Displacement Y", navx.getDisplacementY());
+
+        SmartDashboard.putNumber("Left encoder", leftEnc.get());
+        SmartDashboard.putNumber("Right encoder", rightEnc.get());
+
     }
 
     public void driveAngleInit(double angle) {
@@ -97,4 +108,3 @@ public class Drivetrain extends Subsystem {
         }
     }
 }
-
