@@ -7,8 +7,7 @@ import static frc.team3322.Robot.arms;
 
 public class OpenArms extends Command {
     public OpenArms() {
-        // Use requires() here to declare subsystem dependencies
-        requires(arms);
+        //requires(arms);
     }
 
     @Override
@@ -18,18 +17,17 @@ public class OpenArms extends Command {
 
     @Override
     protected void execute() {
-        arms.openArm();
+        arms.open();
     }
 
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return arms.haveBothReachedEnd();
     }
 
     @Override
     protected void end() {
-        arms.stopArm();
+        arms.stop();
     }
 
     @Override
