@@ -26,6 +26,10 @@ public class Drivetrain extends Subsystem {
     private Encoder rightEnc;
 
     private double lastAngleError = 0;
+    private long lastShift;
+    private int shiftCooldown = 1000;
+    private int shiftLowThreshold = 1;
+    private int shiftHighThreshold = 2;
 
 
     public Drivetrain() {
@@ -109,15 +113,47 @@ public class Drivetrain extends Subsystem {
         }
     }
 
+    public void autoShift() {
+        if (System.currentTimeMillis() - lastShift < shiftCooldown) {
+            if (Math.abs(getRobotVelocity()) > shiftLowThreshold) {
+                if (!isHigh()) {
+                    shiftHigh();
+                    lastShift = System.currentTimeMillis();
+                }
+            } else if (Math.abs(getRobotVelocity()) < shiftHighThreshold) {
+                if (isHigh()) {
+                    shiftLow();
+                    lastShift = System.currentTimeMillis();
+                }
+            }
+        }
+    }
+
+    public double toWheelRatio(double input) {
+        return input / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER;
+    }
+
     public double getLeftDisplacement() {
-        return leftEnc.get() / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER;
+        return toWheelRatio(leftEnc.get());
     }
 
     public double getRightDisplacement() {
-        return rightEnc.get() / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER;
+        return toWheelRatio(rightEnc.get());
     }
 
-    public double getTotalDisplacement() {
-        return (getLeftDisplacement() + getRightDisplacement()) / 2;
+    public double getRobotDisplacement() {
+        return (toWheelRatio(leftEnc.get()) + toWheelRatio(leftEnc.get())) / 2;
+    }
+
+    public double getLeftVelocity() {
+        return toWheelRatio(leftEnc.getRate());
+    }
+
+    public double getRightVelocity() {
+        return toWheelRatio(rightEnc.getRate());
+    }
+
+    public double getRobotVelocity() {
+        return (getLeftVelocity() + getRightVelocity()) / 2;
     }
 }
