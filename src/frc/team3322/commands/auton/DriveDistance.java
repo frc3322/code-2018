@@ -8,33 +8,39 @@ import static frc.team3322.Robot.drivetrain;
 
 public class DriveDistance extends Command {
     private final double desiredDistance;
+    private double speed = .75;
+
+    private double straightAngle;
     private double deltaDistance = 0;
-    private double angle;
-    private double speed;
     private double initialDisplacement;
 
-    public DriveDistance(double meters, double speed) {
+    public DriveDistance(double distance) {
         requires(drivetrain);
 
-        this.desiredDistance = meters;
+        this.desiredDistance = distance;
+    }
+
+    public DriveDistance(double distance, double speed) {
+        this(distance);
+
         this.speed = speed;
     }
 
     @Override
     protected void initialize() {
-        angle = drivetrain.navx.getAngle();
-        initialDisplacement = drivetrain.getTotalDisplacement();
+        initialDisplacement = drivetrain.getRobotDisplacement();
+        straightAngle = drivetrain.navx.getAngle();
+        drivetrain.driveAngleInit(straightAngle);
     }
 
     @Override
     protected void execute() {
-        SmartDashboard.putBoolean("Driving distance", true);
-        double curDistance = drivetrain.getTotalDisplacement() - initialDisplacement;
+        double curDistance = drivetrain.getRobotDisplacement() - initialDisplacement;
 
         deltaDistance = desiredDistance - curDistance;
-        drivetrain.driveAngle(speed, angle);
+        drivetrain.driveAngle(speed, straightAngle);
 
-        SmartDashboard.putNumber("Delta distance", deltaDistance);
+        SmartDashboard.putNumber("DriveDistance delta", deltaDistance);
     }
 
     @Override
@@ -45,7 +51,6 @@ public class DriveDistance extends Command {
     @Override
     protected void end() {
         drivetrain.stop();
-        SmartDashboard.putBoolean("Driving distance", false);
     }
 
     @Override
