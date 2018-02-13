@@ -62,7 +62,7 @@ public class DriveControl extends Command {
         }
 
         // TODO: allow toggling of autoshift
-        drivetrain.autoShift();
+        //drivetrain.autoShift();
 
         SmartDashboard.putBoolean("Driving straight", straightModeStart);
         SmartDashboard.putNumber("Straight angle", straightAngle);
