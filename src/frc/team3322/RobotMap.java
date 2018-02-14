@@ -30,10 +30,10 @@ public class RobotMap
         public static final int ELEVATOR_MOTOR_2 = 2;
 
         // Arms
-        public static final int LEFT_ARM = 3;
-        public static final int RIGHT_ARM = 7;
-        public static final int LEFT_INTAKE = 8;
-        public static final int RIGHT_INTAKE = 9;
+        public static final int LEFT_ARM = 9;
+        public static final int RIGHT_ARM = 3;
+        public static final int LEFT_INTAKE = 7;
+        public static final int RIGHT_INTAKE = 8;
     }
 
     /**
@@ -59,14 +59,16 @@ public class RobotMap
      */
     public static class DIO {
         // Drivetrain
-        public static final int DRIVETRAIN_ENCODER_A = 0;
-        public static final int DRIVETRAIN_ENCODER_B = 1;
+        public static final int DRIVETRAIN_ENCODER_LA = 0;
+        public static final int DRIVETRAIN_ENCODER_LB = 1;
+        public static final int DRIVETRAIN_ENCODER_RA = 2;
+        public static final int DRIVETRAIN_ENCODER_RB = 3;
 
         // Elevator
-        public static final int ELEVATOR_ENCODER_A = 2;
-        public static final int ELEVATOR_ENCODER_B = 3;
-        public static final int ELEVATOR_LIMIT_TOP = 4;
-        public static final int ELEVATOR_LIMIT_BOTTOM = 5;
+        public static final int ELEVATOR_ENCODER_A = 4;
+        public static final int ELEVATOR_ENCODER_B = 5;
+        public static final int ELEVATOR_LIMIT_TOP = -1;
+        public static final int ELEVATOR_LIMIT_BOTTOM = -1;
     }
 
     public static class XBOX {

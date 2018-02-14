@@ -8,42 +8,49 @@ import static frc.team3322.Robot.drivetrain;
 
 public class DriveDistance extends Command {
     private final double desiredDistance;
-    private double deltaDistance = 0;
-    private double angle;
+    private double speed = .75;
 
-    public DriveDistance(double meters) {
+    private double straightAngle;
+    private double deltaDistance = 0;
+    private double initialDisplacement;
+
+    public DriveDistance(double distance) {
         requires(drivetrain);
 
-        this.desiredDistance = meters;
+        this.desiredDistance = distance;
+    }
+
+    public DriveDistance(double distance, double speed) {
+        this(distance);
+
+        this.speed = speed;
     }
 
     @Override
     protected void initialize() {
-        angle = drivetrain.navx.getAngle();
-        drivetrain.navx.resetDisplacement();
+        initialDisplacement = drivetrain.getRobotDisplacement();
+        straightAngle = drivetrain.navx.getAngle();
+        drivetrain.driveAngleInit(straightAngle);
     }
 
     @Override
     protected void execute() {
-        SmartDashboard.putBoolean("Driving distance", true);
-        double curDistance = Math.sqrt(Math.pow(drivetrain.navx.getDisplacementX(), 2)
-                + Math.pow(drivetrain.navx.getDisplacementY(), 2));
+        double curDistance = drivetrain.getRobotDisplacement() - initialDisplacement;
 
         deltaDistance = desiredDistance - curDistance;
-        drivetrain.driveAngle(1, angle);
+        drivetrain.driveAngle(speed, straightAngle);
 
-        SmartDashboard.putNumber("Delta distance", deltaDistance);
+        SmartDashboard.putNumber("DriveDistance delta", deltaDistance);
     }
 
     @Override
     protected boolean isFinished() {
-        return deltaDistance < 1;
+        return deltaDistance < .5;
     }
 
     @Override
     protected void end() {
         drivetrain.stop();
-        SmartDashboard.putBoolean("Driving distance", false);
     }
 
     @Override

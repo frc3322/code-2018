@@ -2,22 +2,23 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.arms;
+import static frc.team3322.Robot.wings;
 
 
-public class EjectCube extends Command {
-
-    public EjectCube() {
-        setTimeout(1);
+public class DeployWings extends Command {
+    public DeployWings() {
+        requires(wings);
+        setTimeout(2);
     }
 
     @Override
     protected void initialize() {
+
     }
 
     @Override
     protected void execute() {
-        arms.intakeOut();
+        wings.deploy();
     }
 
     @Override
@@ -27,7 +28,7 @@ public class EjectCube extends Command {
 
     @Override
     protected void end() {
-        arms.stopIntake();
+        wings.stop();
     }
 
     @Override

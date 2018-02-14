@@ -5,10 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.arms;
 
 
-public class IntakeInwards extends Command {
-    public IntakeInwards() {
-        // Use requires() here to declare subsystem dependencies
-        requires(arms);
+public class CloseArms extends Command {
+    public CloseArms() {
+        //requires(arms);
     }
 
     @Override
@@ -18,18 +17,18 @@ public class IntakeInwards extends Command {
 
     @Override
     protected void execute() {
-        arms.receiveCube();
+        arms.close();
     }
 
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        // TODO: verify motor current
+        return arms.haveBothReachedEnd();
     }
 
     @Override
     protected void end() {
-        arms.stopIntake();
+        arms.stop();
     }
 
     @Override

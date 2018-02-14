@@ -5,24 +5,24 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.arms;
 
 
-public class EjectCube extends Command {
-
-    public EjectCube() {
-        setTimeout(1);
+public class IntakeIn extends Command {
+    public IntakeIn() {
+        //requires(arms);
     }
 
     @Override
     protected void initialize() {
+
     }
 
     @Override
     protected void execute() {
-        arms.intakeOut();
+        arms.intakeIn();
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     @Override

@@ -3,6 +3,7 @@ package frc.team3322.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -13,14 +14,22 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    public static final double DRIVEANGLE_KP = .2;
-    public static final double DRIVEANGLE_KD = .15;
+    private static final double DRIVEANGLE_KP = .4;
+    private static final double DRIVEANGLE_KD = .3;
+    private static final double WHEEL_DIAMETER = .155;
+    private static final double TICS_PER_REVOLUTION = 256;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
     public AHRS navx;
+    private Encoder leftEnc;
+    private Encoder rightEnc;
 
     private double lastAngleError = 0;
+    private long lastShift;
+    private int shiftCooldown = 1000;
+    private int shiftLowThreshold = 1;
+    private int shiftHighThreshold = 2;
 
 
     public Drivetrain() {
@@ -39,6 +48,10 @@ public class Drivetrain extends Subsystem {
         shifter = new DoubleSolenoid(RobotMap.PCM.DRIVETRAIN_SHIFTER_FORWARD, RobotMap.PCM.DRIVETRAIN_SHIFTER_REVERSE);
         navx = new AHRS(SerialPort.Port.kMXP);
 
+        leftEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
+        rightEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
+        rightEnc.setReverseDirection(true);
+
         SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
         SmartDashboard.putNumber("DriveAngle kd", DRIVEANGLE_KD);
     }
@@ -50,11 +63,14 @@ public class Drivetrain extends Subsystem {
     public void drive(double speed, double rotation) {
         robotDrive.arcadeDrive(speed, rotation);
 
-        SmartDashboard.putNumber("Velocity X", navx.getVelocityX());
-        SmartDashboard.putNumber("Velocity Y", navx.getVelocityY());
+        SmartDashboard.putNumber("Velocity", Math.sqrt(Math.pow(navx.getVelocityX(), 2) + Math.pow(navx.getVelocityY(), 2)));
 
         SmartDashboard.putNumber("Displacement X", navx.getDisplacementX());
         SmartDashboard.putNumber("Displacement Y", navx.getDisplacementY());
+
+        SmartDashboard.putNumber("Left displacement", getLeftDisplacement());
+        SmartDashboard.putNumber("Right displacement", getRightDisplacement());
+
     }
 
     public void driveAngleInit(double angle) {
@@ -96,5 +112,48 @@ public class Drivetrain extends Subsystem {
             shiftHigh();
         }
     }
-}
 
+    public void autoShift() {
+        if (System.currentTimeMillis() - lastShift < shiftCooldown) {
+            if (Math.abs(getRobotVelocity()) > shiftLowThreshold) {
+                if (!isHigh()) {
+                    shiftHigh();
+                    lastShift = System.currentTimeMillis();
+                }
+            } else if (Math.abs(getRobotVelocity()) < shiftHighThreshold) {
+                if (isHigh()) {
+                    shiftLow();
+                    lastShift = System.currentTimeMillis();
+                }
+            }
+        }
+    }
+
+    public double toWheelRatio(double input) {
+        return input / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER;
+    }
+
+    public double getLeftDisplacement() {
+        return toWheelRatio(leftEnc.get());
+    }
+
+    public double getRightDisplacement() {
+        return toWheelRatio(rightEnc.get());
+    }
+
+    public double getRobotDisplacement() {
+        return (toWheelRatio(leftEnc.get()) + toWheelRatio(leftEnc.get())) / 2;
+    }
+
+    public double getLeftVelocity() {
+        return toWheelRatio(leftEnc.getRate());
+    }
+
+    public double getRightVelocity() {
+        return toWheelRatio(rightEnc.getRate());
+    }
+
+    public double getRobotVelocity() {
+        return (getLeftVelocity() + getRightVelocity()) / 2;
+    }
+}

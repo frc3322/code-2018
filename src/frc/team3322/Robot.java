@@ -7,6 +7,8 @@
 
 package frc.team3322;
 
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -16,6 +18,7 @@ import frc.team3322.commands.auton.Auton;
 import frc.team3322.subsystems.Arms;
 import frc.team3322.subsystems.Drivetrain;
 import frc.team3322.subsystems.Elevator;
+import frc.team3322.subsystems.Wings;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,6 +34,8 @@ public class Robot extends TimedRobot
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final Elevator elevator = new Elevator();
     public static final Arms arms = new Arms();
+    public static final Wings wings = new Wings();
+
     public static OI oi;
 
     private Command autonomousCommand;
@@ -44,6 +49,8 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit() 
     {
+        CameraServer.getInstance().startAutomaticCapture();
+
         oi = new OI();
 
         // Create sendable choosers for auton selection

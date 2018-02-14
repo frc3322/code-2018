@@ -10,10 +10,7 @@ package frc.team3322;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.team3322.commands.ElevatorToBottom;
-import frc.team3322.commands.ElevatorToTop;
-import frc.team3322.commands.ShiftDrivetrain;
+import frc.team3322.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,8 +34,14 @@ public class OI
     public OI() {
         stick_left.whenPressed(new ShiftDrivetrain());
 
-        button_y.whenPressed(new ElevatorToTop());
-        button_x.whenPressed(new ElevatorToBottom());
+        button_a.whileHeld(new OpenArms());
+        button_b.whileHeld(new CloseArms());
+        button_x.whileHeld(new IntakeIn());
+        button_y.whileHeld(new IntakeOut());
+
+        bumper_left.whileHeld(new PreparePickupCube());
+        bumper_left.whenReleased(new PickupCube());
+        bumper_right.whileHeld(new DropCube());
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS

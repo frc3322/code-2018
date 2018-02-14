@@ -3,26 +3,37 @@ package frc.team3322.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
 
 public class Arms extends Subsystem {
 
-    private double armSpeed = .5;
-    private double intakeSpeed = .75;
+    private double armSpeed = .35;
+    private double intakeSpeed = .35;
+
+    private WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
+    private WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
+
+    private WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
+    private WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.RIGHT_INTAKE);
 
     private SpeedControllerGroup arms;
-    private SpeedControllerGroup intake;
+    private SpeedControllerGroup intakes;
+
+    private enum State {
+        OPENED,
+        CLOSED,
+        MOVING
+    }
+
+    private State currentState = State.MOVING;
 
     public Arms() {
-        WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
-        WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
-        rightArm.setInverted(true);
-        arms = new SpeedControllerGroup(leftArm,rightArm);
-
-        WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
-        WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.RIGHT_INTAKE);
+        leftArm.setInverted(true);
         rightIntake.setInverted(true);
-        intake = new SpeedControllerGroup(leftIntake, rightIntake);
+
+        arms = new SpeedControllerGroup(leftArm, rightArm);
+        intakes = new SpeedControllerGroup(leftIntake, rightIntake);
     }
 
     public Arms(double armSpeed, double intakeSpeed) {
@@ -33,27 +44,85 @@ public class Arms extends Subsystem {
 
     public void initDefaultCommand() {}
 
-    public void openArm() {
-        arms.set(armSpeed);
+    public void open() {
+        if (currentState == State.OPENED) {
+            arms.set(0);
+            return;
+        }
+
+        if (!hasLeftReachedEnd()) {
+            leftArm.set(armSpeed);
+        } else {
+            leftArm.set(0);
+        }
+        if (!hasRightReachedEnd()) {
+            rightArm.set(armSpeed);
+        } else {
+            rightArm.set(0);
+        }
+
+        if (haveBothReachedEnd()) {
+            currentState = State.OPENED;
+        } else {
+            currentState = State.MOVING;
+        }
     }
 
-    public void closeArm() {
-        arms.set(-armSpeed);
+    public void close() {
+        if (currentState == State.CLOSED) {
+            arms.set(0);
+            return;
+        }
+
+        if (!hasLeftReachedEnd()) {
+            leftArm.set(-armSpeed);
+        } else {
+            leftArm.set(0);
+        }
+        if (!hasRightReachedEnd()) {
+            rightArm.set(-armSpeed);
+        } else {
+            rightArm.set(0);
+        }
+
+        if (haveBothReachedEnd()) {
+            currentState = State.CLOSED;
+        } else {
+            currentState = State.MOVING;
+        }
     }
 
-    public void stopArm() {
+    public void stop() {
         arms.set(0);
     }
 
-    public void receiveCube() {
-        intake.set(intakeSpeed);
+    public void intakeIn() {
+        intakes.set(-intakeSpeed);
     }
 
-    public void ejectCube() {
-        intake.set(-intakeSpeed);
+    public void intakeOut() {
+        intakes.set(intakeSpeed);
     }
 
     public void stopIntake() {
-        intake.set(0);
+        intakes.set(0);
+    }
+
+    public boolean hasLeftReachedEnd() {
+        SmartDashboard.putNumber("Left arm current", leftArm.getOutputCurrent());
+        //return false;
+        //if (leftArm.getOutputCurrent() == 0) return false;
+        return leftArm.getOutputCurrent() > 10;
+    }
+
+    public boolean hasRightReachedEnd() {
+        SmartDashboard.putNumber("Right arm current", rightArm.getOutputCurrent());
+        //return false;
+        //if (rightArm.getOutputCurrent() == 0) return false;
+        return rightArm.getOutputCurrent() > 10;
+    }
+
+    public boolean haveBothReachedEnd() {
+        return hasLeftReachedEnd() && hasRightReachedEnd();
     }
 }
