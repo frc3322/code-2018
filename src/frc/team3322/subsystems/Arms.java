@@ -8,6 +8,7 @@ import frc.team3322.RobotMap;
 
 public class Arms extends Subsystem {
 
+    private static final double MAX_CURRENT = 10; // in amps
     private double armSpeed = .35;
     private double intakeSpeed = .35;
 
@@ -112,14 +113,14 @@ public class Arms extends Subsystem {
         SmartDashboard.putNumber("Left arm current", leftArm.getOutputCurrent());
         //return false;
         //if (leftArm.getOutputCurrent() == 0) return false;
-        return leftArm.getOutputCurrent() > 10;
+        return leftArm.getOutputCurrent() > MAX_CURRENT;
     }
 
     public boolean hasRightReachedEnd() {
         SmartDashboard.putNumber("Right arm current", rightArm.getOutputCurrent());
         //return false;
         //if (rightArm.getOutputCurrent() == 0) return false;
-        return rightArm.getOutputCurrent() > 10;
+        return rightArm.getOutputCurrent() > MAX_CURRENT;
     }
 
     public boolean haveBothReachedEnd() {
