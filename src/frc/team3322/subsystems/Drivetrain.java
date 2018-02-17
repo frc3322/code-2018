@@ -16,14 +16,14 @@ public class Drivetrain extends Subsystem {
 
     private static final double DRIVEANGLE_KP = .4;
     private static final double DRIVEANGLE_KD = .3;
-    private static final double WHEEL_DIAMETER = .155;
+    private static final double WHEEL_DIAMETER = .155; // meters
     private static final double TICS_PER_REVOLUTION = 256;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
     public AHRS navx;
-    private Encoder leftEnc;
-    private Encoder rightEnc;
+    private Encoder enc_left;
+    private Encoder enc_right;
 
     private double lastAngleError = 0;
     private long lastShift;
@@ -48,9 +48,9 @@ public class Drivetrain extends Subsystem {
         shifter = new DoubleSolenoid(RobotMap.PCM.DRIVETRAIN_SHIFTER_FORWARD, RobotMap.PCM.DRIVETRAIN_SHIFTER_REVERSE);
         navx = new AHRS(SerialPort.Port.kMXP);
 
-        leftEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
-        rightEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
-        rightEnc.setReverseDirection(true);
+        enc_left = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
+        enc_right = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
+        enc_right.setReverseDirection(true);
 
         SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
         SmartDashboard.putNumber("DriveAngle kd", DRIVEANGLE_KD);
@@ -134,26 +134,31 @@ public class Drivetrain extends Subsystem {
     }
 
     public double getLeftDisplacement() {
-        return toWheelRatio(leftEnc.get());
+        return toWheelRatio(enc_left.get());
     }
 
     public double getRightDisplacement() {
-        return toWheelRatio(rightEnc.get());
+        return toWheelRatio(enc_right.get());
     }
 
     public double getRobotDisplacement() {
-        return (toWheelRatio(leftEnc.get()) + toWheelRatio(leftEnc.get())) / 2;
+        return (toWheelRatio(enc_left.get()) + toWheelRatio(enc_left.get())) / 2;
     }
 
     public double getLeftVelocity() {
-        return toWheelRatio(leftEnc.getRate());
+        return toWheelRatio(enc_left.getRate());
     }
 
     public double getRightVelocity() {
-        return toWheelRatio(rightEnc.getRate());
+        return toWheelRatio(enc_right.getRate());
     }
 
     public double getRobotVelocity() {
         return (getLeftVelocity() + getRightVelocity()) / 2;
+    }
+
+    public void resetEncoders() {
+        enc_left.reset();
+        enc_right.reset();
     }
 }

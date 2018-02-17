@@ -103,8 +103,9 @@ public class Robot extends TimedRobot
     public void autonomousInit() 
     {
         updateAutonData();
-        autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected());
+        drivetrain.resetEncoders();
 
+        autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected());
         autonomousCommand.start();
     }
 
@@ -120,6 +121,8 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit() 
     {
+        drivetrain.resetEncoders();
+
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
