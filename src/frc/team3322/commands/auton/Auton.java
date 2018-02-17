@@ -2,6 +2,7 @@ package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team3322.Robot;
 import frc.team3322.commands.*;
 
 
@@ -46,7 +47,7 @@ public class Auton extends CommandGroup {
     private Path selectedPath;
 
     public Auton(StartPosition startPos, Action action) {
-        gameData = DriverStation.getInstance().getGameSpecificMessage();
+        gameData = Robot.gameData;
         switchSide = gameData.substring(0, 1);
         scaleSide = gameData.substring(1, 2);
 

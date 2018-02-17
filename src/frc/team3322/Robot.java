@@ -9,6 +9,7 @@ package frc.team3322;
 
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -35,6 +36,8 @@ public class Robot extends TimedRobot
     public static final Arms arms = new Arms();
 
     public static OI oi;
+
+    public static String gameData;
 
     private Command autonomousCommand;
     private SendableChooser<Auton.StartPosition> startChooser = new SendableChooser<>();
@@ -74,13 +77,15 @@ public class Robot extends TimedRobot
     @Override
     public void disabledInit() 
     {
-        
+
     }
 
     @Override
     public void disabledPeriodic() 
     {
         Scheduler.getInstance().run();
+
+        updateAutonData();
     }
 
     /**
@@ -97,6 +102,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit() 
     {
+        updateAutonData();
         autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected());
 
         autonomousCommand.start();
@@ -134,5 +140,13 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
+    }
+
+    public void updateAutonData() {
+        String newGameData = DriverStation.getInstance().getGameSpecificMessage();
+
+        if (newGameData.length() == 3) {
+            gameData = newGameData;
+        }
     }
 }
