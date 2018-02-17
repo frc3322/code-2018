@@ -161,18 +161,16 @@ public class Auton extends CommandGroup {
             case DONOTHING:
                 break;
             case POSL_DRIVESTRAIGHT:
-                // TODO: finish this
                 System.out.println("POSL_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(250));
                 break;
             case POSL_LSWITCH:
                 System.out.println("POSL_LSWITCH");
                 addSequential(new DriveDistance(145));
+                addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(12));
-                addSequential(new ElevatorToSwitch());
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSL_LSCALE:
                 System.out.println("POSL_LSCALE");
@@ -184,20 +182,11 @@ public class Auton extends CommandGroup {
                 break;
             case POSL_RSWITCH:
                 System.out.println("POSR_RSWITCH");
-                addSequential(new DriveDistance(145));
-                addSequential(new TurnToAngle(-90));
-                addSequential(new DriveDistance(12));
-                addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
+                // TODO: finish this
                 break;
             case POSL_RSCALE:
-                System.out.println("POSR_RSCALE");
-                addSequential(new DriveDistance(324));
-                addParallel(new ElevatorToScale());
-                addSequential(new TurnToAngle(-90));
-                addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                System.out.println("POSL_RSCALE");
+                // TODO: finish this
                 break;
             case POSM_LSWITCH:
                 // TODO: finish this
@@ -291,25 +280,22 @@ public class Auton extends CommandGroup {
             case POSR_RSWITCH:
                 // TODO: finish this
                 System.out.println("POSR_RSWITCH");
-                addSequential(new DriveDistance(4));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToSwitch());
+                addSequential(new DriveDistance(145));
+                addParallel(new ElevatorToSwitch());
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSR_RSCALE:
                 // TODO: finish this
                 System.out.println("POSR_RSCALE");
-                addSequential(new DriveDistance(8));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToScale());
+                addSequential(new DriveDistance(324));
+                addParallel(new ElevatorToScale());
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSR_DRIVESTRAIGHT:
-                // TODO: finish this
                 System.out.println("POSR_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(250));
                 break;
