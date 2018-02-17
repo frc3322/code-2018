@@ -60,11 +60,11 @@ public class Robot extends TimedRobot
         startChooser.addDefault("Middle", Auton.StartPosition.MIDDLE);
         startChooser.addObject("Right", Auton.StartPosition.RIGHT);
 
+        actionChooser.addDefault("Switch", Auton.Action.SWITCH);
         actionChooser.addObject("Scale", Auton.Action.SCALE);
-        actionChooser.addObject("Switch", Auton.Action.SWITCH);
 
         priorityChooser.addObject("Ignore", Auton.Priority.IGNORE);
-        priorityChooser.addObject("Prefer", Auton.Priority.PREFER);
+        priorityChooser.addDefault("Prefer", Auton.Priority.PREFER);
         priorityChooser.addObject("Flexible", Auton.Priority.FLEXIBLE);
         priorityChooser.addObject("Force", Auton.Priority.FORCE);
 
@@ -77,8 +77,6 @@ public class Robot extends TimedRobot
     public void robotPeriodic() {
         SmartDashboard.putNumber("Left displacement", drivetrain.getLeftDisplacement());
         SmartDashboard.putNumber("Right displacement", drivetrain.getRightDisplacement());
-        SmartDashboard.putNumber("Left ticks", drivetrain.getLeftTicks());
-        SmartDashboard.putNumber("Right ticks", drivetrain.getRightTicks());
         SmartDashboard.putNumber("Displacement", drivetrain.getRobotDisplacement());
         SmartDashboard.putNumber("Velocity", drivetrain.getRobotVelocity());
     }
