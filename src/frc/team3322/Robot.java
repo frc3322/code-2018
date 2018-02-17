@@ -70,6 +70,7 @@ public class Robot extends TimedRobot
 
         SmartDashboard.putData("Start pos", startChooser);
         SmartDashboard.putData("Auton action", actionChooser);
+        SmartDashboard.putData("Action priority", priorityChooser);
     }
 
     @Override
