@@ -62,15 +62,6 @@ public class Drivetrain extends Subsystem {
 
     public void drive(double speed, double rotation) {
         robotDrive.arcadeDrive(speed, rotation);
-
-        SmartDashboard.putNumber("Velocity", Math.sqrt(Math.pow(navx.getVelocityX(), 2) + Math.pow(navx.getVelocityY(), 2)));
-
-        SmartDashboard.putNumber("Displacement X", navx.getDisplacementX());
-        SmartDashboard.putNumber("Displacement Y", navx.getDisplacementY());
-
-        SmartDashboard.putNumber("Left displacement", getLeftDisplacement());
-        SmartDashboard.putNumber("Right displacement", getRightDisplacement());
-
     }
 
     public void driveAngleInit(double angle) {

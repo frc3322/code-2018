@@ -69,6 +69,14 @@ public class Robot extends TimedRobot
         SmartDashboard.putData("Auton action", actionChooser);
     }
 
+    @Override
+    public void robotPeriodic() {
+        SmartDashboard.putNumber("Left displacement", drivetrain.getLeftDisplacement());
+        SmartDashboard.putNumber("Right displacement", drivetrain.getRightDisplacement());
+        SmartDashboard.putNumber("Displacement", drivetrain.getRobotDisplacement());
+        SmartDashboard.putNumber("Velocity", drivetrain.getRobotVelocity());
+    }
+
     /**
      * This function is called once each time the robot enters Disabled mode.
      * You can use it to reset any subsystem information you want to clear when
