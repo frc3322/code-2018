@@ -1,15 +1,11 @@
 package frc.team3322.commands.auton;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team3322.Robot;
 import frc.team3322.commands.*;
 
 
 public class Auton extends CommandGroup {
-    private String gameData;
-    private String switchSide;
-    private String scaleSide;
 
     public enum StartPosition {
         LEFT,
@@ -23,7 +19,7 @@ public class Auton extends CommandGroup {
     }
 
     public enum Path {
-        POSX_DONOTHING,
+        DONOTHING,
         POSL_LSWITCH,
         POSL_LSCALE,
         POSL_RSWITCH,
@@ -51,9 +47,9 @@ public class Auton extends CommandGroup {
     private Path selectedPath;
 
     public Auton(StartPosition startPos, Action action, Priority priority) {
-        gameData = Robot.gameData;
-        switchSide = gameData.substring(0, 1);
-        scaleSide = gameData.substring(1, 2);
+        String gameData = Robot.gameData;
+        String switchSide = gameData.substring(0, 1);
+        String scaleSide = gameData.substring(1, 2);
 
         switch (startPos) {
             case LEFT:
@@ -162,7 +158,7 @@ public class Auton extends CommandGroup {
     private void queuePath() {
         System.out.println("Path queued");
         switch (selectedPath) {
-            case POSX_DONOTHING:
+            case DONOTHING:
                 break;
             case POSL_DRIVESTRAIGHT:
                 // TODO: finish this
@@ -170,7 +166,6 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(250));
                 break;
             case POSL_LSWITCH:
-                // TODO: finish this
                 System.out.println("POSL_LSWITCH");
                 addSequential(new DriveDistance(145));
                 addSequential(new TurnToAngle(90));
@@ -180,42 +175,29 @@ public class Auton extends CommandGroup {
                 addSequential(new ElevatorToBottom());
                 break;
             case POSL_LSCALE:
-                // TODO: finish this
                 System.out.println("POSL_LSCALE");
-                addSequential(new DriveDistance(10));
+                addSequential(new DriveDistance(324));
+                addParallel(new ElevatorToScale());
                 addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToScale());
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSL_RSWITCH:
-                // TODO: finish this
                 System.out.println("POSR_RSWITCH");
-                addSequential(new DriveDistance(4));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(8));
-                addSequential(new TurnToAngle(180));
-                addSequential(new DriveDistance(3));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(2));
+                addSequential(new DriveDistance(145));
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(12));
                 addSequential(new ElevatorToSwitch());
                 addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
                 break;
             case POSL_RSCALE:
-                // TODO: finish this
                 System.out.println("POSR_RSCALE");
-                addSequential(new DriveDistance(4));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(8));
-                addSequential(new TurnToAngle(0));
-                addSequential(new DriveDistance(3));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToScale());
+                addSequential(new DriveDistance(324));
+                addParallel(new ElevatorToScale());
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSM_LSWITCH:
                 // TODO: finish this
