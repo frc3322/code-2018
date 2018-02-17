@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team3322.Robot;
 import frc.team3322.commands.*;
 
+import static frc.team3322.Robot.drivetrain;
+
 
 public class Auton extends CommandGroup {
 
@@ -157,6 +159,7 @@ public class Auton extends CommandGroup {
 
     private void queuePath() {
         System.out.println("Path queued");
+        drivetrain.shiftLow();
         switch (selectedPath) {
             case DONOTHING:
                 break;
@@ -191,13 +194,11 @@ public class Auton extends CommandGroup {
             case POSM_LSWITCH:
                 // TODO: finish this
                 System.out.println("POSM_LSWITCH");
-                addSequential(new DriveDistance(1));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(4));
+                addSequential(new DriveDistance(40));
+                addSequential(new TurnToAngle(-45));
+                addSequential(new DriveDistance(50));
                 addSequential(new TurnToAngle(0));
-                addSequential(new DriveDistance(3));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(2));
+                addSequential(new DriveDistance(30));
                 addSequential(new ElevatorToSwitch());
                 addSequential(new EjectCube());
                 addSequential(new ElevatorToBottom());
