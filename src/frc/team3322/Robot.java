@@ -42,6 +42,7 @@ public class Robot extends TimedRobot
     private Command autonomousCommand;
     private SendableChooser<Auton.StartPosition> startChooser = new SendableChooser<>();
     private SendableChooser<Auton.Action> actionChooser = new SendableChooser<>();
+    private SendableChooser<Auton.Priority> priorityChooser = new SendableChooser<>();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -59,11 +60,13 @@ public class Robot extends TimedRobot
         startChooser.addDefault("Middle", Auton.StartPosition.MIDDLE);
         startChooser.addObject("Right", Auton.StartPosition.RIGHT);
 
-        actionChooser.addObject("Do nothing", Auton.Action.DONOTHING);
-        actionChooser.addDefault("Drive straight", Auton.Action.DRIVESTRAIGHT);
-        actionChooser.addObject("Closest", Auton.Action.CLOSEST);
         actionChooser.addObject("Scale", Auton.Action.SCALE);
         actionChooser.addObject("Switch", Auton.Action.SWITCH);
+
+        priorityChooser.addObject("Ignore", Auton.Priority.IGNORE);
+        priorityChooser.addObject("Prefer", Auton.Priority.PREFER);
+        priorityChooser.addObject("Flexible", Auton.Priority.FLEXIBLE);
+        priorityChooser.addObject("Force", Auton.Priority.FORCE);
 
         SmartDashboard.putData("Start pos", startChooser);
         SmartDashboard.putData("Auton action", actionChooser);
@@ -105,7 +108,7 @@ public class Robot extends TimedRobot
         updateAutonData();
         drivetrain.resetEncoders();
 
-        autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected());
+        autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected(), priorityChooser.getSelected());
         autonomousCommand.start();
     }
 
