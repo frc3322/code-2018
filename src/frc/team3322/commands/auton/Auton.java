@@ -20,9 +20,6 @@ public class Auton extends CommandGroup {
     public enum Action {
         SCALE,
         SWITCH,
-        DONOTHING,
-        DRIVESTRAIGHT,
-        CLOSEST
     }
 
     public enum Path {
@@ -44,241 +41,121 @@ public class Auton extends CommandGroup {
         POSR_DRIVESTRAIGHT
     }
 
+    public enum Priority {
+        IGNORE,
+        PREFER,
+        FLEXIBLE,
+        FORCE
+    }
+
     private Path selectedPath;
 
-    public Auton(StartPosition startPos, Action action) {
+    public Auton(StartPosition startPos, Action action, Priority priority) {
         gameData = Robot.gameData;
         switchSide = gameData.substring(0, 1);
         scaleSide = gameData.substring(1, 2);
 
         switch (startPos) {
             case LEFT:
-                if (switchSide.equals("L") && scaleSide.equals("L")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSL_LSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSL_LSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSL_LSWITCH;
-                            break;
-                    }
-                } else if (switchSide.equals("L") && scaleSide.equals("R")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSL_LSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSL_LSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSL_LSWITCH;
-                            break;
-                    }
-                } else if (switchSide.equals("R") && scaleSide.equals("L")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSL_RSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSL_LSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSL_LSCALE;
-                            break;
-                    }
-                } else if (switchSide.equals("R") && scaleSide.equals("R")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSL_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSL_RSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSL_RSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSL_RSWITCH;
-                            break;
-                    }
+                if (priority == Priority.IGNORE) {
+                    selectedPath = Path.POSL_DRIVESTRAIGHT;
+                    break;
+                }
+                switch (action) {
+                    case SWITCH:
+                        if (switchSide.equals("L")) {
+                            selectedPath = Path.POSL_LSWITCH;
+                        } else {
+                            if (priority == Priority.FLEXIBLE) {
+                                if (scaleSide.equals("L")) {
+                                    selectedPath = Path.POSL_LSCALE;
+                                } else {
+                                    selectedPath = Path.POSL_DRIVESTRAIGHT;
+                                }
+                            } else if (priority == Priority.FORCE) {
+                                selectedPath = Path.POSL_RSWITCH;
+                            }
+                        }
+                        break;
+                    case SCALE:
+                        if (scaleSide.equals("L")) {
+                            selectedPath = Path.POSL_LSCALE;
+                        } else {
+                            if (priority == Priority.FLEXIBLE) {
+                                if (switchSide.equals("L")) {
+                                    selectedPath = Path.POSL_LSWITCH;
+                                } else {
+                                    selectedPath = Path.POSL_DRIVESTRAIGHT;
+                                }
+                            } else if (priority == Priority.FORCE) {
+                                selectedPath = Path.POSL_RSCALE;
+                            }
+                        }
+                        break;
                 }
                 break;
             case MIDDLE:
-                if (switchSide.equals("L") && scaleSide.equals("L")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSM_LSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSM_LSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSM_LSWITCH;
-                            break;
-                    }
-                } else if (switchSide.equals("L") && scaleSide.equals("R")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSM_LSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSM_RSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSM_LSWITCH;
-                            break;
-                    }
-                } else if (switchSide.equals("R") && scaleSide.equals("L")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSM_RSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSM_LSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSM_RSWITCH;
-                            break;
-                    }
-                } else if (switchSide.equals("R") && scaleSide.equals("R")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSM_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSM_RSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSM_RSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSM_RSWITCH;
-                            break;
-                    }
+                if (priority != Priority.FORCE) {
+                    selectedPath = Path.POSM_DRIVESTRAIGHT;
+                    break;
+                }
+
+                switch (action) {
+                    case SWITCH:
+                        if (switchSide.equals("L")) {
+                            selectedPath = Path.POSM_LSWITCH;
+                        } else {
+                            selectedPath = Path.POSM_RSWITCH;
+                        }
+                        break;
+                    case SCALE:
+                        if (scaleSide.equals("L")) {
+                            selectedPath = Path.POSM_LSCALE;
+                        } else {
+                            selectedPath = Path.POSM_RSCALE;
+                        }
+                        break;
                 }
                 break;
             case RIGHT:
-                if (switchSide.equals("L") && scaleSide.equals("L")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSR_LSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSR_LSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSR_LSWITCH;
-                            break;
-                    }
-                } else if (switchSide.equals("L") && scaleSide.equals("R")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSR_LSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSR_RSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSR_RSCALE;
-                            break;
-                    }
-                } else if (switchSide.equals("R") && scaleSide.equals("L")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSR_RSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSR_LSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSR_RSWITCH;
-                            break;
-                    }
-                } else if (switchSide.equals("R") && scaleSide.equals("R")) {
-                    switch (action) {
-                        case DONOTHING:
-                            selectedPath = Auton.Path.POSX_DONOTHING;
-                            break;
-                        case DRIVESTRAIGHT:
-                            selectedPath = Auton.Path.POSR_DRIVESTRAIGHT;
-                            break;
-                        case SWITCH:
-                            selectedPath = Auton.Path.POSR_RSWITCH;
-                            break;
-                        case SCALE:
-                            selectedPath = Auton.Path.POSR_RSCALE;
-                            break;
-                        case CLOSEST:
-                            selectedPath = Auton.Path.POSR_RSWITCH;
-                            break;
-                    }
+                if (priority == Priority.IGNORE) {
+                    selectedPath = Path.POSR_DRIVESTRAIGHT;
+                    break;
+                }
+                switch (action) {
+                    case SWITCH:
+                        if (switchSide.equals("R")) {
+                            selectedPath = Path.POSR_RSWITCH;
+                        } else {
+                            if (priority == Priority.FLEXIBLE) {
+                                if (scaleSide.equals("R")) {
+                                    selectedPath = Path.POSR_RSCALE;
+                                } else {
+                                    selectedPath = Path.POSR_DRIVESTRAIGHT;
+                                }
+                            } else if (priority == Priority.FORCE) {
+                                selectedPath = Path.POSR_LSWITCH;
+                            }
+                        }
+                        break;
+                    case SCALE:
+                        if (scaleSide.equals("R")) {
+                            selectedPath = Path.POSR_RSCALE;
+                        } else {
+                            if (priority == Priority.FLEXIBLE) {
+                                if (switchSide.equals("R")) {
+                                    selectedPath = Path.POSR_RSWITCH;
+                                } else {
+                                    selectedPath = Path.POSR_DRIVESTRAIGHT;
+                                }
+                            } else if (priority == Priority.FORCE) {
+                                selectedPath = Path.POSR_LSCALE;
+                            }
+                        }
+                        break;
                 }
                 break;
         }
-
         queuePath();
     }
 
