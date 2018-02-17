@@ -45,7 +45,7 @@ public class DriveDistance extends Command {
 
     @Override
     protected boolean isFinished() {
-        return deltaDistance < .5;
+        return deltaDistance < 2;
     }
 
     @Override
