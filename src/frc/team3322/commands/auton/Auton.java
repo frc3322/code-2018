@@ -1,6 +1,7 @@
 package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.Robot;
 import frc.team3322.commands.*;
 
@@ -152,20 +153,21 @@ public class Auton extends CommandGroup {
                 }
                 break;
         }
+
         queuePath();
     }
 
     private void queuePath() {
-        System.out.println("Path queued");
+        SmartDashboard.putString("Selected path", selectedPath.toString());
+
         switch (selectedPath) {
             case DONOTHING:
                 break;
             case POSL_DRIVESTRAIGHT:
-                System.out.println("POSL_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(250));
                 break;
             case POSL_LSWITCH:
-                System.out.println("POSL_LSWITCH");
+                // TODO: P2 testing needed
                 addSequential(new DriveDistance(145));
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(90));
@@ -173,7 +175,7 @@ public class Auton extends CommandGroup {
                 addSequential(new EjectCube());
                 break;
             case POSL_LSCALE:
-                System.out.println("POSL_LSCALE");
+                // TODO: everything
                 addSequential(new DriveDistance(324));
                 addParallel(new ElevatorToScale());
                 addSequential(new TurnToAngle(90));
@@ -181,70 +183,54 @@ public class Auton extends CommandGroup {
                 addSequential(new EjectCube());
                 break;
             case POSL_RSWITCH:
-                System.out.println("POSR_RSWITCH");
-                // TODO: finish this
+                // TODO: P2 tuning
+                addSequential(new DriveDistance(218));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(148));
+                addParallel(new ElevatorToSwitch());
+                addSequential(new TurnToAngle(180));
+                addSequential(new DriveDistance(12));
+                addSequential(new EjectCube());
                 break;
             case POSL_RSCALE:
-                System.out.println("POSL_RSCALE");
-                // TODO: finish this
+                addSequential(new DriveDistance(250));
+                addSequential(new TurnToAngle(90));
+                addSequential(new DriveDistance(180));
+                addParallel(new ElevatorToScale());
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(20));
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(12));
+                addSequential(new EjectCube());
                 break;
             case POSM_LSWITCH:
-                // TODO: finish this
-                System.out.println("POSM_LSWITCH");
-                addSequential(new DriveDistance(1));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(4));
+                // TODO: P2 tuning
+                addSequential(new DriveDistance(36));
+                addParallel(new ElevatorToSwitch());
+                addSequential(new TurnToAngle(-45));
+                addSequential(new DriveDistance(60));
                 addSequential(new TurnToAngle(0));
-                addSequential(new DriveDistance(3));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToSwitch());
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSM_LSCALE:
                 // TODO: finish this
-                System.out.println("POSM_LSCALE");
-                addSequential(new DriveDistance(1));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(5));
-                addSequential(new TurnToAngle(0));
-                addSequential(new DriveDistance(8));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToScale());
-                addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSM_RSWITCH:
-                // TODO: finish this
-                System.out.println("POSM_RSWITCH");
-                addSequential(new DriveDistance(1));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(4));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToSwitch());
+                // TODO: P2 tuning
+                addSequential(new DriveDistance(36));
+                addParallel(new ElevatorToSwitch());
+                addSequential(new TurnToAngle(45));
+                addSequential(new DriveDistance(60));
+                addSequential(new TurnToAngle(0));
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSM_RSCALE:
                 // TODO: finish this
-                System.out.println("POSM_RSCALE");
-                addSequential(new DriveDistance(1));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(5));
-                addSequential(new TurnToAngle(0));
-                addSequential(new DriveDistance(8));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToScale());
-                addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSM_DRIVESTRAIGHT: // cross baseline
                 // TODO: finish this
-                System.out.println("POSM_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(50));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(20));
@@ -252,34 +238,29 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(10));
                 break;
             case POSR_LSWITCH:
-                // TODO: finish this
-                System.out.println("POSR_LSWITCH");
-                addSequential(new DriveDistance(6));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(6));
-                addSequential(new TurnToAngle(180));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToSwitch());
+                // TODO: test
+                addSequential(new DriveDistance(218));
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(148));
+                addParallel(new ElevatorToSwitch());
+                addSequential(new TurnToAngle(-180));
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSR_LSCALE:
                 // TODO: finish this
-                System.out.println("POSR_LSCALE");
-                addSequential(new DriveDistance(6));
-                addSequential(new TurnToAngle(270));
-                addSequential(new DriveDistance(8));
+                addSequential(new DriveDistance(250));
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(180));
+                addParallel(new ElevatorToScale());
                 addSequential(new TurnToAngle(0));
-                addSequential(new DriveDistance(3));
+                addSequential(new DriveDistance(20));
                 addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToScale());
+                addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
                 break;
             case POSR_RSWITCH:
-                // TODO: finish this
-                System.out.println("POSR_RSWITCH");
+                // TODO: test
                 addSequential(new DriveDistance(145));
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(-90));
@@ -288,7 +269,6 @@ public class Auton extends CommandGroup {
                 break;
             case POSR_RSCALE:
                 // TODO: finish this
-                System.out.println("POSR_RSCALE");
                 addSequential(new DriveDistance(324));
                 addParallel(new ElevatorToScale());
                 addSequential(new TurnToAngle(-90));
@@ -296,7 +276,6 @@ public class Auton extends CommandGroup {
                 addSequential(new EjectCube());
                 break;
             case POSR_DRIVESTRAIGHT:
-                System.out.println("POSR_DRIVESTRAIGHT");
                 addSequential(new DriveDistance(250));
                 break;
         }
