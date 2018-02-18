@@ -120,6 +120,7 @@ public class Drivetrain extends Subsystem {
 
     public double toWheelRatio(double input) {
         // This ratio determines the wheel translation based on experimental data
+        // TODO: update for P2
         return input / (6080 / 15) * 12;
     }
 
@@ -155,8 +156,10 @@ public class Drivetrain extends Subsystem {
         return (getLeftVelocity() + getRightVelocity()) / 2;
     }
 
-    public void resetEncoders() {
+    public void resetPositioning() {
         enc_left.reset();
         enc_right.reset();
+        navx.reset();
+        navx.resetDisplacement();
     }
 }

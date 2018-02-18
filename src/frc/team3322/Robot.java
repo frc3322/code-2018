@@ -7,7 +7,6 @@
 
 package frc.team3322;
 
-import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -114,7 +113,7 @@ public class Robot extends TimedRobot
     public void autonomousInit() 
     {
         updateAutonData();
-        drivetrain.resetEncoders();
+        drivetrain.resetPositioning();
 
         autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected(), priorityChooser.getSelected());
         autonomousCommand.start();
@@ -132,7 +131,7 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit() 
     {
-        drivetrain.resetEncoders();
+        drivetrain.resetPositioning();
 
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
