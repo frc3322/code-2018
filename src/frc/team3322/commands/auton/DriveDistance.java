@@ -8,7 +8,7 @@ import static frc.team3322.Robot.drivetrain;
 
 public class DriveDistance extends Command {
     private final double desiredDistance;
-    private double speed = .75;
+    private double speed = .65;
 
     private double straightAngle;
     private double deltaDistance = 0;
