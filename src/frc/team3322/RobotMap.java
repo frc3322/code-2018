@@ -20,14 +20,14 @@ public class RobotMap
      */
     public static class CAN {
         // Drivetrain
-        public static final int LEFT_BACK_MOTOR = 11;
-        public static final int LEFT_FRONT_MOTOR = 12;
-        public static final int RIGHT_BACK_MOTOR = 5;
-        public static final int RIGHT_FRONT_MOTOR = 6;
+        public static final int LEFT_BACK_MOTOR = 1;
+        public static final int LEFT_FRONT_MOTOR = 2;
+        public static final int RIGHT_BACK_MOTOR = 11;
+        public static final int RIGHT_FRONT_MOTOR = 12;
 
         // Elevator
-        public static final int ELEVATOR_MOTOR_1 = 1;
-        public static final int ELEVATOR_MOTOR_2 = 2;
+        public static final int ELEVATOR_MOTOR_1 = 5;
+        public static final int ELEVATOR_MOTOR_2 = 6;
 
         // Arms
         public static final int LEFT_ARM = 9;
@@ -43,14 +43,6 @@ public class RobotMap
         // Drivetrain
         public static final int DRIVETRAIN_SHIFTER_FORWARD = 0;
         public static final int DRIVETRAIN_SHIFTER_REVERSE = 1;
-
-        // Elevator
-        public static final int ELEVATOR_SHIFTER_FORWARD = 2;
-        public static final int ELEVATOR_SHIFTER_REVERSE = 3;
-
-        // Eagle Wings
-        public static final int LEFT_WING = 4;
-        public static final int RIGHT_WING = 5;
     }
 
 
@@ -65,8 +57,8 @@ public class RobotMap
         public static final int DRIVETRAIN_ENCODER_RB = 3;
 
         // Elevator
-        public static final int ELEVATOR_ENCODER_A = 4;
-        public static final int ELEVATOR_ENCODER_B = 5;
+        public static final int ELEVATOR_ENCODER_A = -1;
+        public static final int ELEVATOR_ENCODER_B = -1;
         public static final int ELEVATOR_LIMIT_TOP = -1;
         public static final int ELEVATOR_LIMIT_BOTTOM = -1;
     }

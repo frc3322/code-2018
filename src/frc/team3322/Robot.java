@@ -74,6 +74,8 @@ public class Robot extends TimedRobot
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putNumber("Left displacement", drivetrain.getLeftDisplacement());
+        SmartDashboard.putNumber("Right displacement", drivetrain.getRightDisplacement());
         SmartDashboard.putNumber("Displacement", drivetrain.getRobotDisplacement());
         SmartDashboard.putNumber("Velocity", drivetrain.getRobotVelocity());
         SmartDashboard.putNumber("Current angle", drivetrain.navx.getAngle());

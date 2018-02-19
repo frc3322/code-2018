@@ -25,7 +25,6 @@ public class Elevator extends Subsystem {
     private double downSpeed = .45;
 
     private SpeedControllerGroup elevator;
-    private DoubleSolenoid shifter;
 
     private Encoder encoder;
     private DigitalInput topLimitSwitch;
@@ -37,8 +36,6 @@ public class Elevator extends Subsystem {
         WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_1);
         WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_2);
         elevator = new SpeedControllerGroup(elevatorMotor1, elevatorMotor2);
-
-        shifter = new DoubleSolenoid(RobotMap.PCM.ELEVATOR_SHIFTER_FORWARD, RobotMap.PCM.ELEVATOR_SHIFTER_REVERSE);
 
         encoder = null;
         topLimitSwitch = null;
@@ -81,21 +78,11 @@ public class Elevator extends Subsystem {
         move(speed);
     }
 
-    public void shiftHigh() {
-        shifter.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void shiftLow() {
-        shifter.set(DoubleSolenoid.Value.kReverse);
-    }
-
     public void resetEncoder() {
         encoder.reset();
     }
 
-
     // TODO implement the following checks
-
     public boolean isAtTop() {
         return topLimitSwitch != null && topLimitSwitch.get();
     }
