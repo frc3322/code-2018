@@ -57,9 +57,8 @@ public class RobotMap
         public static final int DRIVETRAIN_ENCODER_RB = 3;
 
         // Elevator
-        public static final int ELEVATOR_ENCODER_A = -1;
-        public static final int ELEVATOR_ENCODER_B = -1;
-        public static final int ELEVATOR_LIMIT_TOP = -1;
+        public static final int ELEVATOR_ENCODER_A = 4;
+        public static final int ELEVATOR_ENCODER_B = 5;
         public static final int ELEVATOR_LIMIT_BOTTOM = -1;
     }
 

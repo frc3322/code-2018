@@ -31,7 +31,7 @@ public class Arms extends Subsystem {
 
     public Arms() {
         leftArm.setInverted(true);
-        rightIntake.setInverted(true);
+        leftIntake.setInverted(true);
 
         arms = new SpeedControllerGroup(leftArm, rightArm);
         intakes = new SpeedControllerGroup(leftIntake, rightIntake);
@@ -52,7 +52,7 @@ public class Arms extends Subsystem {
         }
 
         if (!hasLeftReachedEnd()) {
-            leftArm.set(armSpeed);
+            leftArm.set(.7);
         } else {
             leftArm.set(0);
         }

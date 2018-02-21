@@ -159,7 +159,6 @@ public class Drivetrain extends Subsystem {
     public void resetPositioning() {
         enc_left.reset();
         enc_right.reset();
-        navx.reset();
         navx.resetDisplacement();
     }
 }

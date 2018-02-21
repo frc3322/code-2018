@@ -22,23 +22,21 @@ public class Elevator extends Subsystem {
     private static final double ELEVATOR_KD = 0.15;
 
     private double upSpeed = .5;
-    private double downSpeed = .45;
+    private double downSpeed = .4;
 
     private SpeedControllerGroup elevator;
 
     private Encoder encoder;
-    private DigitalInput topLimitSwitch;
     private DigitalInput bottomLimitSwitch;
 
-    private double lastHeightError;
+    private double lastHeightError = 0;
 
     public Elevator() {
         WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_1);
         WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_2);
         elevator = new SpeedControllerGroup(elevatorMotor1, elevatorMotor2);
 
-        encoder = null;
-        topLimitSwitch = null;
+        encoder = new Encoder(RobotMap.DIO.ELEVATOR_ENCODER_A, RobotMap.DIO.ELEVATOR_ENCODER_B);
         bottomLimitSwitch = null;
     }
 
@@ -53,15 +51,19 @@ public class Elevator extends Subsystem {
     }
 
     public void moveUp() {
-        elevator.set(upSpeed);
+        move(upSpeed);
     }
 
     public void moveDown() {
-        elevator.set(-downSpeed);
+        move(-downSpeed);
     }
 
     public void move(double speed) {
-        elevator.set(speed);
+        if (isAtTop() || isAtBottom()) {
+            elevator.set(0);
+        } else {
+            elevator.set(speed);
+        }
     }
 
     public void stop() {
@@ -76,33 +78,34 @@ public class Elevator extends Subsystem {
         double speed = kp * error + kd * (lastHeightError - error);
 
         move(speed);
+
+        lastHeightError = error;
     }
 
     public void resetEncoder() {
         encoder.reset();
     }
 
+    public double toInchRatio(double input) {
+        return input * 1;
+    }
+
     // TODO implement the following checks
     public boolean isAtTop() {
-        return topLimitSwitch != null && topLimitSwitch.get();
+        return false;
     }
 
     public boolean isAtBottom() {
-        if (bottomLimitSwitch != null) {
-            resetEncoder();
-            return bottomLimitSwitch.get();
-        }
         return false;
     }
 
     public double getHeight() {
         if (encoder != null) {
-            return encoder.getDistance();
+            return toInchRatio(encoder.getDistance());
         }
         return -1;
     }
 
-    // TODO incorporate hysteresis
     public boolean isAtSwitch() {
         return false;
     }
