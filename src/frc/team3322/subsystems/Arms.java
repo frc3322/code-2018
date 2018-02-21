@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
+import frc.team3322.commands.ArmIdle;
 
 public class Arms extends Subsystem {
 
@@ -43,7 +44,9 @@ public class Arms extends Subsystem {
         this.intakeSpeed = intakeSpeed;
     }
 
-    public void initDefaultCommand() {}
+    public void initDefaultCommand() {
+        setDefaultCommand(new ArmIdle());
+    }
 
     public void open() {
         if (currentState == State.OPENED) {
@@ -67,6 +70,7 @@ public class Arms extends Subsystem {
         } else {
             currentState = State.MOVING;
         }
+        updateDashboard();
     }
 
     public void close() {
@@ -91,10 +95,12 @@ public class Arms extends Subsystem {
         } else {
             currentState = State.MOVING;
         }
+        updateDashboard();
     }
 
     public void stop() {
         arms.set(0);
+        updateDashboard();
     }
 
     public void intakeIn() {
@@ -105,22 +111,29 @@ public class Arms extends Subsystem {
         intakes.set(intakeSpeed);
     }
 
+    public void setIntake(double speed) {
+        intakes.set(speed);
+    }
+
     public void stopIntake() {
         intakes.set(0);
     }
 
-    public boolean hasLeftReachedEnd() {
+    private void updateDashboard() {
         SmartDashboard.putNumber("Left arm current", leftArm.getOutputCurrent());
-        //return false;
+        SmartDashboard.putNumber("Right arm current", rightArm.getOutputCurrent());
+    }
+
+    public boolean hasLeftReachedEnd() {
+        return false;
         //if (leftArm.getOutputCurrent() == 0) return false;
-        return leftArm.getOutputCurrent() > MAX_CURRENT;
+        //return leftArm.getOutputCurrent() > MAX_CURRENT;
     }
 
     public boolean hasRightReachedEnd() {
-        SmartDashboard.putNumber("Right arm current", rightArm.getOutputCurrent());
-        //return false;
+        return false;
         //if (rightArm.getOutputCurrent() == 0) return false;
-        return rightArm.getOutputCurrent() > MAX_CURRENT;
+        //return rightArm.getOutputCurrent() > MAX_CURRENT;
     }
 
     public boolean haveBothReachedEnd() {
