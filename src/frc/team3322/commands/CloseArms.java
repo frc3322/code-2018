@@ -7,12 +7,7 @@ import static frc.team3322.Robot.arms;
 
 public class CloseArms extends Command {
     public CloseArms() {
-        //requires(arms);
-    }
-
-    @Override
-    protected void initialize() {
-
+        requires(arms);
     }
 
     @Override

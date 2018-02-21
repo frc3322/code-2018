@@ -5,22 +5,16 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
-import frc.team3322.commands.ArmIdle;
+import frc.team3322.commands.IntakeIdle;
 
 public class Arms extends Subsystem {
 
-    private static final double MAX_CURRENT = 10; // in amps
     private double armSpeed = .35;
-    private double intakeSpeed = .35;
 
     private WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
     private WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
 
-    private WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
-    private WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.RIGHT_INTAKE);
-
     private SpeedControllerGroup arms;
-    private SpeedControllerGroup intakes;
 
     private enum State {
         OPENED,
@@ -32,20 +26,17 @@ public class Arms extends Subsystem {
 
     public Arms() {
         leftArm.setInverted(true);
-        leftIntake.setInverted(true);
 
         arms = new SpeedControllerGroup(leftArm, rightArm);
-        intakes = new SpeedControllerGroup(leftIntake, rightIntake);
     }
 
     public Arms(double armSpeed, double intakeSpeed) {
         this();
         this.armSpeed = armSpeed;
-        this.intakeSpeed = intakeSpeed;
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmIdle());
+        setDefaultCommand(new IntakeIdle());
     }
 
     public void open() {
@@ -101,22 +92,6 @@ public class Arms extends Subsystem {
     public void stop() {
         arms.set(0);
         updateDashboard();
-    }
-
-    public void intakeIn() {
-        intakes.set(-intakeSpeed);
-    }
-
-    public void intakeOut() {
-        intakes.set(intakeSpeed);
-    }
-
-    public void setIntake(double speed) {
-        intakes.set(speed);
-    }
-
-    public void stopIntake() {
-        intakes.set(0);
     }
 
     private void updateDashboard() {

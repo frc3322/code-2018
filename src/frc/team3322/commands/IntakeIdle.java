@@ -2,17 +2,17 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.arms;
+import static frc.team3322.Robot.intakes;
 
 
-public class ArmIdle extends Command {
-    public ArmIdle() {
-        requires(arms);
+public class IntakeIdle extends Command {
+    public IntakeIdle() {
+        requires(intakes);
     }
 
     @Override
     protected void execute() {
-        arms.setIntake(-.1);
+        intakes.set(-.1);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class ArmIdle extends Command {
 
     @Override
     protected void end() {
-        arms.stopIntake();
+        intakes.stop();
     }
 
     @Override
