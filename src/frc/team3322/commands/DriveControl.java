@@ -12,11 +12,6 @@ public class DriveControl extends Command {
     private final int SPEED_AXIS;
     private final int ROTATION_AXIS;
 
-    private boolean straightModeStart;
-    private boolean straightModeRun;
-    private long runDelay;
-    private double straightAngle;
-
     public DriveControl() {
         requires(drivetrain);
 
@@ -26,7 +21,7 @@ public class DriveControl extends Command {
 
     @Override
     protected void initialize() {
-        straightModeStart = false;
+        drivetrain.driveStraightInit();
     }
 
     @Override
@@ -34,38 +29,7 @@ public class DriveControl extends Command {
         double speedInput = -oi.stick.getRawAxis(SPEED_AXIS);
         double rotationInput = oi.stick.getRawAxis(ROTATION_AXIS);
 
-        if (Math.abs(rotationInput) < .15) {
-            if (Math.abs(speedInput) > .15) {
-                if (!straightModeStart) {
-                    straightModeStart = true;
-
-                    runDelay = System.currentTimeMillis();
-                }
-
-                // Wait a bit before setting our desired angle
-                if (System.currentTimeMillis() - runDelay > 250 && !straightModeRun) {
-                    straightAngle = drivetrain.navx.getAngle();
-                    drivetrain.driveAngleInit(straightAngle);
-                    straightModeRun = true;
-                }
-
-                if (straightModeRun) {
-                    drivetrain.driveAngle(speedInput, straightAngle);
-                } else {
-                    drivetrain.drive(speedInput, rotationInput);
-                }
-            }
-        } else {
-            straightModeStart = false;
-            straightModeRun = false;
-            drivetrain.drive(speedInput, rotationInput);
-        }
-
-        // TODO: allow toggling of autoshift
-        //drivetrain.autoShift();
-
-        SmartDashboard.putBoolean("Driving straight", straightModeStart);
-        SmartDashboard.putNumber("Straight angle", straightAngle);
+        drivetrain.driveStraight(speedInput, rotationInput);
     }
 
     @Override

@@ -26,6 +26,10 @@ public class Drivetrain extends Subsystem {
     private int shiftLowThreshold = 1;
     private int shiftHighThreshold = 2;
 
+    private boolean straightModeStart;
+    private boolean straightModeRun;
+    private long runDelay;
+    private double straightAngle;
 
     public Drivetrain() {
         WPI_TalonSRX leftBackMotor = new WPI_TalonSRX(RobotMap.CAN.LEFT_BACK_MOTOR);
@@ -42,7 +46,6 @@ public class Drivetrain extends Subsystem {
 
         shifter = new DoubleSolenoid(RobotMap.PCM.DRIVETRAIN_SHIFTER_FORWARD, RobotMap.PCM.DRIVETRAIN_SHIFTER_REVERSE);
         navx = new AHRS(SPI.Port.kMXP);
-
         enc_left = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
         enc_right = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
         enc_right.setReverseDirection(true);
@@ -73,6 +76,41 @@ public class Drivetrain extends Subsystem {
         drive(speed, turn);
 
         SmartDashboard.putNumber("DriveAngle error", error);
+    }
+
+    public void driveStraightInit() {
+        straightModeStart = false;
+        straightModeRun = false;
+    }
+
+    public void driveStraight(double speed, double rotation) {
+        if (Math.abs(speed) > .15 && Math.abs(rotation) < .15) {
+            if (!straightModeStart) {
+                straightModeStart = true;
+
+                runDelay = System.currentTimeMillis();
+            }
+
+            // Wait a bit before setting our desired angle
+            if (System.currentTimeMillis() - runDelay > 250 && !straightModeRun) {
+                straightAngle = navx.getAngle();
+                driveAngleInit(straightAngle);
+                straightModeRun = true;
+            }
+
+            if (straightModeRun) {
+                driveAngle(speed, straightAngle);
+            } else {
+                drive(speed, rotation);
+            }
+        } else {
+            straightModeStart = false;
+            straightModeRun = false;
+
+            drive(speed, rotation);
+        }
+
+        SmartDashboard.putBoolean("Driving straight", straightModeRun);
     }
 
     public void stop() {
@@ -115,7 +153,7 @@ public class Drivetrain extends Subsystem {
         }
     }
 
-    public double toWheelRatio(double input) {
+    private double toWheelRatio(double input) {
         // This ratio determines the wheel translation based on experimental data
         // TODO: update for P2
         return input / (6080 / 15) * 12;
