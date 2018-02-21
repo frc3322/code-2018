@@ -31,8 +31,8 @@ public class RobotMap
 
         // Arms
         public static final int LEFT_ARM = 2;
-        public static final int RIGHT_ARM = 1;
-        public static final int LEFT_INTAKE = 12;
+        public static final int RIGHT_ARM = 12;
+        public static final int LEFT_INTAKE = 1;
         public static final int RIGHT_INTAKE = 11;
     }
 
