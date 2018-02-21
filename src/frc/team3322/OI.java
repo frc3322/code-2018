@@ -33,8 +33,6 @@ public class OI
     Button stick_right = new JoystickButton(stick, RobotMap.XBOX.STICK_RIGHT);
 
     public OI() {
-        stick_left.whenPressed(new ShiftDrivetrain());
-
         button_a.whileHeld(new OpenArms());
         button_b.whileHeld(new CloseArms());
         button_x.whileHeld(new IntakeIn());
@@ -43,6 +41,9 @@ public class OI
         bumper_left.whileHeld(new PreparePickupCube());
         bumper_left.whenReleased(new PickupCube());
         bumper_right.whileHeld(new DropCube());
+
+        stick_left.whenPressed(new ShiftDrivetrain());
+        stick_right.toggleWhenPressed(new AutoShiftDrivetrain());
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS
