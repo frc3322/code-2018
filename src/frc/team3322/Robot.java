@@ -78,7 +78,8 @@ public class Robot extends TimedRobot
         SmartDashboard.putNumber("Right displacement", drivetrain.getRightDisplacement());
         SmartDashboard.putNumber("Displacement", drivetrain.getRobotDisplacement());
         SmartDashboard.putNumber("Velocity", drivetrain.getRobotVelocity());
-        SmartDashboard.putNumber("Acceleration", drivetrain.navx.getAccelFullScaleRangeG());
+        SmartDashboard.putNumber("Acceleration X", drivetrain.navx.getWorldLinearAccelX());
+        SmartDashboard.putNumber("Acceleration Y", drivetrain.navx.getWorldLinearAccelY());
         SmartDashboard.putNumber("Current angle", drivetrain.navx.getAngle());
         SmartDashboard.putNumber("Lift encoder ticks", elevator.getHeight());
     }
