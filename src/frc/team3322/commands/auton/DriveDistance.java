@@ -11,7 +11,7 @@ public class DriveDistance extends Command {
     private double speed = .65;
 
     private double straightAngle;
-    private double deltaDistance = 0;
+    private double distanceFromTarget = 0;
     private double initialDisplacement;
 
     public DriveDistance(double distance) {
@@ -36,16 +36,16 @@ public class DriveDistance extends Command {
     @Override
     protected void execute() {
         double curDistance = drivetrain.getRobotDisplacement() - initialDisplacement;
+        distanceFromTarget = desiredDistance - curDistance;
 
-        deltaDistance = desiredDistance - curDistance;
         drivetrain.driveAngle(speed, straightAngle);
 
-        SmartDashboard.putNumber("DriveDistance delta", deltaDistance);
+        SmartDashboard.putNumber("DriveDistance remaining", distanceFromTarget);
     }
 
     @Override
     protected boolean isFinished() {
-        return deltaDistance < 2;
+        return distanceFromTarget < 2;
     }
 
     @Override
