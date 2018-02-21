@@ -7,6 +7,7 @@
 
 package frc.team3322;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -59,4 +60,26 @@ public class OI
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
+
+    /**
+     * Rumbles the controller for a specified duration and intensity
+     * @param intensity A scale from 0 to 1
+     * @param duration In milliseconds
+     */
+    public void rumble(double intensity, double duration) {
+        GenericHID.RumbleType rumbleType = GenericHID.RumbleType.kLeftRumble;
+
+        Thread rumble = new Thread(() -> {
+            long startTime = System.currentTimeMillis();
+
+            while (!Thread.interrupted()) {
+                stick.setRumble(rumbleType, intensity);
+
+                if (System.currentTimeMillis() - startTime < duration) break;
+            }
+
+            stick.setRumble(rumbleType, 0);
+        });
+        rumble.start();
+    }
 }
