@@ -3,11 +3,13 @@ package frc.team3322.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static frc.team3322.Robot.arms;
+import static frc.team3322.Robot.intakes;
 
 
 public class EjectCube extends Command {
 
     public EjectCube() {
+        requires(intakes);
         setTimeout(1);
     }
 
@@ -17,7 +19,7 @@ public class EjectCube extends Command {
 
     @Override
     protected void execute() {
-        arms.intakeOut();
+        intakes.spinOutwards();
     }
 
     @Override
@@ -27,7 +29,7 @@ public class EjectCube extends Command {
 
     @Override
     protected void end() {
-        arms.stopIntake();
+        intakes.stop();
     }
 
     @Override
