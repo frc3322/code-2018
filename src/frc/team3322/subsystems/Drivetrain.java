@@ -11,7 +11,7 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    private static final double DRIVEANGLE_KP = .4;
+    private static final double DRIVEANGLE_KP = .35;
     private static final double DRIVEANGLE_KD = .3;
 
     private DifferentialDrive robotDrive;
@@ -49,6 +49,8 @@ public class Drivetrain extends Subsystem {
         enc_left = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
         enc_right = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
         enc_right.setReverseDirection(true);
+
+        lastShift = System.currentTimeMillis() - shiftCooldown;
 
         SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
         SmartDashboard.putNumber("DriveAngle kd", DRIVEANGLE_KD);
@@ -139,12 +141,12 @@ public class Drivetrain extends Subsystem {
 
     public void autoShift() {
         if (System.currentTimeMillis() - lastShift < shiftCooldown) {
-            if (Math.abs(getRobotVelocity()) > shiftLowThreshold) {
+            if (Math.abs(getRobotVelocity()) > shiftHighThreshold) {
                 if (!isHigh()) {
                     shiftHigh();
                     lastShift = System.currentTimeMillis();
                 }
-            } else if (Math.abs(getRobotVelocity()) < shiftHighThreshold) {
+            } else if (Math.abs(getRobotVelocity()) < shiftLowThreshold) {
                 if (isHigh()) {
                     shiftLow();
                     lastShift = System.currentTimeMillis();
@@ -153,18 +155,12 @@ public class Drivetrain extends Subsystem {
         }
     }
 
-    private double toWheelRatio(double input) {
+    private double toInchRatio(double input) {
         // This ratio determines the wheel translation based on experimental data
-        // TODO: update for P2
-        return input / (6080 / 15) * 12;
-    }
-
-    public double getLeftDisplacement() {
-        return toWheelRatio(enc_left.get());
-    }
-
-    public double getRightDisplacement() {
-        return toWheelRatio(enc_right.get());
+        double inchesTraveled = 15 * 12;
+        int encoderTicks = 10759;
+        // more tests: 10525 ticks per 15 ft
+        return input * (inchesTraveled / encoderTicks);
     }
 
     public double getLeftTicks() {
@@ -175,20 +171,32 @@ public class Drivetrain extends Subsystem {
         return enc_right.get();
     }
 
+    public double getLeftDisplacement() {
+        return toInchRatio(enc_left.get());
+    }
+
+    public double getRightDisplacement() {
+        return toInchRatio(enc_right.get());
+    }
+
     public double getRobotDisplacement() {
-        return (toWheelRatio(enc_left.get()) + toWheelRatio(enc_left.get())) / 2;
+        return Math.max(getLeftDisplacement(), getRightDisplacement());
     }
 
     public double getLeftVelocity() {
-        return toWheelRatio(enc_left.getRate());
+        return toInchRatio(enc_left.getRate());
     }
 
     public double getRightVelocity() {
-        return toWheelRatio(enc_right.getRate());
+        return toInchRatio(enc_right.getRate());
     }
 
     public double getRobotVelocity() {
-        return (getLeftVelocity() + getRightVelocity()) / 2;
+        return Math.max(getLeftVelocity(), getRightVelocity());
+    }
+
+    public double getAcceleration() {
+        return Math.sqrt(Math.pow(navx.getWorldLinearAccelX(), 2) + Math.pow(navx.getWorldLinearAccelY(), 2));
     }
 
     public void resetPositioning() {

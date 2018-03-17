@@ -6,46 +6,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static frc.team3322.Robot.drivetrain;
 
 
-public class DriveDistance extends Command {
-    private final double desiredDistance;
-    private double speed = .7;
+public class Drive extends Command {
+    private double speed = .65;
 
     private double straightAngle;
-    private double distanceFromTarget = 0;
-    private double initialDisplacement;
 
-    public DriveDistance(double distance) {
+    public Drive() {
         requires(drivetrain);
-
-        this.desiredDistance = distance;
     }
 
-    public DriveDistance(double distance, double speed) {
-        this(distance);
+    public Drive(double speed) {
+        this();
 
         this.speed = speed;
     }
 
     @Override
     protected void initialize() {
-        initialDisplacement = drivetrain.getRobotDisplacement();
         straightAngle = drivetrain.navx.getAngle();
         drivetrain.driveAngleInit(straightAngle);
     }
 
     @Override
     protected void execute() {
-        double curDistance = drivetrain.getRobotDisplacement() - initialDisplacement;
-        distanceFromTarget = desiredDistance - curDistance;
-
         drivetrain.driveAngle(speed, straightAngle);
-
-        SmartDashboard.putNumber("DriveDistance remaining", distanceFromTarget);
     }
 
     @Override
     protected boolean isFinished() {
-        return distanceFromTarget < 2;
+        return isTimedOut();
     }
 
     @Override

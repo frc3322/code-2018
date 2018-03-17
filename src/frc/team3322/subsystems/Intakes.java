@@ -36,6 +36,11 @@ public class Intakes extends Subsystem {
         intakes.set(-intakeSpeed);
     }
 
+    public void spinOpposite() {
+        leftIntake.set(-intakeSpeed);
+        rightIntake.set(intakeSpeed*.25);
+    }
+
     public void spinOutwards() {
         intakes.set(intakeSpeed);
     }

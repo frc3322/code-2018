@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
-import frc.team3322.commands.IntakeIdle;
 
 public class Arms extends Subsystem {
 
-    private double armSpeed = .35;
+    private double leftSpeed = .4;
+    private double rightSpeed = .4;
 
     private WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
     private WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
@@ -26,17 +26,19 @@ public class Arms extends Subsystem {
 
     public Arms() {
         leftArm.setInverted(true);
+        SmartDashboard.putNumber("Left arm speed", leftSpeed);
+        SmartDashboard.putNumber("Right arm speed", rightSpeed);
 
         arms = new SpeedControllerGroup(leftArm, rightArm);
     }
 
-    public Arms(double armSpeed, double intakeSpeed) {
+    public Arms(double leftSpeed, double rightSpeed) {
         this();
-        this.armSpeed = armSpeed;
+        this.leftSpeed = leftSpeed;
+        this.rightSpeed = rightSpeed;
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new IntakeIdle());
     }
 
     public void open() {
@@ -46,12 +48,12 @@ public class Arms extends Subsystem {
         }
 
         if (!hasLeftReachedEnd()) {
-            leftArm.set(.7);
+            leftArm.set(leftSpeed);
         } else {
             leftArm.set(0);
         }
         if (!hasRightReachedEnd()) {
-            rightArm.set(armSpeed);
+            rightArm.set(rightSpeed);
         } else {
             rightArm.set(0);
         }
@@ -71,12 +73,12 @@ public class Arms extends Subsystem {
         }
 
         if (!hasLeftReachedEnd()) {
-            leftArm.set(-armSpeed);
+            leftArm.set(-leftSpeed);
         } else {
             leftArm.set(0);
         }
         if (!hasRightReachedEnd()) {
-            rightArm.set(-armSpeed);
+            rightArm.set(-rightSpeed);
         } else {
             rightArm.set(0);
         }

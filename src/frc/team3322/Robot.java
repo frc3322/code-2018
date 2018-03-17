@@ -64,10 +64,10 @@ public class Robot extends TimedRobot
         actionChooser.addDefault("Switch", Auton.Action.SWITCH);
         actionChooser.addObject("Scale", Auton.Action.SCALE);
 
-        priorityChooser.addObject("Ignore", Auton.Priority.IGNORE);
-        priorityChooser.addDefault("Prefer", Auton.Priority.PREFER);
-        priorityChooser.addObject("Flexible", Auton.Priority.FLEXIBLE);
-        priorityChooser.addObject("Force", Auton.Priority.FORCE);
+        priorityChooser.addDefault("Force (both sides)", Auton.Priority.FORCE);
+        priorityChooser.addObject("Play-it-safe (one side)", Auton.Priority.FLEXIBLE);
+        //not implemented - priorityChooser.addObject("Prefer ( sw. and sc.)", Auton.Priority.PREFER);
+        priorityChooser.addObject("Ignore (go straight)", Auton.Priority.IGNORE);
 
         SmartDashboard.putData("Start pos", startChooser);
         SmartDashboard.putData("Auton action", actionChooser);
@@ -76,14 +76,15 @@ public class Robot extends TimedRobot
 
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putNumber("Left displacement", drivetrain.getLeftDisplacement());
-        SmartDashboard.putNumber("Right displacement", drivetrain.getRightDisplacement());
-        SmartDashboard.putNumber("Displacement", drivetrain.getRobotDisplacement());
+        SmartDashboard.putNumber("Left ticks", drivetrain.getLeftTicks());
+        SmartDashboard.putNumber("Right ticks", drivetrain.getRightTicks());
+        SmartDashboard.putNumber("Left distance", drivetrain.getLeftDisplacement());
+        SmartDashboard.putNumber("Right distance", drivetrain.getRightDisplacement());
+        SmartDashboard.putNumber("Distance", drivetrain.getRobotDisplacement());
         SmartDashboard.putNumber("Velocity", drivetrain.getRobotVelocity());
-        SmartDashboard.putNumber("Acceleration X", drivetrain.navx.getWorldLinearAccelX());
-        SmartDashboard.putNumber("Acceleration Y", drivetrain.navx.getWorldLinearAccelY());
+        SmartDashboard.putNumber("Acceleration", drivetrain.getAcceleration());
         SmartDashboard.putNumber("Current angle", drivetrain.navx.getAngle());
-        SmartDashboard.putNumber("Lift encoder ticks", elevator.getHeight());
+        SmartDashboard.putNumber("Lift height", elevator.getHeight());
     }
 
     /**
@@ -160,7 +161,11 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
+        drivetrain.driveAngle(.3, 90);
+    }
 
+    public void testInit() {
+        drivetrain.driveAngleInit(0);
     }
 
     public void updateAutonData() {

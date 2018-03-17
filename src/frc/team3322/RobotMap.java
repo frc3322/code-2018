@@ -59,7 +59,6 @@ public class RobotMap
         // Elevator
         public static final int ELEVATOR_ENCODER_A = 4;
         public static final int ELEVATOR_ENCODER_B = 5;
-        public static final int ELEVATOR_LIMIT_BOTTOM = -1;
     }
 
     public static class XBOX {

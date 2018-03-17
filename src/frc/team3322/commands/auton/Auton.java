@@ -92,7 +92,7 @@ public class Auton extends CommandGroup {
                 }
                 break;
             case MIDDLE:
-                if (priority != Priority.FORCE) {
+                if (priority == Priority.IGNORE) {
                     selectedPath = Path.POSM_DRIVESTRAIGHT;
                     break;
                 }
@@ -160,14 +160,21 @@ public class Auton extends CommandGroup {
     private void queuePath() {
         SmartDashboard.putString("Selected path", selectedPath.toString());
 
+        if (selectedPath == Path.DONOTHING) return;
+
+        /*
+        Important metrics
+        Distance from back wall to switch
+         */
+
+        addParallel(new CloseArms(), 2);
+        addParallel(new IntakeIdle());
+
         switch (selectedPath) {
-            case DONOTHING:
-                break;
             case POSL_DRIVESTRAIGHT:
-                addSequential(new DriveDistance(250));
+                addSequential(new DriveDistance(130));
                 break;
             case POSL_LSWITCH:
-                // TODO: P2 testing needed
                 addSequential(new DriveDistance(145));
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(90));
@@ -175,11 +182,12 @@ public class Auton extends CommandGroup {
                 addSequential(new EjectCube());
                 break;
             case POSL_LSCALE:
-                // TODO: everything
-                addSequential(new DriveDistance(324));
-                addParallel(new ElevatorToScale());
+                // TODO: test
+                addSequential(new DriveDistance(310));
                 addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(12));
+                addParallel(new ElevatorToScale());
+                addSequential(new DriveDistance(-12));
+                addSequential(new DriveDistance(24));
                 addSequential(new EjectCube());
                 break;
             case POSL_RSWITCH:
@@ -202,6 +210,9 @@ public class Auton extends CommandGroup {
                 addSequential(new TurnToAngle(-90));
                 addSequential(new DriveDistance(12));
                 addSequential(new EjectCube());
+                break;
+            case POSM_DRIVESTRAIGHT:
+                addSequential(new DriveDistance(130));
                 break;
             case POSM_LSWITCH:
                 // TODO: P2 tuning
@@ -227,15 +238,10 @@ public class Auton extends CommandGroup {
                 addSequential(new EjectCube());
                 break;
             case POSM_RSCALE:
-                // TODO: finish this
+                // TODO: everything
                 break;
-            case POSM_DRIVESTRAIGHT: // cross baseline
-                // TODO: finish this
-                addSequential(new DriveDistance(50));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(20));
-                addSequential(new TurnToAngle(0));
-                addSequential(new DriveDistance(10));
+            case POSR_DRIVESTRAIGHT:
+                addSequential(new DriveDistance(130));
                 break;
             case POSR_LSWITCH:
                 // TODO: test
@@ -260,7 +266,6 @@ public class Auton extends CommandGroup {
                 addSequential(new EjectCube());
                 break;
             case POSR_RSWITCH:
-                // TODO: test
                 addSequential(new DriveDistance(145));
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(-90));
@@ -268,15 +273,13 @@ public class Auton extends CommandGroup {
                 addSequential(new EjectCube());
                 break;
             case POSR_RSCALE:
-                // TODO: finish this
-                addSequential(new DriveDistance(324));
-                addParallel(new ElevatorToScale());
+                // TODO: test
+                addSequential(new DriveDistance(310));
                 addSequential(new TurnToAngle(-90));
-                addSequential(new DriveDistance(12));
+                addParallel(new ElevatorToScale());
+                addSequential(new DriveDistance(-12));
+                addSequential(new DriveDistance(24));
                 addSequential(new EjectCube());
-                break;
-            case POSR_DRIVESTRAIGHT:
-                addSequential(new DriveDistance(250));
                 break;
         }
     }

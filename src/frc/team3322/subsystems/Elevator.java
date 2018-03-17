@@ -22,7 +22,7 @@ public class Elevator extends Subsystem {
     private static final double ELEVATOR_KD = 0.15;
 
     private double upSpeed = .5;
-    private double downSpeed = .4;
+    private double downSpeed = .3;
 
     private SpeedControllerGroup elevator;
 
@@ -35,9 +35,9 @@ public class Elevator extends Subsystem {
         WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_1);
         WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.CAN.ELEVATOR_MOTOR_2);
         elevator = new SpeedControllerGroup(elevatorMotor1, elevatorMotor2);
+        elevator.setInverted(true);
 
         encoder = new Encoder(RobotMap.DIO.ELEVATOR_ENCODER_A, RobotMap.DIO.ELEVATOR_ENCODER_B);
-        bottomLimitSwitch = null;
     }
 
     public Elevator(double upSpeed, double downSpeed) {
@@ -86,8 +86,12 @@ public class Elevator extends Subsystem {
         encoder.reset();
     }
 
-    public double toInchRatio(double input) {
-        return input * 1;
+    private double toInchRatio(double input) {
+        // This ratio determines the lift translation based on experimental data
+        // TODO: find these values
+        double inchesTraveled = 1;
+        int encoderTicks = 1;
+        return input * (inchesTraveled / encoderTicks);
     }
 
     // TODO implement the following checks

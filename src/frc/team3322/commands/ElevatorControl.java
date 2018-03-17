@@ -1,6 +1,7 @@
 package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
 
 import static frc.team3322.Robot.elevator;
@@ -18,11 +19,6 @@ public class ElevatorControl extends Command {
 
         this.UP_AXIS = RobotMap.XBOX.TRIGGER_L_AXIS;
         this.DOWN_AXIS = RobotMap.XBOX.TRIGGER_R_AXIS;
-    }
-
-    @Override
-    protected void initialize() {
-
     }
 
     @Override

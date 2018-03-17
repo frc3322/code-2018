@@ -38,12 +38,14 @@ public class OI
         button_x.whileHeld(new IntakeIn());
         button_y.whileHeld(new IntakeOut());
 
-        bumper_left.whileHeld(new PreparePickupCube());
-        bumper_left.whenReleased(new PickupCube());
-        bumper_right.whileHeld(new DropCube());
+        bumper_left.whileHeld(new EjectCube());
+        bumper_right.whileHeld(new PreparePickupCube());
+        bumper_right.whenReleased(new PickupCube());
 
         stick_left.whenPressed(new ShiftDrivetrain());
         stick_right.toggleWhenPressed(new AutoShiftDrivetrain());
+
+        button_start.whileHeld(new IntakeOpposite());
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS

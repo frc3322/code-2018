@@ -5,14 +5,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.intakes;
 
 
-public class IntakeIdle extends Command {
-    public IntakeIdle() {
+public class IntakeOpposite extends Command {
+    public IntakeOpposite() {
         requires(intakes);
     }
 
     @Override
     protected void execute() {
-        intakes.set(-.2);
+        intakes.spinOpposite();
     }
 
     @Override

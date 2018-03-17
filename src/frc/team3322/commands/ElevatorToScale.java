@@ -8,6 +8,7 @@ import static frc.team3322.Robot.elevator;
 public class ElevatorToScale extends Command {
     public ElevatorToScale() {
         requires(elevator);
+        setTimeout(6);
     }
 
     @Override
@@ -17,12 +18,13 @@ public class ElevatorToScale extends Command {
 
     @Override
     protected void execute() {
-        elevator.goToPos(Elevator.SCALE);
+        //elevator.goToPos(Elevator.SCALE);
+        elevator.move(.5);
     }
 
     @Override
     protected boolean isFinished() {
-        return elevator.isAtScale();
+        return isTimedOut() || elevator.isAtScale();
     }
 
     @Override
