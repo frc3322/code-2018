@@ -41,7 +41,7 @@ public class Auton extends CommandGroup {
     public enum Priority {
         IGNORE,
         PREFER,
-        FLEXIBLE,
+        SAFE,
         FORCE
     }
 
@@ -52,6 +52,7 @@ public class Auton extends CommandGroup {
         String switchSide = gameData.substring(0, 1);
         String scaleSide = gameData.substring(1, 2);
 
+        // TODO: mirror side path logic to reduce structure repetition
         switch (startPos) {
             case LEFT:
                 if (priority == Priority.IGNORE) {
@@ -63,7 +64,7 @@ public class Auton extends CommandGroup {
                         if (switchSide.equals("L")) {
                             selectedPath = Path.POSL_LSWITCH;
                         } else {
-                            if (priority == Priority.FLEXIBLE) {
+                            if (priority == Priority.SAFE) {
                                 if (scaleSide.equals("L")) {
                                     selectedPath = Path.POSL_LSCALE;
                                 } else {
@@ -78,7 +79,7 @@ public class Auton extends CommandGroup {
                         if (scaleSide.equals("L")) {
                             selectedPath = Path.POSL_LSCALE;
                         } else {
-                            if (priority == Priority.FLEXIBLE) {
+                            if (priority == Priority.SAFE) {
                                 if (switchSide.equals("L")) {
                                     selectedPath = Path.POSL_LSWITCH;
                                 } else {
@@ -124,7 +125,7 @@ public class Auton extends CommandGroup {
                         if (switchSide.equals("R")) {
                             selectedPath = Path.POSR_RSWITCH;
                         } else {
-                            if (priority == Priority.FLEXIBLE) {
+                            if (priority == Priority.SAFE) {
                                 if (scaleSide.equals("R")) {
                                     selectedPath = Path.POSR_RSCALE;
                                 } else {
@@ -139,7 +140,7 @@ public class Auton extends CommandGroup {
                         if (scaleSide.equals("R")) {
                             selectedPath = Path.POSR_RSCALE;
                         } else {
-                            if (priority == Priority.FLEXIBLE) {
+                            if (priority == Priority.SAFE) {
                                 if (switchSide.equals("R")) {
                                     selectedPath = Path.POSR_RSWITCH;
                                 } else {
@@ -163,8 +164,12 @@ public class Auton extends CommandGroup {
         if (selectedPath == Path.DONOTHING) return;
 
         /*
-        Important metrics
-        Distance from back wall to switch
+        Important metrics (in inches)
+        Distance from back wall to switch: 140.00
+        Switch length from start to end: 56.00
+        Distance from back wall to platform: 261.47
+        Distance from back wall to scale: 299.65
+        Distance from side wall to scale: 71.57
          */
 
         addParallel(new CloseArms(), 2);
@@ -172,23 +177,23 @@ public class Auton extends CommandGroup {
 
         switch (selectedPath) {
             case POSL_DRIVESTRAIGHT:
-                addSequential(new DriveDistance(130));
+                addSequential(new DriveDistance(140));
                 break;
             case POSL_LSWITCH:
-                addSequential(new DriveDistance(145));
+                addSequential(new DriveDistance(140 + 5));
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSL_LSCALE:
                 // TODO: test
-                addSequential(new DriveDistance(310));
+                addSequential(new DriveDistance(299.65 + 5));
                 addSequential(new TurnToAngle(90));
                 addParallel(new ElevatorToScale());
                 addSequential(new DriveDistance(-12));
                 addSequential(new DriveDistance(24));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSL_RSWITCH:
                 // TODO: P2 tuning
@@ -198,7 +203,7 @@ public class Auton extends CommandGroup {
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(180));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSL_RSCALE:
                 addSequential(new DriveDistance(250));
@@ -209,7 +214,7 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(20));
                 addSequential(new TurnToAngle(-90));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSM_DRIVESTRAIGHT:
                 addSequential(new DriveDistance(130));
@@ -222,7 +227,7 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(60));
                 addSequential(new TurnToAngle(0));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSM_LSCALE:
                 // TODO: finish this
@@ -235,10 +240,14 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(60));
                 addSequential(new TurnToAngle(0));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSM_RSCALE:
                 // TODO: everything
+                addSequential(new DriveDistance(36));
+                addSequential(new TurnToAngle(-90));
+                addSequential(new DriveDistance(36));
+                addSequential(new DriveDistance(36));
                 break;
             case POSR_DRIVESTRAIGHT:
                 addSequential(new DriveDistance(130));
@@ -251,7 +260,7 @@ public class Auton extends CommandGroup {
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(-180));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSR_LSCALE:
                 // TODO: finish this
@@ -263,14 +272,14 @@ public class Auton extends CommandGroup {
                 addSequential(new DriveDistance(20));
                 addSequential(new TurnToAngle(90));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSR_RSWITCH:
                 addSequential(new DriveDistance(145));
                 addParallel(new ElevatorToSwitch());
                 addSequential(new TurnToAngle(-90));
                 addSequential(new DriveDistance(12));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
             case POSR_RSCALE:
                 // TODO: test
@@ -279,7 +288,7 @@ public class Auton extends CommandGroup {
                 addParallel(new ElevatorToScale());
                 addSequential(new DriveDistance(-12));
                 addSequential(new DriveDistance(24));
-                addSequential(new EjectCube());
+                addSequential(new EjectCube(), 3);
                 break;
         }
     }

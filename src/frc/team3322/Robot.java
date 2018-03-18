@@ -65,8 +65,8 @@ public class Robot extends TimedRobot
         actionChooser.addObject("Scale", Auton.Action.SCALE);
 
         priorityChooser.addDefault("Force (both sides)", Auton.Priority.FORCE);
-        priorityChooser.addObject("Play-it-safe (one side)", Auton.Priority.FLEXIBLE);
-        //not implemented - priorityChooser.addObject("Prefer ( sw. and sc.)", Auton.Priority.PREFER);
+        priorityChooser.addObject("Safe (one side)", Auton.Priority.SAFE);
+        //not implemented - priorityChooser.addObject("Prefer (one side, both actions)", Auton.Priority.PREFER);
         priorityChooser.addObject("Ignore (go straight)", Auton.Priority.IGNORE);
 
         SmartDashboard.putData("Start pos", startChooser);

@@ -23,7 +23,7 @@ public class ElevatorControl extends Command {
 
     @Override
     protected void execute() {
-        double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS);
+        double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS) * .75;
 
         elevator.move(moveInput);
     }

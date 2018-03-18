@@ -35,10 +35,10 @@ public class OI
     public OI() {
         button_a.whileHeld(new OpenArms());
         button_b.whileHeld(new CloseArms());
-        button_x.whileHeld(new IntakeIn());
-        button_y.whileHeld(new IntakeOut());
+        button_x.whileHeld(new IntakeCube());
+        button_y.whileHeld(new EjectCube(.5));
 
-        bumper_left.whileHeld(new EjectCube());
+        bumper_left.whileHeld(new EjectCube(.35));
         bumper_right.whileHeld(new PreparePickupCube());
         bumper_right.whenReleased(new PickupCube());
 

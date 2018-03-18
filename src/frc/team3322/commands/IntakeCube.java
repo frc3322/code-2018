@@ -5,19 +5,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.intakes;
 
 
-public class IntakeOut extends Command {
-    public IntakeOut() {
+public class IntakeCube extends Command {
+    public IntakeCube() {
         requires(intakes);
     }
 
     @Override
     protected void execute() {
-        intakes.spinOutwards();
+        intakes.spinInwards();
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     @Override

@@ -7,6 +7,6 @@ public class PreparePickupCube extends CommandGroup {
 
     public PreparePickupCube() {
         addParallel(new OpenArms());
-        addParallel(new IntakeIn());
+        addParallel(new IntakeCube());
     }
 }

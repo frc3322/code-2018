@@ -7,10 +7,15 @@ import static frc.team3322.Robot.intakes;
 
 
 public class EjectCube extends Command {
+    double speed = 0;
 
     public EjectCube() {
         requires(intakes);
-        setTimeout(1);
+    }
+
+    public EjectCube(double speed) {
+        this();
+        this.speed = speed;
     }
 
     @Override
@@ -19,12 +24,16 @@ public class EjectCube extends Command {
 
     @Override
     protected void execute() {
-        intakes.spinOutwards();
+        if (speed == 0) {
+            intakes.spinOutwards();
+        } else {
+            intakes.set(speed);
+        }
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     @Override
