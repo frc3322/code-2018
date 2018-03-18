@@ -41,8 +41,8 @@ public class Robot extends TimedRobot
     public static String gameData;
 
     private Command autonomousCommand;
-    private SendableChooser<Auton.StartPosition> startChooser = new SendableChooser<>();
-    private SendableChooser<Auton.Action> actionChooser = new SendableChooser<>();
+    private SendableChooser<Auton.Position> startChooser = new SendableChooser<>();
+    private SendableChooser<Auton.Objective> objectiveChooser = new SendableChooser<>();
     private SendableChooser<Auton.Priority> priorityChooser = new SendableChooser<>();
 
     /**
@@ -57,21 +57,22 @@ public class Robot extends TimedRobot
         oi = new OI();
 
         // Create sendable choosers for auton selection
-        startChooser.addObject("Left", Auton.StartPosition.LEFT);
-        startChooser.addDefault("Middle", Auton.StartPosition.MIDDLE);
-        startChooser.addObject("Right", Auton.StartPosition.RIGHT);
+        startChooser.addDefault("Left", Auton.Position.LEFT);
+        startChooser.addObject("Middle", Auton.Position.MIDDLE);
+        startChooser.addObject("Right", Auton.Position.RIGHT);
 
-        actionChooser.addDefault("Switch", Auton.Action.SWITCH);
-        actionChooser.addObject("Scale", Auton.Action.SCALE);
+        objectiveChooser.addObject("Switch", Auton.Objective.SWITCH);
+        objectiveChooser.addObject("Scale", Auton.Objective.SCALE);
+        objectiveChooser.addDefault("Auto line", Auton.Objective.SCALE);
+        objectiveChooser.addObject("None (do nothing)", Auton.Objective.SCALE);
 
-        priorityChooser.addDefault("Force (both sides)", Auton.Priority.FORCE);
-        priorityChooser.addObject("Safe (one side)", Auton.Priority.SAFE);
-        //not implemented - priorityChooser.addObject("Prefer (one side, both actions)", Auton.Priority.PREFER);
-        priorityChooser.addObject("Ignore (go straight)", Auton.Priority.IGNORE);
+        priorityChooser.addDefault("Safe (stay on start side)", Auton.Priority.SAFE);
+        priorityChooser.addObject("Prefer (stay on start side, switch and scale)", Auton.Priority.PREFER);
+        priorityChooser.addObject("Force (both sides)", Auton.Priority.FORCE);
 
         SmartDashboard.putData("Start pos", startChooser);
-        SmartDashboard.putData("Auton action", actionChooser);
-        SmartDashboard.putData("Action priority", priorityChooser);
+        SmartDashboard.putData("Auton action", objectiveChooser);
+        SmartDashboard.putData("Objective priority", priorityChooser);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class Robot extends TimedRobot
         updateAutonData();
         drivetrain.resetPositioning();
 
-        autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected(), priorityChooser.getSelected());
+        autonomousCommand = new Auton(startChooser.getSelected(), objectiveChooser.getSelected(), priorityChooser.getSelected());
         autonomousCommand.start();
     }
 
@@ -168,7 +169,7 @@ public class Robot extends TimedRobot
         drivetrain.driveAngleInit(0);
     }
 
-    public void updateAutonData() {
+    private void updateAutonData() {
         String newGameData = DriverStation.getInstance().getGameSpecificMessage();
 
         if (newGameData.length() == 3) {

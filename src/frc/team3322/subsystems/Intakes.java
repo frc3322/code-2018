@@ -9,7 +9,6 @@ import frc.team3322.commands.IntakeIdle;
 
 public class Intakes extends Subsystem {
 
-    private static final double MAX_CURRENT = 10; // in amps
     private double intakeSpeed = .35;
 
     private WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.LEFT_INTAKE);
