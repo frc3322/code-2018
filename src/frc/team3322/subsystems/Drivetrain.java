@@ -31,6 +31,7 @@ public class Drivetrain extends Subsystem {
     private long runDelay;
     private double straightAngle;
 
+
     public Drivetrain() {
         WPI_TalonSRX leftBackMotor = new WPI_TalonSRX(RobotMap.CAN.LEFT_BACK_MOTOR);
         WPI_TalonSRX leftFrontMotor = new WPI_TalonSRX(RobotMap.CAN.LEFT_FRONT_MOTOR);
@@ -78,6 +79,17 @@ public class Drivetrain extends Subsystem {
         drive(speed, turn);
 
         SmartDashboard.putNumber("DriveAngle error", error);
+    }
+
+    public void driveArc(double radius, double angularSpeed) {
+        double wheelDistance = 40; // needs measuring
+        double innerSpeed = (radius - wheelDistance / 2) * angularSpeed;
+        double outerSpeed = (radius + wheelDistance / 2) * angularSpeed;
+        if (angularSpeed > 0) {
+            robotDrive.tankDrive(outerSpeed, innerSpeed);
+        } else {
+            robotDrive.tankDrive(innerSpeed, outerSpeed);
+        }
     }
 
     public void driveStraightInit() {
