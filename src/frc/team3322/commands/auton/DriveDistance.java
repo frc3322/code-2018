@@ -8,7 +8,7 @@ import static frc.team3322.Robot.drivetrain;
 
 public class DriveDistance extends Command {
     private final double desiredDistance;
-    private double speed = .7;
+    private double speed = 1;
 
     private double straightAngle;
     private double distanceFromTarget = 0;
@@ -46,6 +46,7 @@ public class DriveDistance extends Command {
             speed = (desiredDistance/2)/curDistance;
         }
         speed = speed * this.speed + 0.2;
+        speed *= distanceFromTarget/Math.abs(distanceFromTarget);
 
         drivetrain.driveAngle(speed, straightAngle);
         SmartDashboard.putNumber("DriveDistance remaining", distanceFromTarget);
@@ -53,7 +54,7 @@ public class DriveDistance extends Command {
 
     @Override
     protected boolean isFinished() {
-        return distanceFromTarget < 2;
+        return Math.abs(distanceFromTarget) < 2;
     }
 
     @Override
