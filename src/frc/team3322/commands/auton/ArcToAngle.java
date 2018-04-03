@@ -5,26 +5,24 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.drivetrain;
 
 
-public class TurnToAngle extends Command {
+public class ArcToAngle extends Command {
     private final double desiredAngle;
+    private final double radius;
+    private final double angularSpeedMod;
 
-    public TurnToAngle(double degrees) {
-        // Use requires() here to declare subsystem dependencies
+    public ArcToAngle(double degrees, double radius) {
         requires(drivetrain);
-        setTimeout(5);
 
-        double initialAngle = drivetrain.navx.getAngle();
-        desiredAngle = initialAngle + degrees;
-    }
-
-    @Override
-    protected void initialize() {
-        drivetrain.driveAngleInit(drivetrain.navx.getAngle());
+        this.desiredAngle = drivetrain.navx.getAngle() + degrees;
+        this.radius = radius;
+        this.angularSpeedMod = 1;
     }
 
     @Override
     protected void execute() {
-        drivetrain.driveAngle(0, desiredAngle);
+        double omegaError = desiredAngle - drivetrain.navx.getRate();
+
+        drivetrain.driveArc(radius, angularSpeedMod);
     }
 
     @Override

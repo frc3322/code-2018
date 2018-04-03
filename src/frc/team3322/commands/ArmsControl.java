@@ -1,29 +1,27 @@
 package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3322.subsystems.Elevator;
 
-import static frc.team3322.Robot.elevator;
+import static frc.team3322.Robot.arms;
 
-public class ElevatorToScale extends Command {
-    public ElevatorToScale() {
-        requires(elevator);
-        setTimeout(7);
+
+public class ArmsControl extends Command {
+    public ArmsControl() {
+        requires(arms);
     }
 
     @Override
     protected void initialize() {
-        elevator.goToPosInit(Elevator.SCALE);
     }
 
     @Override
     protected void execute() {
-        elevator.goToPos(Elevator.SCALE);
+        arms.goToRotation();
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || elevator.isAtScale();
+        return false;
     }
 
     @Override

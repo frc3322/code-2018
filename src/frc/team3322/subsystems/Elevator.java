@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.PIDController;
 import frc.team3322.Robot;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.ElevatorControl;
+import org.opencv.core.Mat;
 
 public class Elevator extends Subsystem {
 
@@ -18,13 +20,18 @@ public class Elevator extends Subsystem {
     public static final double SWITCH = 100;
     public static final double BOTTOM = 0;
 
+    private static final double MAX_SPEED = .5;
     private static final double ELEVATOR_KP = 0.2;
+    private static final double ELEVATOR_KI = .3;
     private static final double ELEVATOR_KD = 0.15;
+    private static final double ELEVATOR_DECAY = .3;
 
     private double upSpeed = .5;
     private double downSpeed = .3;
 
     private SpeedControllerGroup elevator;
+
+    private PIDController pid;
 
     private Encoder encoder;
     private DigitalInput bottomLimitSwitch;
@@ -38,6 +45,8 @@ public class Elevator extends Subsystem {
         elevator.setInverted(true);
 
         encoder = new Encoder(RobotMap.DIO.ELEVATOR_ENCODER_A, RobotMap.DIO.ELEVATOR_ENCODER_B);
+
+        pid = new PIDController("Elevator", ELEVATOR_KP, ELEVATOR_DECAY, ELEVATOR_KI, ELEVATOR_KD);
     }
 
     public Elevator(double upSpeed, double downSpeed) {
@@ -70,16 +79,16 @@ public class Elevator extends Subsystem {
         elevator.set(0);
     }
 
+    public void goToPosInit(double height) {
+        pid.initialize(height, getHeight());
+    }
+
     public void goToPos(double height) {
-        double error = height - getHeight();
-        double kp = SmartDashboard.getNumber("Elevator kp", ELEVATOR_KP);
-        double kd = SmartDashboard.getNumber("Elevator kd", ELEVATOR_KD);
-
-        double speed = kp * error + kd * (lastHeightError - error);
-
-        move(speed);
-
-        lastHeightError = error;
+        double out = pid.output(getHeight());
+        if (Math.abs(out) > MAX_SPEED) {
+            out = out / Math.abs(out) * MAX_SPEED;
+        }
+        move(out);
     }
 
     public void resetEncoder() {

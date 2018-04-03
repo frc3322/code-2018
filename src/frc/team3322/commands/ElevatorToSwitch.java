@@ -8,18 +8,17 @@ import static frc.team3322.Robot.elevator;
 public class ElevatorToSwitch extends Command {
     public ElevatorToSwitch() {
         requires(elevator);
-        setTimeout(3);
+        setTimeout(4);
     }
 
     @Override
     protected void initialize() {
-
+        elevator.goToPosInit(Elevator.SWITCH);
     }
 
     @Override
     protected void execute() {
-        //elevator.goToPos(Elevator.SWITCH);
-        elevator.move(0.4);
+        elevator.goToPos(Elevator.SWITCH);
     }
 
     @Override

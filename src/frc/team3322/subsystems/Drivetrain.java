@@ -13,6 +13,7 @@ public class Drivetrain extends Subsystem {
 
     private static final double DRIVEANGLE_KP = .35;
     private static final double DRIVEANGLE_KD = .3;
+    private static final double WHEEL_SEPARATION = 22;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
@@ -31,6 +32,7 @@ public class Drivetrain extends Subsystem {
     private long runDelay;
     private double straightAngle;
 
+
     public Drivetrain() {
         WPI_TalonSRX leftBackMotor = new WPI_TalonSRX(RobotMap.CAN.LEFT_BACK_MOTOR);
         WPI_TalonSRX leftFrontMotor = new WPI_TalonSRX(RobotMap.CAN.LEFT_FRONT_MOTOR);
@@ -46,8 +48,8 @@ public class Drivetrain extends Subsystem {
 
         shifter = new DoubleSolenoid(RobotMap.PCM.DRIVETRAIN_SHIFTER_FORWARD, RobotMap.PCM.DRIVETRAIN_SHIFTER_REVERSE);
         navx = new AHRS(SPI.Port.kMXP);
-        enc_left = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
-        enc_right = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
+        enc_left = new Encoder(RobotMap.DIO.DRIVETRAIN_LEFT_ENCODER_A, RobotMap.DIO.DRIVETRAIN_LEFT_ENCODER_B);
+        enc_right = new Encoder(RobotMap.DIO.DRIVETRAIN_RIGHT_ENCODER_A, RobotMap.DIO.DRIVETRAIN_RIGHT_ENCODER_B);
         enc_right.setReverseDirection(true);
 
         lastShift = System.currentTimeMillis() - shiftCooldown;
@@ -78,6 +80,18 @@ public class Drivetrain extends Subsystem {
         drive(speed, turn);
 
         SmartDashboard.putNumber("DriveAngle error", error);
+    }
+
+    public void driveArc(double radius, double speed) {
+        // Ignore speed for now
+        double innerSpeed = (radius - WHEEL_SEPARATION / 2) / (radius + WHEEL_SEPARATION / 2) * Math.abs(speed);
+        double outerSpeed = Math.abs(speed);
+
+        if (speed > 0) {
+            robotDrive.tankDrive(outerSpeed, innerSpeed);
+        } else {
+            robotDrive.tankDrive(innerSpeed, outerSpeed);
+        }
     }
 
     public void driveStraightInit() {
