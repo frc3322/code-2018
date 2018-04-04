@@ -18,7 +18,7 @@ public class ElevatorToSwitch extends Command {
 
     @Override
     protected void execute() {
-        elevator.goToPos(Elevator.SWITCH);
+        elevator.goToPos();
     }
 
     @Override

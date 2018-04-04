@@ -18,7 +18,7 @@ public class ElevatorToScale extends Command {
 
     @Override
     protected void execute() {
-        elevator.goToPos(Elevator.SCALE);
+        elevator.goToPos();
     }
 
     @Override

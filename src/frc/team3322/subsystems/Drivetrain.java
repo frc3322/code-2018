@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.PIDController;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.DriveControl;
 
@@ -20,6 +21,9 @@ public class Drivetrain extends Subsystem {
     public AHRS navx;
     private Encoder enc_left;
     private Encoder enc_right;
+
+    private PIDController pid;
+    private static final double MAX_TURN = .2;
 
     private double lastAngleError = 0;
     private long lastShift;
@@ -52,6 +56,8 @@ public class Drivetrain extends Subsystem {
         enc_right = new Encoder(RobotMap.DIO.DRIVETRAIN_RIGHT_ENCODER_A, RobotMap.DIO.DRIVETRAIN_RIGHT_ENCODER_B);
         enc_right.setReverseDirection(true);
 
+        pid = new PIDController("Drive angle", DRIVEANGLE_KP, 0, 0, DRIVEANGLE_KD);
+
         lastShift = System.currentTimeMillis() - shiftCooldown;
 
         SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
@@ -67,19 +73,15 @@ public class Drivetrain extends Subsystem {
     }
 
     public void driveAngleInit(double angle) {
-        lastAngleError = angle - navx.getAngle();
+        pid.initialize(angle, navx.getAngle());
     }
 
-    public void driveAngle(double speed, double angle) {
-        double error = angle - navx.getAngle(); //getAngle() returns overall angle, not necessarily from -180 to 180
-        double kp = SmartDashboard.getNumber("DriveAngle kp", DRIVEANGLE_KP);
-        double kd = SmartDashboard.getNumber("DriveAngle kd", DRIVEANGLE_KD);
-
-        double turn = kp * error + kd * (lastAngleError - error);
-
+    public void driveAngle(double speed) {
+        double turn = pid.output(navx.getAngle());
+        if (Math.abs(turn) > MAX_TURN) {
+            turn = turn / Math.abs(turn) * MAX_TURN;
+        }
         drive(speed, turn);
-
-        SmartDashboard.putNumber("DriveAngle error", error);
     }
 
     public void driveArc(double radius, double speed) {
@@ -115,7 +117,7 @@ public class Drivetrain extends Subsystem {
             }
 
             if (straightModeRun) {
-                driveAngle(speed, straightAngle);
+                driveAngle(speed);
             } else {
                 drive(speed, rotation);
             }

@@ -84,7 +84,7 @@ public class Robot extends TimedRobot
         SmartDashboard.putNumber("Velocity", drivetrain.getRobotVelocity());
         SmartDashboard.putNumber("Acceleration", drivetrain.getAcceleration());
         SmartDashboard.putNumber("Current angle", drivetrain.navx.getAngle());
-        SmartDashboard.putNumber("Lift height", elevator.getHeight());
+        SmartDashboard.putNumber("Elevator height", elevator.getHeight());
     }
 
     /**
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot
     @Override
     public void disabledInit() 
     {
-
+        elevator.resetEncoder();
     }
 
     @Override
@@ -161,11 +161,11 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
-        drivetrain.driveAngle(.3, 90);
+        elevator.goToPos();
     }
 
     public void testInit() {
-        drivetrain.driveAngleInit(0);
+        elevator.goToPosInit(Elevator.SWITCH);
     }
 
     public void updateAutonData() {

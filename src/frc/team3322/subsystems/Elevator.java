@@ -15,12 +15,13 @@ import org.opencv.core.Mat;
 
 public class Elevator extends Subsystem {
 
-    public static final double TOP = 1000;
-    public static final double SCALE = 300;
-    public static final double SWITCH = 100;
-    public static final double BOTTOM = 0;
+    public static final double TOP = 56;
+    public static final double SCALE = 55;
+    public static final double SWITCH = 18;
+    public static final double BOTTOM = 1;
 
-    private static final double MAX_SPEED = .5;
+    // TODO implement climbing mode
+    private static final double MAX_POWER = .5;
     private static final double ELEVATOR_KP = 0.2;
     private static final double ELEVATOR_KI = .3;
     private static final double ELEVATOR_KD = 0.15;
@@ -68,7 +69,7 @@ public class Elevator extends Subsystem {
     }
 
     public void move(double speed) {
-        if (isAtTop() || isAtBottom()) {
+        if ((speed > 0 && isAtTop()) || (speed < 0 && isAtBottom())) {
             elevator.set(0);
         } else {
             elevator.set(speed);
@@ -83,10 +84,10 @@ public class Elevator extends Subsystem {
         pid.initialize(height, getHeight());
     }
 
-    public void goToPos(double height) {
+    public void goToPos() {
         double out = pid.output(getHeight());
-        if (Math.abs(out) > MAX_SPEED) {
-            out = out / Math.abs(out) * MAX_SPEED;
+        if (Math.abs(out) > MAX_POWER) {
+            out = out / Math.abs(out) * MAX_POWER;
         }
         move(out);
     }
@@ -98,18 +99,18 @@ public class Elevator extends Subsystem {
     private double toInchRatio(double input) {
         // This ratio determines the lift translation based on experimental data
         // TODO: find these values
-        double inchesTraveled = 1;
-        int encoderTicks = 1;
+        double inchesTraveled = 58.3;
+        double encoderTicks = 8371;
         return input * (inchesTraveled / encoderTicks);
     }
 
     // TODO implement the following checks
     public boolean isAtTop() {
-        return false;
+        return getHeight() >= TOP;
     }
 
     public boolean isAtBottom() {
-        return false;
+        return getHeight() <= BOTTOM;
     }
 
     public double getHeight() {

@@ -12,7 +12,7 @@ public class CloseArms extends Command {
 
     @Override
     protected void execute() {
-        arms.close();
+        //arms.close();
     }
 
     @Override

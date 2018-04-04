@@ -12,7 +12,7 @@ public class OpenArms extends Command {
 
     @Override
     protected void execute() {
-        arms.open();
+        //arms.open();
     }
 
     @Override
