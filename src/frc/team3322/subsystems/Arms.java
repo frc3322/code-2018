@@ -1,116 +1,118 @@
 package frc.team3322.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.PIDController;
 import frc.team3322.RobotMap;
+import frc.team3322.commands.ArmsControl;
 
 public class Arms extends Subsystem {
 
-    private double leftSpeed = .4;
-    private double rightSpeed = .4;
+    private static final double ARMS_KP = .3;
+    private static final double ARMS_DECAY = .2;
+    private static final double ARMS_KI = .2;
+    private static final double ARMS_KD = .3;
+    private static final double ARMS_MAX_SPEED = .3;
 
-    private WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.LEFT_ARM);
-    private WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.RIGHT_ARM);
+    public static final double ARMS_PREPARE_PICKUP = 500; // @TODO find actual values
+    public static final double ARMS_RETRACT = 1000; // @TODO find actual values
 
-    private SpeedControllerGroup arms;
+    private WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.ARM_LEFT);
+    private WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.ARM_RIGHT);
 
-    private enum State {
-        OPENED,
-        CLOSED,
-        MOVING
-    }
+    private Encoder enc_left;
+    private Encoder enc_right;
 
-    private State currentState = State.MOVING;
+    PIDController[] pid = new PIDController[2];
 
     public Arms() {
         leftArm.setInverted(true);
-        SmartDashboard.putNumber("Left arm speed", leftSpeed);
-        SmartDashboard.putNumber("Right arm speed", rightSpeed);
 
-        arms = new SpeedControllerGroup(leftArm, rightArm);
-    }
+        enc_left = new Encoder(RobotMap.DIO.ARM_LEFT_ENCODER_A, RobotMap.DIO.ARM_LEFT_ENCODER_B);
+        enc_right = new Encoder(RobotMap.DIO.ARM_RIGHT_ENCODER_A, RobotMap.DIO.ARM_RIGHT_ENCODER_B);
 
-    public Arms(double leftSpeed, double rightSpeed) {
-        this();
-        this.leftSpeed = leftSpeed;
-        this.rightSpeed = rightSpeed;
+        pid[0] = new PIDController("Arms left", ARMS_KP, ARMS_DECAY, ARMS_KI, ARMS_KD);
+        pid[1] = new PIDController("Arms right", ARMS_KP, ARMS_DECAY, ARMS_KI, ARMS_KD);
+
+        for (int i = 0; i <= 1; ++i) {
+            pid[i].initialize(getRotation(i), getRotation(i));
+        }
     }
 
     public void initDefaultCommand() {
+        setDefaultCommand(new ArmsControl());
     }
 
-    public void open() {
-        if (currentState == State.OPENED) {
-            arms.set(0);
-            return;
+    public void goToRotationInit(double rotation) {
+        for (int i = 0; i <= 1; ++i) {
+            pid[i].initialize(rotation, getRotation(i));
         }
-
-        if (!hasLeftReachedEnd()) {
-            leftArm.set(leftSpeed);
-        } else {
-            leftArm.set(0);
-        }
-        if (!hasRightReachedEnd()) {
-            rightArm.set(rightSpeed);
-        } else {
-            rightArm.set(0);
-        }
-
-        if (haveBothReachedEnd()) {
-            currentState = State.OPENED;
-        } else {
-            currentState = State.MOVING;
-        }
-        updateDashboard();
     }
 
-    public void close() {
-        if (currentState == State.CLOSED) {
-            arms.set(0);
-            return;
-        }
+    public void goToRotation() {
+        for (int i = 0; i <= 1; ++i) {
+            double out = pid[i].output(getRotation(i));
+            if (Math.abs(out) > ARMS_MAX_SPEED) {
+                out = out / Math.abs(out) * ARMS_MAX_SPEED;
+            }
 
-        if (!hasLeftReachedEnd()) {
-            leftArm.set(-leftSpeed);
-        } else {
-            leftArm.set(0);
+            set(i, out);
         }
-        if (!hasRightReachedEnd()) {
-            rightArm.set(-rightSpeed);
-        } else {
-            rightArm.set(0);
-        }
+    }
 
-        if (haveBothReachedEnd()) {
-            currentState = State.CLOSED;
+    public void hasReachedState() {
+
+    }
+
+    public void set(int side, double speed) {
+        if (side == 0) {
+            leftArm.set(speed);
         } else {
-            currentState = State.MOVING;
+            rightArm.set(speed);
         }
-        updateDashboard();
     }
 
     public void stop() {
-        arms.set(0);
-        updateDashboard();
+        leftArm.set(0);
+        rightArm.set(0);
     }
 
-    private void updateDashboard() {
-        SmartDashboard.putNumber("Left arm current", leftArm.getOutputCurrent());
-        SmartDashboard.putNumber("Right arm current", rightArm.getOutputCurrent());
+    private double getCombinedRotation() {
+        return (getLeftRotation() + getRightRotation()) / 2;
     }
 
+    private double getLeftRotation() {
+        return toDegrees(enc_left.getDistance());
+    }
+
+    private double getRightRotation() {
+        return toDegrees(enc_right.getDistance());
+    }
+
+    private double getRotation(int side) {
+        if (side == 0) {
+            return getLeftRotation();
+        } else {
+            return getRightRotation();
+        }
+    }
+
+    public double toDegrees(double input) {
+        return input / 256 * 365;
+    }
+
+    // TODO: remove
+    @Deprecated
     public boolean hasLeftReachedEnd() {
-        return false;
-        //if (leftArm.getOutputCurrent() == 0) return false;
-        //return leftArm.getOutputCurrent() > MAX_CURRENT;
+        return enc_left.getDistance() > 10; // some value
     }
 
+    @Deprecated
     public boolean hasRightReachedEnd() {
-        return false;
-        //if (rightArm.getOutputCurrent() == 0) return false;
-        //return rightArm.getOutputCurrent() > MAX_CURRENT;
+        return enc_right.getDistance() > 10; // some value
     }
 
     public boolean haveBothReachedEnd() {

@@ -8,7 +8,7 @@ import static frc.team3322.Robot.drivetrain;
 
 public class DriveDistance extends Command {
     private final double desiredDistance;
-    private double speed = 1;
+    private double speed = .7;
 
     private double straightAngle;
     private double distanceFromTarget = 0;
@@ -48,7 +48,8 @@ public class DriveDistance extends Command {
         speed = speed * this.speed + 0.2;
         speed *= distanceFromTarget/Math.abs(distanceFromTarget);
 
-        drivetrain.driveAngle(speed, straightAngle);
+        // TODO: fix motion profiling
+        drivetrain.driveAngle(this.speed);
         SmartDashboard.putNumber("DriveDistance remaining", distanceFromTarget);
     }
 

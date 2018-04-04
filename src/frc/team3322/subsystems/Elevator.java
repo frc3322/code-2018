@@ -7,24 +7,32 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.PIDController;
 import frc.team3322.Robot;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.ElevatorControl;
+import org.opencv.core.Mat;
 
 public class Elevator extends Subsystem {
 
-    public static final double TOP = 1000;
-    public static final double SCALE = 300;
-    public static final double SWITCH = 100;
-    public static final double BOTTOM = 0;
+    public static final double TOP = 56;
+    public static final double SCALE = 55;
+    public static final double SWITCH = 18;
+    public static final double BOTTOM = 1;
 
+    // TODO implement climbing mode
+    private static final double MAX_POWER = .5;
     private static final double ELEVATOR_KP = 0.2;
+    private static final double ELEVATOR_KI = .3;
     private static final double ELEVATOR_KD = 0.15;
+    private static final double ELEVATOR_DECAY = .3;
 
     private double upSpeed = .5;
     private double downSpeed = .3;
 
     private SpeedControllerGroup elevator;
+
+    private PIDController pid;
 
     private Encoder encoder;
     private DigitalInput bottomLimitSwitch;
@@ -38,6 +46,8 @@ public class Elevator extends Subsystem {
         elevator.setInverted(true);
 
         encoder = new Encoder(RobotMap.DIO.ELEVATOR_ENCODER_A, RobotMap.DIO.ELEVATOR_ENCODER_B);
+
+        pid = new PIDController("Elevator", ELEVATOR_KP, ELEVATOR_DECAY, ELEVATOR_KI, ELEVATOR_KD);
     }
 
     public Elevator(double upSpeed, double downSpeed) {
@@ -59,7 +69,7 @@ public class Elevator extends Subsystem {
     }
 
     public void move(double speed) {
-        if (isAtTop() || isAtBottom()) {
+        if ((speed > 0 && isAtTop()) || (speed < 0 && isAtBottom())) {
             elevator.set(0);
         } else {
             elevator.set(speed);
@@ -70,16 +80,16 @@ public class Elevator extends Subsystem {
         elevator.set(0);
     }
 
-    public void goToPos(double height) {
-        double error = height - getHeight();
-        double kp = SmartDashboard.getNumber("Elevator kp", ELEVATOR_KP);
-        double kd = SmartDashboard.getNumber("Elevator kd", ELEVATOR_KD);
+    public void goToPosInit(double height) {
+        pid.initialize(height, getHeight());
+    }
 
-        double speed = kp * error + kd * (lastHeightError - error);
-
-        move(speed);
-
-        lastHeightError = error;
+    public void goToPos() {
+        double out = pid.output(getHeight());
+        if (Math.abs(out) > MAX_POWER) {
+            out = out / Math.abs(out) * MAX_POWER;
+        }
+        move(out);
     }
 
     public void resetEncoder() {
@@ -89,18 +99,9 @@ public class Elevator extends Subsystem {
     private double toInchRatio(double input) {
         // This ratio determines the lift translation based on experimental data
         // TODO: find these values
-        double inchesTraveled = 1;
-        int encoderTicks = 1;
+        double inchesTraveled = 58.3;
+        double encoderTicks = 8371;
         return input * (inchesTraveled / encoderTicks);
-    }
-
-    // TODO implement the following checks
-    public boolean isAtTop() {
-        return false;
-    }
-
-    public boolean isAtBottom() {
-        return false;
     }
 
     public double getHeight() {
@@ -111,10 +112,18 @@ public class Elevator extends Subsystem {
     }
 
     public boolean isAtSwitch() {
-        return false;
+        return Math.abs(SWITCH - getHeight()) < 2;
     }
 
     public boolean isAtScale() {
-        return false;
+        return Math.abs(SCALE - getHeight()) < 2;
+    }
+
+    public boolean isAtTop() {
+        return getHeight() >= TOP;
+    }
+
+    public boolean isAtBottom() {
+        return getHeight() <= BOTTOM;
     }
 }

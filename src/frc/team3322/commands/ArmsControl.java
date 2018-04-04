@@ -5,25 +5,28 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3322.Robot.arms;
 
 
-public class CloseArms extends Command {
-    public CloseArms() {
+public class ArmsControl extends Command {
+    public ArmsControl() {
         requires(arms);
     }
 
     @Override
+    protected void initialize() {
+    }
+
+    @Override
     protected void execute() {
-        //arms.close();
+        arms.goToRotation();
     }
 
     @Override
     protected boolean isFinished() {
-        // TODO: verify motor current
-        return arms.haveBothReachedEnd();
+        return false;
     }
 
     @Override
     protected void end() {
-        arms.stop();
+
     }
 
     @Override

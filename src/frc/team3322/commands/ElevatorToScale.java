@@ -8,18 +8,17 @@ import static frc.team3322.Robot.elevator;
 public class ElevatorToScale extends Command {
     public ElevatorToScale() {
         requires(elevator);
-        setTimeout(6);
+        setTimeout(7);
     }
 
     @Override
     protected void initialize() {
-
+        elevator.goToPosInit(Elevator.SCALE);
     }
 
     @Override
     protected void execute() {
-        //elevator.goToPos(Elevator.SCALE);
-        elevator.move(.5);
+        elevator.goToPos();
     }
 
     @Override
