@@ -38,7 +38,17 @@ public class DriveDistance extends Command {
         double curDistance = drivetrain.getRobotDisplacement() - initialDisplacement;
         distanceFromTarget = desiredDistance - curDistance;
 
-        drivetrain.driveAngle(speed, straightAngle);
+        double speed;
+        // Increment speed the first half, decrement speed the second half
+        if (curDistance < desiredDistance/2) {
+            speed = curDistance/(desiredDistance/2);
+        } else {
+            speed = (desiredDistance/2)/curDistance;
+        }
+        speed = speed * this.speed + 0.2;
+        speed *= distanceFromTarget/Math.abs(distanceFromTarget);
+
+        drivetrain.driveAngle(this.speed);
 
         SmartDashboard.putNumber("DriveDistance remaining", distanceFromTarget);
     }

@@ -29,7 +29,7 @@ public class Drive extends Command {
 
     @Override
     protected void execute() {
-        drivetrain.driveAngle(speed, straightAngle);
+        drivetrain.driveAngle(speed);
     }
 
     @Override

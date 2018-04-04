@@ -104,15 +104,6 @@ public class Elevator extends Subsystem {
         return input * (inchesTraveled / encoderTicks);
     }
 
-    // TODO implement the following checks
-    public boolean isAtTop() {
-        return getHeight() >= TOP;
-    }
-
-    public boolean isAtBottom() {
-        return getHeight() <= BOTTOM;
-    }
-
     public double getHeight() {
         if (encoder != null) {
             return toInchRatio(encoder.getDistance());
@@ -121,10 +112,18 @@ public class Elevator extends Subsystem {
     }
 
     public boolean isAtSwitch() {
-        return false;
+        return Math.abs(SWITCH - getHeight()) < 2;
     }
 
     public boolean isAtScale() {
-        return false;
+        return Math.abs(SCALE - getHeight()) < 2;
+    }
+
+    public boolean isAtTop() {
+        return getHeight() >= TOP;
+    }
+
+    public boolean isAtBottom() {
+        return getHeight() <= BOTTOM;
     }
 }

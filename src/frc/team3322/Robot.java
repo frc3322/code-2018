@@ -95,7 +95,7 @@ public class Robot extends TimedRobot
     @Override
     public void disabledInit() 
     {
-        elevator.resetEncoder();
+
     }
 
     @Override
@@ -122,6 +122,7 @@ public class Robot extends TimedRobot
     {
         updateAutonData();
         drivetrain.resetPositioning();
+        elevator.resetEncoder();
 
         autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected(), priorityChooser.getSelected());
         autonomousCommand.start();
