@@ -98,7 +98,6 @@ public class Elevator extends Subsystem {
 
     private double toInchRatio(double input) {
         // This ratio determines the lift translation based on experimental data
-        // TODO: find these values
         double inchesTraveled = 58.3;
         double encoderTicks = 8371;
         return input * (inchesTraveled / encoderTicks);

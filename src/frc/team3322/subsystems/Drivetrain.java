@@ -59,9 +59,6 @@ public class Drivetrain extends Subsystem {
         pid = new PIDController("Drive angle", DRIVEANGLE_KP, 0, 0, DRIVEANGLE_KD);
 
         lastShift = System.currentTimeMillis() - shiftCooldown;
-
-        SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
-        SmartDashboard.putNumber("DriveAngle kd", DRIVEANGLE_KD);
     }
 
     public void initDefaultCommand() {
@@ -85,22 +82,11 @@ public class Drivetrain extends Subsystem {
     }
 
     public void driveArc(double radius, double speed) {
-        // Ignore speed for now
+        // Ignore speed for now`
         double innerSpeed = (radius - WHEEL_SEPARATION / 2) / (radius + WHEEL_SEPARATION / 2) * Math.abs(speed);
         double outerSpeed = Math.abs(speed);
 
         if (speed > 0) {
-            robotDrive.tankDrive(outerSpeed, innerSpeed);
-        } else {
-            robotDrive.tankDrive(innerSpeed, outerSpeed);
-        }
-    }
-
-    public void driveArc(double radius, double angularSpeed) {
-        double wheelDistance = 40; // needs measuring
-        double innerSpeed = (radius - wheelDistance / 2) * angularSpeed;
-        double outerSpeed = (radius + wheelDistance / 2) * angularSpeed;
-        if (angularSpeed > 0) {
             robotDrive.tankDrive(outerSpeed, innerSpeed);
         } else {
             robotDrive.tankDrive(innerSpeed, outerSpeed);
