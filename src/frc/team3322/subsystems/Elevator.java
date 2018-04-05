@@ -2,16 +2,12 @@ package frc.team3322.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.PIDController;
-import frc.team3322.Robot;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.ElevatorControl;
-import org.opencv.core.Mat;
 
 public class Elevator extends Subsystem {
 
@@ -27,8 +23,12 @@ public class Elevator extends Subsystem {
     private static final double ELEVATOR_KD = 0.15;
     private static final double ELEVATOR_DECAY = .3;
 
+    private static final double DOWN_SPEED_MODIFIER = .75;
+
     private double upSpeed = .5;
     private double downSpeed = .3;
+
+    public double downSpeedModifier = .75;
 
     private SpeedControllerGroup elevator;
 
@@ -78,6 +78,14 @@ public class Elevator extends Subsystem {
 
     public void stop() {
         elevator.set(0);
+    }
+
+    public void toggleClimbMode() {
+        if (downSpeedModifier != DOWN_SPEED_MODIFIER) {
+            downSpeedModifier = 1;
+        } else {
+            downSpeedModifier = DOWN_SPEED_MODIFIER;
+        }
     }
 
     public void goToPosInit(double height) {

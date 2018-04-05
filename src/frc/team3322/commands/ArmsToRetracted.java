@@ -17,15 +17,17 @@ public class ArmsToRetracted extends Command {
 
     @Override
     protected void execute() {
+        arms.goToRotation();
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return arms.hasReached(arms.ARMS_RETRACT);
     }
 
     @Override
     protected void end() {
+        arms.stop();
     }
 
     @Override

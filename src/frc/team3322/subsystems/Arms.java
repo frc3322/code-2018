@@ -63,8 +63,8 @@ public class Arms extends Subsystem {
         }
     }
 
-    public void hasReachedState() {
-
+    public boolean hasReached(double position) {
+        return (Math.abs(getLeftRotation() - position) < 50) && (Math.abs(getRightRotation() - position) < 500);
     }
 
     public void set(int side, double speed) {

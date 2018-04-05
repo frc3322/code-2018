@@ -46,6 +46,8 @@ public class OI
         stick_right.toggleWhenPressed(new AutoShiftDrivetrain());
 
         button_start.whileHeld(new IntakeOpposite());
+
+        button_back.toggleWhenPressed(new ToggleClimbMode());
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS
@@ -67,10 +69,9 @@ public class OI
     /**
      * Rumbles the controller for a specified duration and intensity
      * @param intensity A scale from 0 to 1
-     * @param duration In milliseconds
      */
-    public void rumble(double intensity, double duration) {
-        GenericHID.RumbleType rumbleType = GenericHID.RumbleType.kLeftRumble;
+    public void rumble(double intensity) {
+        /*GenericHID.RumbleType rumbleType = GenericHID.RumbleType.kLeftRumble;
 
         Thread rumble = new Thread(() -> {
             long startTime = System.currentTimeMillis();
@@ -83,6 +84,7 @@ public class OI
 
             stick.setRumble(rumbleType, 0);
         });
-        rumble.start();
+        rumble.start();*/
+        stick.setRumble(GenericHID.RumbleType.kLeftRumble, intensity);
     }
 }

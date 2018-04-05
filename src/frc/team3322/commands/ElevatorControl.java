@@ -1,7 +1,6 @@
 package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.RobotMap;
 
 import static frc.team3322.Robot.elevator;
@@ -23,7 +22,7 @@ public class ElevatorControl extends Command {
 
     @Override
     protected void execute() {
-        double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS);
+        double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS) * elevator.downSpeedModifier;
 
         elevator.move(moveInput);
     }
