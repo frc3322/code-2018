@@ -19,7 +19,7 @@ public class TurnToAngle extends Command {
 
     @Override
     protected void initialize() {
-        drivetrain.driveAngleInit(drivetrain.navx.getAngle());
+        drivetrain.driveAngleInit(desiredAngle);
     }
 
     @Override

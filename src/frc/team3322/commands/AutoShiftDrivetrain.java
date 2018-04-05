@@ -7,6 +7,7 @@ import static frc.team3322.Robot.drivetrain;
 
 public class AutoShiftDrivetrain extends Command {
 
+
     @Override
     protected void execute() {
         drivetrain.autoShift();

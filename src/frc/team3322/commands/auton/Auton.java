@@ -172,7 +172,7 @@ public class Auton extends CommandGroup {
     private void queuePath() {
         if (selectedPath == Path.DO_NOTHING) return;
 
-        addParallel(new CloseArms(), 2);
+        addParallel(new ArmsToRetracted(), 3);
         addParallel(new IntakeIdle());
         addSequential(new ShiftLow());
 

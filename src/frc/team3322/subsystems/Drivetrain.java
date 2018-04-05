@@ -12,7 +12,7 @@ import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    private static final double DRIVEANGLE_KP = .35;
+    private static final double DRIVEANGLE_KP = 1;
     private static final double DRIVEANGLE_KD = .3;
     private static final double WHEEL_SEPARATION = 22;
 

@@ -2,21 +2,22 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.arms;
+import static frc.team3322.Robot.elevator;
 
 
-public class ArmsControl extends Command {
-    public ArmsControl() {
-        requires(arms);
+public class ElevatorHold extends Command {
+    public ElevatorHold() {
+        requires(elevator);
     }
 
     @Override
     protected void initialize() {
+        elevator.goToPosInit(elevator.getHeight());
     }
 
     @Override
     protected void execute() {
-        arms.goToRotation();
+        elevator.goToPos();
     }
 
     @Override
@@ -26,7 +27,7 @@ public class ArmsControl extends Command {
 
     @Override
     protected void end() {
-
+        elevator.stop();
     }
 
     @Override

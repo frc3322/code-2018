@@ -4,10 +4,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.PIDController;
 import frc.team3322.RobotMap;
-import frc.team3322.commands.ArmsControl;
+import frc.team3322.commands.ArmsIdle;
 
 public class Arms extends Subsystem {
 
@@ -15,13 +14,16 @@ public class Arms extends Subsystem {
     private static final double ARMS_DECAY = .2;
     private static final double ARMS_KI = .2;
     private static final double ARMS_KD = .3;
-    private static final double ARMS_MAX_SPEED = .3;
+    private static final double MAX_SPEED = .6;
 
-    public static final double ARMS_PREPARE_PICKUP = 500; // @TODO find actual values
-    public static final double ARMS_RETRACT = 1000; // @TODO find actual values
+    public static final double POS_PREPARE_PICKUP = 40; // @TODO find actual values
+    public static final double POS_RETRACTED = 100; // @TODO find actual values
+    public static final double POS_CLOSED = -10; // TODO
 
     private WPI_TalonSRX leftArm = new WPI_TalonSRX(RobotMap.CAN.ARM_LEFT);
     private WPI_TalonSRX rightArm = new WPI_TalonSRX(RobotMap.CAN.ARM_RIGHT);
+
+    private SpeedControllerGroup arms = new SpeedControllerGroup(leftArm, rightArm);
 
     private Encoder enc_left;
     private Encoder enc_right;
@@ -43,28 +45,41 @@ public class Arms extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmsControl());
+        setDefaultCommand(new ArmsIdle());
     }
 
     public void goToRotationInit(double rotation) {
-        for (int i = 0; i <= 1; ++i) {
-            pid[i].initialize(rotation, getRotation(i));
-        }
+        pid[0].initialize(rotation, getRotation(0));
+        pid[1].initialize(rotation, getRotation(1));
     }
 
     public void goToRotation() {
         for (int i = 0; i <= 1; ++i) {
             double out = pid[i].output(getRotation(i));
-            if (Math.abs(out) > ARMS_MAX_SPEED) {
-                out = out / Math.abs(out) * ARMS_MAX_SPEED;
+            if (Math.abs(out) > MAX_SPEED) {
+                out = out / Math.abs(out) * MAX_SPEED;
             }
 
             set(i, out);
         }
     }
 
-    public boolean hasReached(double position) {
-        return (Math.abs(getLeftRotation() - position) < 50) && (Math.abs(getRightRotation() - position) < 500);
+    public void open() {
+        if (haveReached(POS_RETRACTED)) {
+            arms.set(0);
+            return;
+        }
+
+        arms.set(MAX_SPEED);
+    }
+
+    public void close() {
+        if (haveReached(POS_CLOSED)) {
+            arms.set(0);
+            return;
+        }
+
+        arms.set(-MAX_SPEED);
     }
 
     public void set(int side, double speed) {
@@ -85,7 +100,7 @@ public class Arms extends Subsystem {
     }
 
     private double getLeftRotation() {
-        return toDegrees(enc_left.getDistance());
+        return toDegrees(-enc_left.getDistance());
     }
 
     private double getRightRotation() {
@@ -100,22 +115,16 @@ public class Arms extends Subsystem {
         }
     }
 
+    public boolean haveReached(double position) {
+        return (Math.abs(getLeftRotation() - position) < 10) && (Math.abs(getRightRotation() - position) < 10);
+    }
+
     public double toDegrees(double input) {
-        return input / 256 * 365;
+        return input / 1024 * 365;
     }
 
-    // TODO: remove
-    @Deprecated
-    public boolean hasLeftReachedEnd() {
-        return enc_left.getDistance() > 10; // some value
-    }
-
-    @Deprecated
-    public boolean hasRightReachedEnd() {
-        return enc_right.getDistance() > 10; // some value
-    }
-
-    public boolean haveBothReachedEnd() {
-        return hasLeftReachedEnd() && hasRightReachedEnd();
+    public void resetPosition() {
+        enc_left.reset();
+        enc_right.reset();
     }
 }

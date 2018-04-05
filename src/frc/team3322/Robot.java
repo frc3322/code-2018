@@ -124,6 +124,7 @@ public class Robot extends TimedRobot
         updateAutonData();
         drivetrain.resetPositioning();
         elevator.resetEncoder();
+        arms.resetPosition();
 
         autonomousCommand = new Auton(startChooser.getSelected(), objectiveChooser.getSelected(), priorityChooser.getSelected());
         autonomousCommand.start();
