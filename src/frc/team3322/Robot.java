@@ -8,6 +8,7 @@
 package frc.team3322;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,7 +18,7 @@ import frc.team3322.commands.auton.Auton;
 import frc.team3322.subsystems.Arms;
 import frc.team3322.subsystems.Drivetrain;
 import frc.team3322.subsystems.Elevator;
-import frc.team3322.subsystems.Wings;
+import frc.team3322.subsystems.Intakes;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,13 +34,16 @@ public class Robot extends TimedRobot
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final Elevator elevator = new Elevator();
     public static final Arms arms = new Arms();
-    public static final Wings wings = new Wings();
+    public static final Intakes intakes = new Intakes();
 
     public static OI oi;
 
+    public static String gameData;
+
     private Command autonomousCommand;
-    private SendableChooser<Auton.StartPosition> startChooser = new SendableChooser<>();
-    private SendableChooser<Auton.Action> actionChooser = new SendableChooser<>();
+    private SendableChooser<Auton.Position> startChooser = new SendableChooser<>();
+    private SendableChooser<Auton.Objective> objectiveChooser = new SendableChooser<>();
+    private SendableChooser<Auton.Priority> priorityChooser = new SendableChooser<>();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -53,20 +57,35 @@ public class Robot extends TimedRobot
         oi = new OI();
 
         // Create sendable choosers for auton selection
-        startChooser.addObject("Left", Auton.StartPosition.LEFT);
-        startChooser.addDefault("Middle", Auton.StartPosition.MIDDLE);
-        startChooser.addObject("Right", Auton.StartPosition.RIGHT);
+        startChooser.addDefault("Left", Auton.Position.LEFT);
+        startChooser.addObject("Middle", Auton.Position.MIDDLE);
+        startChooser.addObject("Right", Auton.Position.RIGHT);
 
-        actionChooser.addObject("Do nothing", Auton.Action.DONOTHING);
-        actionChooser.addDefault("Drive straight", Auton.Action.DRIVESTRAIGHT);
-        actionChooser.addObject("Closest", Auton.Action.CLOSEST);
-        actionChooser.addObject("Scale", Auton.Action.SCALE);
-        actionChooser.addObject("Switch", Auton.Action.SWITCH);
+        objectiveChooser.addObject("Switch", Auton.Objective.SWITCH);
+        objectiveChooser.addObject("Scale", Auton.Objective.SCALE);
+        objectiveChooser.addDefault("Auto line", Auton.Objective.SCALE);
+        objectiveChooser.addObject("None (do nothing)", Auton.Objective.SCALE);
+
+        priorityChooser.addDefault("Safe (stay on start side)", Auton.Priority.SAFE);
+        priorityChooser.addObject("Prefer (stay on start side, switch and scale)", Auton.Priority.PREFER);
+        priorityChooser.addObject("Force (both sides)", Auton.Priority.FORCE);
 
         SmartDashboard.putData("Start pos", startChooser);
-        SmartDashboard.putData("Auton action", actionChooser);
+        SmartDashboard.putData("Auton action", objectiveChooser);
+        SmartDashboard.putData("Objective priority", priorityChooser);
+    }
 
-        drivetrain.resetEncoders();
+    @Override
+    public void robotPeriodic() {
+        SmartDashboard.putNumber("Left ticks", drivetrain.getLeftTicks());
+        SmartDashboard.putNumber("Right ticks", drivetrain.getRightTicks());
+        SmartDashboard.putNumber("Left distance", drivetrain.getLeftDisplacement());
+        SmartDashboard.putNumber("Right distance", drivetrain.getRightDisplacement());
+        SmartDashboard.putNumber("Distance", drivetrain.getRobotDisplacement());
+        SmartDashboard.putNumber("Velocity", drivetrain.getRobotVelocity());
+        SmartDashboard.putNumber("Acceleration", drivetrain.getAcceleration());
+        SmartDashboard.putNumber("Current angle", drivetrain.navx.getAngle());
+        SmartDashboard.putNumber("Elevator height", elevator.getHeight());
     }
 
     /**
@@ -77,13 +96,15 @@ public class Robot extends TimedRobot
     @Override
     public void disabledInit() 
     {
-        
+
     }
 
     @Override
     public void disabledPeriodic() 
     {
         Scheduler.getInstance().run();
+
+        updateAutonData();
     }
 
     /**
@@ -100,8 +121,12 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit() 
     {
-        autonomousCommand = new Auton(startChooser.getSelected(), actionChooser.getSelected());
+        updateAutonData();
+        drivetrain.resetPositioning();
+        elevator.resetEncoder();
+        arms.resetPosition();
 
+        autonomousCommand = new Auton(startChooser.getSelected(), objectiveChooser.getSelected(), priorityChooser.getSelected());
         autonomousCommand.start();
     }
 
@@ -117,6 +142,8 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit() 
     {
+        drivetrain.resetPositioning();
+
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
@@ -137,5 +164,18 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
+        elevator.goToPos();
+    }
+
+    public void testInit() {
+        elevator.goToPosInit(Elevator.SWITCH);
+    }
+
+    private void updateAutonData() {
+        String newGameData = DriverStation.getInstance().getGameSpecificMessage();
+
+        if (newGameData.length() == 3) {
+            gameData = newGameData;
+        }
     }
 }

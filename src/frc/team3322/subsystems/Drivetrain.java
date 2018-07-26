@@ -2,35 +2,39 @@ package frc.team3322.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3322.PIDController;
 import frc.team3322.RobotMap;
 import frc.team3322.commands.DriveControl;
 
 public class Drivetrain extends Subsystem {
 
-    private static final double DRIVEANGLE_KP = .4;
+    private static final double DRIVEANGLE_KP = 1;
     private static final double DRIVEANGLE_KD = .3;
-    private static final double WHEEL_DIAMETER = 6;
-    private static final double TICS_PER_REVOLUTION = 256;
-    private static final double GEAR_RATIO = 0.5;
+    private static final double WHEEL_SEPARATION = 22;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
     public AHRS navx;
-    private Encoder leftEnc;
-    private Encoder rightEnc;
+    private Encoder enc_left;
+    private Encoder enc_right;
+
+    private PIDController pid;
+    private static final double MAX_TURN = .2;
 
     private double lastAngleError = 0;
     private long lastShift;
     private int shiftCooldown = 1000;
     private int shiftLowThreshold = 1;
     private int shiftHighThreshold = 2;
+
+    private boolean straightModeStart;
+    private boolean straightModeRun;
+    private long runDelay;
+    private double straightAngle;
 
 
     public Drivetrain() {
@@ -47,14 +51,14 @@ public class Drivetrain extends Subsystem {
         robotDrive = new DifferentialDrive(leftGroup, rightGroup);
 
         shifter = new DoubleSolenoid(RobotMap.PCM.DRIVETRAIN_SHIFTER_FORWARD, RobotMap.PCM.DRIVETRAIN_SHIFTER_REVERSE);
-        navx = new AHRS(SerialPort.Port.kMXP);
+        navx = new AHRS(SPI.Port.kMXP);
+        enc_left = new Encoder(RobotMap.DIO.DRIVETRAIN_LEFT_ENCODER_A, RobotMap.DIO.DRIVETRAIN_LEFT_ENCODER_B);
+        enc_right = new Encoder(RobotMap.DIO.DRIVETRAIN_RIGHT_ENCODER_A, RobotMap.DIO.DRIVETRAIN_RIGHT_ENCODER_B);
+        enc_right.setReverseDirection(true);
 
-        leftEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LA, RobotMap.DIO.DRIVETRAIN_ENCODER_LB);
-        rightEnc = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RA, RobotMap.DIO.DRIVETRAIN_ENCODER_RB);
-        rightEnc.setReverseDirection(true);
+        pid = new PIDController("Drive angle", DRIVEANGLE_KP, 0, 0, DRIVEANGLE_KD);
 
-        SmartDashboard.putNumber("DriveAngle kp", DRIVEANGLE_KP);
-        SmartDashboard.putNumber("DriveAngle kd", DRIVEANGLE_KD);
+        lastShift = System.currentTimeMillis() - shiftCooldown;
     }
 
     public void initDefaultCommand() {
@@ -63,31 +67,65 @@ public class Drivetrain extends Subsystem {
 
     public void drive(double speed, double rotation) {
         robotDrive.arcadeDrive(speed, rotation);
-
-        SmartDashboard.putNumber("Velocity", Math.sqrt(Math.pow(navx.getVelocityX(), 2) + Math.pow(navx.getVelocityY(), 2)));
-
-        SmartDashboard.putNumber("Displacement X", navx.getDisplacementX());
-        SmartDashboard.putNumber("Displacement Y", navx.getDisplacementY());
-
-        SmartDashboard.putNumber("Left displacement", getLeftDisplacement());
-        SmartDashboard.putNumber("Right displacement", getRightDisplacement());
-
     }
 
     public void driveAngleInit(double angle) {
-        lastAngleError = angle - navx.getAngle();
+        pid.initialize(angle, navx.getAngle());
     }
 
-    public void driveAngle(double speed, double angle) {
-        double error = angle - navx.getAngle(); //getAngle() returns overall angle, not necessarily from -180 to 180
-        double kp = SmartDashboard.getNumber("DriveAngle kp", DRIVEANGLE_KP);
-        double kd = SmartDashboard.getNumber("DriveAngle kd", DRIVEANGLE_KD);
-
-        double turn = kp * error + kd * (lastAngleError - error);
-
+    public void driveAngle(double speed) {
+        double turn = pid.output(navx.getAngle());
+        if (Math.abs(turn) > MAX_TURN) {
+            turn = turn / Math.abs(turn) * MAX_TURN;
+        }
         drive(speed, turn);
+    }
 
-        SmartDashboard.putNumber("DriveAngle error", error);
+    public void driveArc(double radius, double speed) {
+        // Ignore speed for now`
+        double innerSpeed = (radius - WHEEL_SEPARATION / 2) / (radius + WHEEL_SEPARATION / 2) * Math.abs(speed);
+        double outerSpeed = Math.abs(speed);
+
+        if (speed > 0) {
+            robotDrive.tankDrive(outerSpeed, innerSpeed);
+        } else {
+            robotDrive.tankDrive(innerSpeed, outerSpeed);
+        }
+    }
+
+    public void driveStraightInit() {
+        straightModeStart = false;
+        straightModeRun = false;
+    }
+
+    public void driveStraight(double speed, double rotation) {
+        if (Math.abs(speed) > .15 && Math.abs(rotation) < .15) {
+            if (!straightModeStart) {
+                straightModeStart = true;
+
+                runDelay = System.currentTimeMillis();
+            }
+
+            // Wait a bit before setting our desired angle
+            if (System.currentTimeMillis() - runDelay > 250 && !straightModeRun) {
+                straightAngle = navx.getAngle();
+                driveAngleInit(straightAngle);
+                straightModeRun = true;
+            }
+
+            if (straightModeRun) {
+                driveAngle(speed);
+            } else {
+                drive(speed, rotation);
+            }
+        } else {
+            straightModeStart = false;
+            straightModeRun = false;
+
+            drive(speed, rotation);
+        }
+
+        SmartDashboard.putBoolean("Driving straight", straightModeRun);
     }
 
     public void stop() {
@@ -116,12 +154,12 @@ public class Drivetrain extends Subsystem {
 
     public void autoShift() {
         if (System.currentTimeMillis() - lastShift < shiftCooldown) {
-            if (Math.abs(getRobotVelocity()) > shiftLowThreshold) {
+            if (Math.abs(getRobotVelocity()) > shiftHighThreshold) {
                 if (!isHigh()) {
                     shiftHigh();
                     lastShift = System.currentTimeMillis();
                 }
-            } else if (Math.abs(getRobotVelocity()) < shiftHighThreshold) {
+            } else if (Math.abs(getRobotVelocity()) < shiftLowThreshold) {
                 if (isHigh()) {
                     shiftLow();
                     lastShift = System.currentTimeMillis();
@@ -130,36 +168,53 @@ public class Drivetrain extends Subsystem {
         }
     }
 
-    public double toWheelRatio(double input) {
-        return input / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER * GEAR_RATIO;
+    private double toInchRatio(double input) {
+        // This ratio determines the wheel translation based on experimental data
+        double inchesTraveled = 15 * 12;
+        int encoderTicks = 10759;
+        // more tests: 10525 ticks per 15 ft
+        return input * (inchesTraveled / encoderTicks);
+    }
+
+    public double getLeftTicks() {
+        return enc_left.get();
+    }
+
+    public double getRightTicks() {
+        return enc_right.get();
     }
 
     public double getLeftDisplacement() {
-        return toWheelRatio(leftEnc.get());
+        return toInchRatio(enc_left.get());
     }
 
     public double getRightDisplacement() {
-        return toWheelRatio(rightEnc.get());
+        return toInchRatio(enc_right.get());
     }
 
     public double getRobotDisplacement() {
-        return (toWheelRatio(leftEnc.get()) + toWheelRatio(rightEnc.get())) / 2;
+        return Math.max(getLeftDisplacement(), getRightDisplacement());
     }
 
     public double getLeftVelocity() {
-        return toWheelRatio(leftEnc.getRate());
+        return toInchRatio(enc_left.getRate());
     }
 
     public double getRightVelocity() {
-        return toWheelRatio(rightEnc.getRate());
+        return toInchRatio(enc_right.getRate());
     }
 
     public double getRobotVelocity() {
-        return (getLeftVelocity() + getRightVelocity()) / 2;
+        return Math.max(getLeftVelocity(), getRightVelocity());
     }
 
-    public void resetEncoders() {
-        leftEnc.reset();
-        rightEnc.reset();
+    public double getAcceleration() {
+        return Math.sqrt(Math.pow(navx.getWorldLinearAccelX(), 2) + Math.pow(navx.getWorldLinearAccelY(), 2));
+    }
+
+    public void resetPositioning() {
+        enc_left.reset();
+        enc_right.reset();
+        navx.resetDisplacement();
     }
 }

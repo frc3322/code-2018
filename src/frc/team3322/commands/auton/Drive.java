@@ -1,35 +1,40 @@
 package frc.team3322.commands.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.team3322.Robot.drivetrain;
 
 
-public class TurnToAngle extends Command {
-    private final double desiredAngle;
+public class Drive extends Command {
+    private double speed = .65;
 
-    public TurnToAngle(double degrees) {
-        // Use requires() here to declare subsystem dependencies
+    private double straightAngle;
+
+    public Drive() {
         requires(drivetrain);
-        setTimeout(5);
+    }
 
-        double initialAngle = drivetrain.navx.getAngle();
-        desiredAngle = initialAngle + degrees;
+    public Drive(double speed) {
+        this();
+
+        this.speed = speed;
     }
 
     @Override
     protected void initialize() {
-        drivetrain.driveAngleInit(desiredAngle);
+        straightAngle = drivetrain.navx.getAngle();
+        drivetrain.driveAngleInit(straightAngle);
     }
 
     @Override
     protected void execute() {
-        drivetrain.driveAngle(0);
+        drivetrain.driveAngle(speed);
     }
 
     @Override
     protected boolean isFinished() {
-        return Math.abs(desiredAngle - drivetrain.navx.getAngle()) < 1 || isTimedOut();
+        return isTimedOut();
     }
 
     @Override

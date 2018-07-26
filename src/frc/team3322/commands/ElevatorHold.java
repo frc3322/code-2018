@@ -1,29 +1,33 @@
 package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3322.subsystems.Arms;
 
-import static frc.team3322.Robot.arms;
+import static frc.team3322.Robot.elevator;
 
 
-public class CloseArms extends Command {
-    public CloseArms() {
-        requires(arms);
+public class ElevatorHold extends Command {
+    public ElevatorHold() {
+        requires(elevator);
+    }
+
+    @Override
+    protected void initialize() {
+        elevator.goToPosInit(elevator.getHeight());
     }
 
     @Override
     protected void execute() {
-        arms.close();
+        elevator.goToPos();
     }
 
     @Override
     protected boolean isFinished() {
-        return arms.haveReached(Arms.POS_CLOSED);
+        return false;
     }
 
     @Override
     protected void end() {
-        arms.stop();
+        elevator.stop();
     }
 
     @Override

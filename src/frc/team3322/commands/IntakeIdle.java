@@ -2,33 +2,27 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.wings;
+import static frc.team3322.Robot.intakes;
 
 
-public class DeployWings extends Command {
-    public DeployWings() {
-        requires(wings);
-        setTimeout(2);
-    }
-
-    @Override
-    protected void initialize() {
-
+public class IntakeIdle extends Command {
+    public IntakeIdle() {
+        requires(intakes);
     }
 
     @Override
     protected void execute() {
-        wings.deploy();
+        intakes.set(-.2);
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     @Override
     protected void end() {
-        wings.stop();
+        intakes.stop();
     }
 
     @Override

@@ -12,6 +12,8 @@ public class ElevatorControl extends Command {
     private final int UP_AXIS;
     private final int DOWN_AXIS;
 
+    private boolean holding = false;
+
     public ElevatorControl() {
         // Use requires() here to declare subsystem dependencies
         requires(elevator);
@@ -21,15 +23,21 @@ public class ElevatorControl extends Command {
     }
 
     @Override
-    protected void initialize() {
-
-    }
-
-    @Override
     protected void execute() {
-        double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS);
+        double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS) * elevator.downSpeedModifier;
 
-        elevator.move(moveInput);
+        if (moveInput < .1) {
+            if (!holding) {
+                holding = true;
+                elevator.goToPosInit(elevator.getHeight());
+            }
+
+            elevator.goToPos();
+        } else {
+            holding = false;
+
+            elevator.move(moveInput);
+        }
     }
 
     @Override

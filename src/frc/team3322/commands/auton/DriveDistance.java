@@ -7,11 +7,12 @@ import static frc.team3322.Robot.drivetrain;
 
 
 public class DriveDistance extends Command {
+    private double MAX_SPEED = .7;
+
     private final double desiredDistance;
-    private double speed = .75;
 
     private double straightAngle;
-    private double deltaDistance = 0;
+    private double distanceFromTarget = 0;
     private double initialDisplacement;
 
     public DriveDistance(double distance) {
@@ -23,7 +24,7 @@ public class DriveDistance extends Command {
     public DriveDistance(double distance, double speed) {
         this(distance);
 
-        this.speed = speed;
+        this.MAX_SPEED = speed;
     }
 
     @Override
@@ -36,16 +37,26 @@ public class DriveDistance extends Command {
     @Override
     protected void execute() {
         double curDistance = drivetrain.getRobotDisplacement() - initialDisplacement;
+        distanceFromTarget = desiredDistance - curDistance;
 
-        deltaDistance = desiredDistance - curDistance;
-        drivetrain.driveAngle(speed, straightAngle);
+        double speed;
+        // Increment speed the first half, decrement speed the second half
+        if (curDistance < desiredDistance/2) {
+            speed = curDistance/(desiredDistance/2);
+        } else {
+            speed = (desiredDistance/2)/curDistance;
+        }
+        speed = speed * MAX_SPEED + 0.25;
+        speed *= distanceFromTarget/Math.abs(distanceFromTarget);
 
-        SmartDashboard.putNumber("DriveDistance delta", deltaDistance);
+        // TODO: fix motion profiling
+        drivetrain.driveAngle(MAX_SPEED);
+        SmartDashboard.putNumber("DriveDistance remaining", distanceFromTarget);
     }
 
     @Override
     protected boolean isFinished() {
-        return deltaDistance < .5;
+        return Math.abs(distanceFromTarget) < 2;
     }
 
     @Override

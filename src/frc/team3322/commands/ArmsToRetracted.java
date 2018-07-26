@@ -1,44 +1,32 @@
 package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team3322.subsystems.Arms;
 
 import static frc.team3322.Robot.arms;
-import static frc.team3322.Robot.intakes;
 
-
-public class EjectCube extends Command {
-    double speed = 0;
-
-    public EjectCube() {
-        requires(intakes);
-    }
-
-    public EjectCube(double speed) {
-        this();
-        this.speed = speed;
+public class ArmsToRetracted extends Command {
+    public ArmsToRetracted() {
     }
 
     @Override
     protected void initialize() {
+        arms.goToRotationInit(Arms.POS_RETRACTED);
     }
 
     @Override
     protected void execute() {
-        if (speed == 0) {
-            intakes.spinOutwards();
-        } else {
-            intakes.set(speed);
-        }
+        arms.goToRotation();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return arms.haveReached(Arms.POS_RETRACTED);
     }
 
     @Override
     protected void end() {
-        intakes.stop();
+        arms.stop();
     }
 
     @Override

@@ -2,32 +2,27 @@ package frc.team3322.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3322.Robot.arms;
+import static frc.team3322.Robot.intakes;
 
 
-public class IntakeOut extends Command {
-    public IntakeOut() {
-        //requires(arms);
-    }
-
-    @Override
-    protected void initialize() {
-
+public class IntakeCube extends Command {
+    public IntakeCube() {
+        requires(intakes);
     }
 
     @Override
     protected void execute() {
-        arms.intakeOut();
+        intakes.spinInwards();
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     @Override
     protected void end() {
-        arms.stopIntake();
+        intakes.stop();
     }
 
     @Override
