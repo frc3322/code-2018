@@ -34,7 +34,7 @@ public class OI
     public OI() {
         stick_left.whenPressed(new ShiftDrivetrain());
 
-        //button_a.whileHeld(new OpenArms());
+        button_a.whileHeld(new OpenArms());
         button_b.whileHeld(new CloseArms());
         button_x.whileHeld(new IntakeIn());
         button_y.whileHeld(new IntakeOut());
