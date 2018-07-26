@@ -16,8 +16,9 @@ public class Drivetrain extends Subsystem {
 
     private static final double DRIVEANGLE_KP = .4;
     private static final double DRIVEANGLE_KD = .3;
-    private static final double WHEEL_DIAMETER = .155;
+    private static final double WHEEL_DIAMETER = 6;
     private static final double TICS_PER_REVOLUTION = 256;
+    private static final double GEAR_RATIO = 0.5;
 
     private DifferentialDrive robotDrive;
     private DoubleSolenoid shifter;
@@ -130,7 +131,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public double toWheelRatio(double input) {
-        return input / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER;
+        return input / TICS_PER_REVOLUTION * Math.PI * WHEEL_DIAMETER * GEAR_RATIO;
     }
 
     public double getLeftDisplacement() {
@@ -142,7 +143,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public double getRobotDisplacement() {
-        return (toWheelRatio(leftEnc.get()) + toWheelRatio(leftEnc.get())) / 2;
+        return (toWheelRatio(leftEnc.get()) + toWheelRatio(rightEnc.get())) / 2;
     }
 
     public double getLeftVelocity() {
@@ -155,5 +156,10 @@ public class Drivetrain extends Subsystem {
 
     public double getRobotVelocity() {
         return (getLeftVelocity() + getRightVelocity()) / 2;
+    }
+
+    public void resetEncoders() {
+        leftEnc.reset();
+        rightEnc.reset();
     }
 }

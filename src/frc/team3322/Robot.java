@@ -7,7 +7,6 @@
 
 package frc.team3322;
 
-import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -66,6 +65,8 @@ public class Robot extends TimedRobot
 
         SmartDashboard.putData("Start pos", startChooser);
         SmartDashboard.putData("Auton action", actionChooser);
+
+        drivetrain.resetEncoders();
     }
 
     /**

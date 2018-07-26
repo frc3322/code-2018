@@ -3,6 +3,7 @@ package frc.team3322.commands.auton;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team3322.commands.*;
+import frc.team3322.subsystems.Drivetrain;
 
 
 public class Auton extends CommandGroup {
@@ -288,12 +289,12 @@ public class Auton extends CommandGroup {
                 break;
             case POSL_LSWITCH:
                 System.out.println("POSL_LSWITCH");
-                addSequential(new DriveDistance(3));
-                addSequential(new TurnToAngle(90));
-                addSequential(new DriveDistance(2));
-                addSequential(new ElevatorToSwitch());
-                addSequential(new EjectCube());
-                addSequential(new ElevatorToBottom());
+                addSequential(new DriveDistance(60));
+                //addSequential(new TurnToAngle(90));
+                //addSequential(new DriveDistance(2));
+                //addSequential(new ElevatorToSwitch());
+                //addSequential(new EjectCube());
+                //addSequential(new ElevatorToBottom());
                 break;
             case POSL_LSCALE:
                 System.out.println("POSL_LSCALE");
