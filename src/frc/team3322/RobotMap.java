@@ -30,8 +30,8 @@ public class RobotMap
         public static final int ELEVATOR_MOTOR_2 = 13;
 
         // Arms
-        public static final int ARM_LEFT = 2;
-        public static final int ARM_RIGHT = 12;
+        public static final int ARMS = 2;
+        //public static final int ARMS = 12;
 
         // Intake
         public static final int INTAKE_LEFT = 1;
@@ -63,10 +63,11 @@ public class RobotMap
         public static final int ELEVATOR_ENCODER_B = 1;
 
         // Arms
-        public static final int ARM_LEFT_ENCODER_A = 6;
-        public static final int ARM_LEFT_ENCODER_B = 7;
-        public static final int ARM_RIGHT_ENCODER_A = 8;
-        public static final int ARM_RIGHT_ENCODER_B = 9;
+        //TODO: Change to counter
+        //public static final int ARM_LEFT_ENCODER_A = 6;
+        //public static final int ARM_LEFT_ENCODER_B = 7;
+        //public static final int ARM_RIGHT_ENCODER_A = 8;
+        //public static final int ARM_RIGHT_ENCODER_B = 9;
     }
 
     public static class XBOX {

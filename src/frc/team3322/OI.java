@@ -33,8 +33,8 @@ public class OI
     Button stick_right = new JoystickButton(stick, RobotMap.XBOX.STICK_RIGHT);
 
     public OI() {
-        button_a.whileHeld(new OpenArms());
-        button_b.whileHeld(new CloseArms());
+        button_a.whileHeld(new LiftArms());
+        button_b.whileHeld(new LowerArms());
         button_x.whileHeld(new IntakeCube());
         button_y.whileHeld(new EjectCube(.5));
 

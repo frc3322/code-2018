@@ -6,14 +6,14 @@ import frc.team3322.subsystems.Arms;
 import static frc.team3322.Robot.arms;
 
 
-public class CloseArms extends Command {
-    public CloseArms() {
+public class LowerArms extends Command {
+    public LowerArms() {
         requires(arms);
     }
 
     @Override
     protected void execute() {
-        arms.close();
+        arms.lowerArms();
     }
 
     @Override
