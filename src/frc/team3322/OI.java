@@ -19,18 +19,19 @@ import frc.team3322.commands.*;
  */
 public class OI 
 {
-    public Joystick stick = new Joystick(0);
+    public Joystick chassisStick = new Joystick(0);
+    public Joystick aboveChassisStick = new Joystick(1);
 
-    Button button_a = new JoystickButton(stick, RobotMap.XBOX.BUTTON_A);
-    Button button_b = new JoystickButton(stick, RobotMap.XBOX.BUTTON_B);
-    Button button_x = new JoystickButton(stick, RobotMap.XBOX.BUTTON_X);
-    Button button_y = new JoystickButton(stick, RobotMap.XBOX.BUTTON_Y);
-    Button bumper_left = new JoystickButton(stick, RobotMap.XBOX.BUMPER_LEFT);
-    Button bumper_right = new JoystickButton(stick, RobotMap.XBOX.BUMPER_RIGHT);
-    Button button_back = new JoystickButton(stick, RobotMap.XBOX.BUTTON_BACK);
-    Button button_start = new JoystickButton(stick, RobotMap.XBOX.BUTTON_START);
-    Button stick_left = new JoystickButton(stick, RobotMap.XBOX.STICK_LEFT);
-    Button stick_right = new JoystickButton(stick, RobotMap.XBOX.STICK_RIGHT);
+    Button button_a = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_A);
+    Button button_b = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_B);
+    Button button_x = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_X);
+    Button button_y = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_Y);
+    Button bumper_left = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUMPER_LEFT);
+    Button bumper_right = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUMPER_RIGHT);
+    Button button_back = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_BACK);
+    Button button_start = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_START);
+    Button stick_left = new JoystickButton(aboveChassisStick, RobotMap.XBOX.STICK_LEFT);
+    Button stick_right = new JoystickButton(aboveChassisStick, RobotMap.XBOX.STICK_RIGHT);
 
     public OI() {
         button_a.whileHeld(new LiftArms());
@@ -85,6 +86,7 @@ public class OI
             stick.setRumble(rumbleType, 0);
         });
         rumble.start();*/
-        stick.setRumble(GenericHID.RumbleType.kLeftRumble, intensity);
+        chassisStick.setRumble(GenericHID.RumbleType.kLeftRumble, intensity);
+        aboveChassisStick.setRumble(GenericHID.RumbleType.kLeftRumble, intensity);
     }
 }

@@ -26,8 +26,8 @@ public class DriveControl extends Command {
 
     @Override
     protected void execute() {
-        double speedInput = -oi.stick.getRawAxis(SPEED_AXIS);
-        double rotationInput = oi.stick.getRawAxis(ROTATION_AXIS);
+        double speedInput = -oi.chassisStick.getRawAxis(SPEED_AXIS);
+        double rotationInput = oi.chassisStick.getRawAxis(ROTATION_AXIS);
 
         drivetrain.driveStraight(speedInput, rotationInput);
     }
