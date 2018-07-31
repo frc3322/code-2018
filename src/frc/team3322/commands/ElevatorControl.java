@@ -24,7 +24,7 @@ public class ElevatorControl extends Command {
 
     @Override
     protected void execute() {
-        double moveInput = oi.stick.getRawAxis(UP_AXIS) - oi.stick.getRawAxis(DOWN_AXIS) * elevator.downSpeedModifier;
+        double moveInput = oi.aboveChassisStick.getRawAxis(UP_AXIS) - oi.aboveChassisStick.getRawAxis(DOWN_AXIS) * elevator.downSpeedModifier;
 
         if (moveInput < .1) {
             if (!holding) {
