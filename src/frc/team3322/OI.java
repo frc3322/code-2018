@@ -19,8 +19,8 @@ import frc.team3322.commands.*;
  */
 public class OI 
 {
-    public Joystick chassisStick = new Joystick(0);
-    public Joystick aboveChassisStick = new Joystick(1);
+    public Joystick chassisStick = new Joystick(1);
+    public Joystick aboveChassisStick = new Joystick(2);
 
     Button button_a = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_A);
     Button button_b = new JoystickButton(aboveChassisStick, RobotMap.XBOX.BUTTON_B);
