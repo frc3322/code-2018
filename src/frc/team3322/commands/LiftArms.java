@@ -18,7 +18,7 @@ public class LiftArms extends Command {
 
     @Override
     protected boolean isFinished() {
-        return arms.haveReached(Arms.POS_RETRACTED);
+        return arms.haveReachedPerpendicular();
     }
 
     @Override

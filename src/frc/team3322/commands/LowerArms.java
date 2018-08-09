@@ -18,7 +18,7 @@ public class LowerArms extends Command {
 
     @Override
     protected boolean isFinished() {
-        return arms.haveReached(Arms.POS_CLOSED);
+        return arms.haveReachedParallel();
     }
 
     @Override

@@ -63,9 +63,8 @@ public class RobotMap
         public static final int ELEVATOR_ENCODER_B = 1;
 
         // Arms
-        //TODO: Change to counter
-        //public static final int ARM_LEFT_ENCODER_A = 6;
-        //public static final int ARM_LEFT_ENCODER_B = 7;
+        public static final int HALL_EFFECT_PERPENDICULAR = 6;
+        public static final int HALL_EFFECT_PARALLEL = 7;
         //public static final int ARM_RIGHT_ENCODER_A = 8;
         //public static final int ARM_RIGHT_ENCODER_B = 9;
     }

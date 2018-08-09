@@ -22,7 +22,7 @@ public class ArmsToPreparePickup extends Command {
 
     @Override
     protected boolean isFinished() {
-        return arms.haveReached(Arms.POS_PREPARE_PICKUP);
+        return arms.haveReachedParallel();
     }
 
     @Override

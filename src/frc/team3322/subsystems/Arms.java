@@ -1,6 +1,7 @@
 package frc.team3322.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -23,6 +24,9 @@ public class Arms extends Subsystem {
     private WPI_TalonSRX arms = new WPI_TalonSRX(RobotMap.CAN.ARMS);
 
     // TODO: make arms counter
+    private DigitalInput hallEffectParallel = new DigitalInput(RobotMap.DIO.HALL_EFFECT_PARALLEL);
+    private DigitalInput hallEffectPerpendicular = new DigitalInput(RobotMap.DIO.HALL_EFFECT_PERPENDICULAR);
+
     //private Encoder enc_left;
     //private Encoder enc_right;
 
@@ -59,7 +63,7 @@ public class Arms extends Subsystem {
     }
 
     public void liftArms() {
-        if (haveReached(POS_RETRACTED)) {
+        if (haveReachedPerpendicular()) {
             arms.set(0);
             return;
         }
@@ -68,7 +72,7 @@ public class Arms extends Subsystem {
     }
 
     public void lowerArms() {
-        if (haveReached(POS_CLOSED)) {
+        if (haveReachedParallel()) {
             arms.set(0);
             return;
         }
@@ -91,8 +95,12 @@ public class Arms extends Subsystem {
     }
 
 
-    public boolean haveReached(double position) {
-        return (Math.abs(getRotation() - position) < 10);
+    public boolean haveReachedPerpendicular() {
+        return hallEffectPerpendicular.get();
+    }
+
+    public boolean haveReachedParallel() {
+        return hallEffectParallel.get();
     }
 
     public double toDegrees(double input) {
