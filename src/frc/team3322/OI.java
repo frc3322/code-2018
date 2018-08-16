@@ -40,8 +40,8 @@ public class OI
         button_y.whileHeld(new EjectCube(.5));
 
         bumper_left.whileHeld(new EjectCube(.35));
-        bumper_right.whileHeld(new PreparePickupCube());
-        bumper_right.whenReleased(new PickupCube());
+        //bumper_right.whileHeld(new PreparePickupCube());
+        //bumper_right.whenReleased(new PickupCube());
 
         stick_left.whenPressed(new ShiftDrivetrain());
         stick_right.toggleWhenPressed(new AutoShiftDrivetrain());
@@ -53,7 +53,7 @@ public class OI
 
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of
-    // three ways:
+    // three ways
 
     // Start the command when the button is pressed and let it run the command
     // until it is finished as determined by it's isFinished method.

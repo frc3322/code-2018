@@ -15,7 +15,7 @@ public class Arms extends Subsystem {
     private static final double ARMS_DECAY = .2;
     private static final double ARMS_KI = .2;
     private static final double ARMS_KD = .3;
-    private static final double MAX_SPEED = .6;
+    private static final double MAX_SPEED = 1;
 
     public static final double POS_PREPARE_PICKUP = 40; // @TODO find actual values
     public static final double POS_RETRACTED = 100; // @TODO find actual values
@@ -96,11 +96,11 @@ public class Arms extends Subsystem {
 
 
     public boolean haveReachedPerpendicular() {
-        return hallEffectPerpendicular.get();
+        return false;/*hallEffectPerpendicular.get();*/
     }
 
     public boolean haveReachedParallel() {
-        return hallEffectParallel.get();
+        return false;/*hallEffectParallel.get();*/
     }
 
     public double toDegrees(double input) {
