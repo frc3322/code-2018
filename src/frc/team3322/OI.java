@@ -49,7 +49,7 @@ public class OI
         button_start.whileHeld(new IntakeOpposite());
 
         button_back.toggleWhenPressed(new ToggleClimbMode());
-    }
+        }
 
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of

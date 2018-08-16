@@ -2,6 +2,7 @@ package frc.team3322.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team3322.RobotMap;
@@ -16,6 +17,8 @@ public class Intakes extends Subsystem {
 
     private SpeedControllerGroup intakes;
 
+    PowerDistributionPanel pdp = new PowerDistributionPanel();
+
     public Intakes() {
         leftIntake.setInverted(true);
 
@@ -25,6 +28,14 @@ public class Intakes extends Subsystem {
     public Intakes(double intakeSpeed) {
         this();
         this.intakeSpeed = intakeSpeed;
+    }
+
+    public double getLeftIntakeCurrent() {
+        return pdp.getCurrent(RobotMap.CAN.INTAKE_LEFT);
+    }
+
+    public double getRightIntakeCurrent() {
+        return pdp.getCurrent(RobotMap.CAN.INTAKE_RIGHT);
     }
 
     public void initDefaultCommand() {

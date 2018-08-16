@@ -3,6 +3,7 @@ package frc.team3322.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team3322.PIDController;
@@ -22,6 +23,8 @@ public class Arms extends Subsystem {
     public static final double POS_CLOSED = -10; // TODO
 
     private WPI_TalonSRX arms = new WPI_TalonSRX(RobotMap.CAN.ARMS);
+
+    PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     // TODO: make arms counter
     private DigitalInput hallEffectParallel = new DigitalInput(RobotMap.DIO.HALL_EFFECT_PARALLEL);
@@ -87,6 +90,11 @@ public class Arms extends Subsystem {
     public void stop() {
         arms.set(0);
     }
+
+    public double getArmCurrent() {
+    return pdp.getCurrent(RobotMap.CAN.ARMS);
+    }
+
 
     //TODO: Change to counter
     private double getRotation() {
