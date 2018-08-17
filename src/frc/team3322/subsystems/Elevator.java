@@ -127,10 +127,12 @@ public class Elevator extends Subsystem {
     }
 
     public boolean isAtTop() {
-        return getHeight() >= TOP;
+       //return getHeight() >= TOP;
+        return false;
     }
 
     public boolean isAtBottom() {
-        return getHeight() <= BOTTOM;
+        //return getHeight() <= BOTTOM;
+        return false;
     }
 }

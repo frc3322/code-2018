@@ -26,7 +26,7 @@ public class ElevatorControl extends Command {
     protected void execute() {
         double moveInput = oi.aboveChassisStick.getRawAxis(UP_AXIS) - oi.aboveChassisStick.getRawAxis(DOWN_AXIS) * elevator.downSpeedModifier;
 
-        if (moveInput < .1) {
+       if ((moveInput < .1) && (moveInput > -0.1)) {
             if (!holding) {
                 holding = true;
                 elevator.goToPosInit(elevator.getHeight());
