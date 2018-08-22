@@ -131,6 +131,7 @@ public class Robot extends TimedRobot
         elevator.resetEncoder();
         arms.resetPosition();
 
+
         autonomousCommand = new Auton(startChooser.getSelected(), objectiveChooser.getSelected(), priorityChooser.getSelected());
         autonomousCommand.start();
     }

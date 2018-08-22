@@ -12,7 +12,7 @@ public class IntakeIdle extends Command {
 
     @Override
     protected void execute() {
-        intakes.set(-.1);
+        intakes.set(-.2);
     }
 
     @Override

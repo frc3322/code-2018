@@ -32,6 +32,7 @@ public class ElevatorControl extends Command {
                 elevator.goToPosInit(elevator.getHeight());
             }
 
+
             elevator.goToPos();
         } else {
             holding = false;
