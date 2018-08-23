@@ -172,7 +172,7 @@ public class Auton extends CommandGroup {
     private void queuePath() {
         if (selectedPath == Path.DO_NOTHING) return;
 
-        addParallel(new ArmsToRetracted(), 3);
+        addParallel(new ArmsToParallel());
         addParallel(new IntakeIdle());
         addSequential(new ShiftLow());
 
@@ -187,7 +187,6 @@ public class Auton extends CommandGroup {
                         break;
                     case SAME_SWITCH:
                         addSequential(new DriveDistance(145));
-                        addParallel(new ArmsToParallel());
                         addParallel(new ElevatorToSwitch());
                         addSequential(new TurnToAngle(90 * rightInversion));
                         addSequential(new DriveDistance(12));
@@ -196,7 +195,6 @@ public class Auton extends CommandGroup {
                     case OPPOSITE_SWITCH:
                         // TODO: P2 tuning
                         addSequential(new DriveDistance(218));
-                        addParallel(new ArmsToParallel());
                         addSequential(new TurnToAngle(90 * rightInversion));
                         addSequential(new DriveDistance(148));
                         addParallel(new ElevatorToSwitch());
@@ -207,7 +205,6 @@ public class Auton extends CommandGroup {
                     case SAME_SCALE:
                         // TODO: test
                         addSequential(new DriveDistance(305));
-                        addParallel(new ArmsToParallel());
                         addSequential(new TurnToAngle(90 * rightInversion));
                         addParallel(new ElevatorToScale());
                         addSequential(new DriveDistance(-12));
@@ -217,7 +214,6 @@ public class Auton extends CommandGroup {
                     case OPPOSITE_SCALE:
                         // TODO: test
                         addSequential(new DriveDistance(218));
-                        addParallel(new ArmsToParallel());
                         addSequential(new TurnToAngle(90 * rightInversion));
                         addSequential(new DriveDistance(180));
                         addParallel(new ElevatorToScale());
@@ -240,7 +236,6 @@ public class Auton extends CommandGroup {
                     case LEFT_SWITCH:
                         // TODO: P2 tuning
                         addSequential(new DriveDistance(36));
-                        addParallel(new ArmsToParallel());
                         addSequential(new TurnToAngle(-45 * rightInversion));
                         addParallel(new ElevatorToSwitch());
                         addSequential(new DriveDistance(60));
@@ -252,7 +247,6 @@ public class Auton extends CommandGroup {
                     case LEFT_SCALE:
                         // TODO: test
                         addSequential(new DriveDistance(36));
-                        addParallel(new ArmsToParallel());
                         addSequential(new TurnToAngle(-90 * rightInversion));
                         addSequential(new DriveDistance(72));
                         addSequential(new TurnToAngle(0));
