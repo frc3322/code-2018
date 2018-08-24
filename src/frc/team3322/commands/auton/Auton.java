@@ -171,15 +171,29 @@ public class Auton extends CommandGroup {
 
     private void queuePath() {
         if (selectedPath == Path.DO_NOTHING) return;
-        if (startPos == Position.MIDDLE) return;
+        if (startPos == Position.MIDDLE) {
+            addSequential(new DriveDistance(130));
+        }
         if (switchSide == startPos) {
-            addParallel(new ElevatorToSwitch());
-            addParallel(new ArmsToParallel());
-            addParallel(new IntakeIdle());
-            addSequential(new DriveDistance(100));
-            addParallel(new ElevatorHold());
-            addParallel(new ShiftLow());
-            addSequential(new EjectCube(), 1);
+            if (startPos == Position.LEFT) {
+                addParallel(new ElevatorToSwitch());
+                addParallel(new ArmsToParallel());
+                addParallel(new IntakeIdle());
+                addSequential(new DriveDistance(145));
+                addSequential(new TurnToAngle(90));
+                addParallel(new ElevatorHold());
+                addParallel(new ShiftLow());
+                addSequential(new EjectCube(), 1);
+            } else {
+                addParallel(new ElevatorToSwitch());
+                addParallel(new ArmsToParallel());
+                addParallel(new IntakeIdle());
+                addSequential(new DriveDistance(145));
+                addSequential(new TurnToAngle(-90));
+                addParallel(new ElevatorHold());
+                addParallel(new ShiftLow());
+                addSequential(new EjectCube(), 1);
+            }
         } else addSequential(new DriveDistance(130));
 
 
