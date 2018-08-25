@@ -192,7 +192,7 @@ public class Auton extends CommandGroup {
                 addParallel(new ShiftLow());
                 addSequential(new EjectCube(), 3);
             }
-        } else addSequential(new DriveDistance(100));
+        } else addSequential(new DriveDistance(130));
 
 
         /*switch (startPos) {
