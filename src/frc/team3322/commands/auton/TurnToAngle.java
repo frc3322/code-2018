@@ -24,7 +24,7 @@ public class TurnToAngle extends Command {
 
     @Override
     protected void execute() {
-        drivetrain.driveAngle(0);
+        drivetrain.drive(0, 0.65);
     }
 
     @Override
