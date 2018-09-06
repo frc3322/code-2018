@@ -10,7 +10,7 @@ import frc.team3322.commands.IntakeIdle;
 
 public class Intakes extends Subsystem {
 
-    private double intakeSpeed = .35;
+    private double intakeSpeed = .5;
 
     private WPI_TalonSRX leftIntake = new WPI_TalonSRX(RobotMap.CAN.INTAKE_LEFT);
     private WPI_TalonSRX rightIntake = new WPI_TalonSRX(RobotMap.CAN.INTAKE_RIGHT);
@@ -52,7 +52,7 @@ public class Intakes extends Subsystem {
 
     public void spinOpposite() {
         leftIntake.set(-intakeSpeed);
-        rightIntake.set(intakeSpeed*.25);
+        rightIntake.set(intakeSpeed*-.25);
     }
 
     public void set(double speed) {

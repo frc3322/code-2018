@@ -59,8 +59,8 @@ public class RobotMap
         public static final int DRIVETRAIN_RIGHT_ENCODER_B = 3;
 
         // Elevator
-        public static final int ELEVATOR_ENCODER_A = 0;
         public static final int ELEVATOR_ENCODER_B = 1;
+        public static final int ELEVATOR_ENCODER_A = 0;
 
         // Arms
         public static final int HALL_EFFECT_PERPENDICULAR = 6;

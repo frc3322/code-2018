@@ -26,7 +26,7 @@ public class Elevator extends Subsystem {
     private static final double DOWN_SPEED_MODIFIER = .75;
 
     private double upSpeed = .5;
-    private double downSpeed = .3;
+    private double downSpeed = .1;
 
     public double downSpeedModifier = .75;
 
