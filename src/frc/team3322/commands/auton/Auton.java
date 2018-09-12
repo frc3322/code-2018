@@ -174,8 +174,8 @@ public class Auton extends CommandGroup {
         if (startPos == Position.MIDDLE) {
             if (switchSide == Position.RIGHT){
                 addSequential(new DriveDistance(110), 5);
-                //addParallel(new ElevatorToSwitch());
-                //addSequential(new ArmsToParallel(), 1);
+                addSequential(new ElevatorToSwitch());
+                addSequential(new ArmsToParallel(), 1);
                 addSequential(new EjectCube());
             } else {
                 addSequential(new DriveDistance(110), 5);
@@ -186,17 +186,17 @@ public class Auton extends CommandGroup {
             if (startPos == Position.LEFT) {
                 addSequential(new DriveDistance(145), 5);
                 addSequential(new TurnToAngle(0.5), 1.5);
-                //addParallel(new ElevatorToSwitch());
-                //addParallel(new ArmsToParallel(), 1);
+                addSequential(new ElevatorToSwitch());
+                addSequential(new ArmsToParallel(), 1);
                 addSequential(new DriveDistance(12), 2);
-                //addSequential(new EjectCube(), 3);
+                addSequential(new EjectCube(), 3);
             } else {
                 addSequential(new DriveDistance(145),5);
                 addSequential(new TurnToAngle(-0.5), 1.5);
-                //addParallel(new ElevatorToSwitch());
-                //addParallel(new ArmsToParallel(), 1);
+                addSequential(new ElevatorToSwitch());
+                addSequential(new ArmsToParallel(), 1);
                 addSequential(new DriveDistance(12), 2);
-                //addSequential(new EjectCube(), 3);
+                addSequential(new EjectCube(), 3);
             }
         } else addSequential(new DriveDistance(130));
 

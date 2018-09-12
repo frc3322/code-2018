@@ -16,7 +16,7 @@ public class Arms extends Subsystem {
     private static final double ARMS_DECAY = 0;
     private static final double ARMS_KI = 0;
     private static final double ARMS_KD = 0;
-    private static final double MAX_SPEED = 0;
+    private static final double MAX_SPEED = 1;
 
     public static final double POS_PREPARE_PICKUP = 40; // @TODO find actual values
     public static final double POS_RETRACTED = 100; // @TODO find actual values
@@ -66,19 +66,12 @@ public class Arms extends Subsystem {
     }
 
     public void liftArms() {
-        if (haveReachedPerpendicular()) {
-            arms.set(0);
-            return;
-        }
+
 
         arms.set(MAX_SPEED);
     }
 
     public void lowerArms() {
-        if (haveReachedParallel()) {
-            arms.set(0);
-            return;
-        }
 
         arms.set(-MAX_SPEED);
     }
