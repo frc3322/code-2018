@@ -7,6 +7,8 @@
 
 package frc.team3322;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -162,6 +164,25 @@ public class Robot extends TimedRobot
     public void teleopPeriodic() 
     {
         Scheduler.getInstance().run();
+
+        double Kp = -0.1f;
+        edu.wpi.first.networktables.NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableEntry targetx = table.getEntry("tx");
+
+
+        double tx = targetx.getDouble(0);
+        double aim_error = tx;
+        double steering_adjust = Kp*aim_error;
+        double AimMinCmd = 0.095f;
+
+        if (){
+            double heading_error = tx;
+            steering_adjust = Kp * tx;
+
+            left_command1 += steering_adjust; //where I get the error
+            right_command1 -= steering_adjust; //where I get the error
+
+        }
     }
 
     /**
