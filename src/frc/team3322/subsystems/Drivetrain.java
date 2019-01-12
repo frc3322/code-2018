@@ -2,6 +2,9 @@ package frc.team3322.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -59,6 +62,7 @@ public class Drivetrain extends Subsystem {
         pid = new PIDController("Drive angle", DRIVEANGLE_KP, 0, 0, DRIVEANGLE_KD);
 
         lastShift = System.currentTimeMillis() - shiftCooldown;
+
     }
 
     public void initDefaultCommand() {
@@ -217,4 +221,5 @@ public class Drivetrain extends Subsystem {
         enc_right.reset();
         navx.resetDisplacement();
     }
+
 }

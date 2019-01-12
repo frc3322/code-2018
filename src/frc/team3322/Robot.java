@@ -17,10 +17,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3322.commands.auton.Auton;
-import frc.team3322.subsystems.Arms;
-import frc.team3322.subsystems.Drivetrain;
-import frc.team3322.subsystems.Elevator;
-import frc.team3322.subsystems.Intakes;
+import frc.team3322.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,6 +34,7 @@ public class Robot extends TimedRobot
     public static final Elevator elevator = new Elevator();
     public static final Arms arms = new Arms();
     public static final Intakes intakes = new Intakes();
+    public static final Limelight limelight = new Limelight();
 
     public static OI oi;
 
@@ -165,24 +163,6 @@ public class Robot extends TimedRobot
     {
         Scheduler.getInstance().run();
 
-        double Kp = -0.1f;
-        edu.wpi.first.networktables.NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        NetworkTableEntry targetx = table.getEntry("tx");
-
-
-        double tx = targetx.getDouble(0);
-        double aim_error = tx;
-        double steering_adjust = Kp*aim_error;
-        double AimMinCmd = 0.095f;
-
-        if (){
-            double heading_error = tx;
-            steering_adjust = Kp * tx;
-
-            left_command1 += steering_adjust; //where I get the error
-            right_command1 -= steering_adjust; //where I get the error
-
-        }
     }
 
     /**
